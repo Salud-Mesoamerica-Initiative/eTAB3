@@ -1,0 +1,169 @@
+@media print {
+	@page {
+    margin: 0 !important;
+    size: auto !important;
+    }
+    @page:right{ 
+        @bottom-left {
+            margin: 10pt 0 30pt 0 !important;
+            border-top: .25pt solid #666 !important;
+            content: "Our Cats" !important;
+            font-size: 9pt !important;
+            color: #333 !important;
+        }
+
+        @bottom-right { 
+            margin: 10pt 0 30pt 0 !important;
+            border-top: .25pt solid #666 !important;
+            content: counter(page) !important;
+            font-size: 9pt !important;
+        }
+
+        @top-right {
+            content:  string(doctitle) !important;
+            margin: 30pt 0 10pt 0 !important;
+            font-size: 9pt !important;
+            color: #333 !important;
+        }
+    }
+    
+    html{
+        -webkit-print-color-adjust:exact !important;
+        font-size: 10px !important;
+    }
+    body {
+        margin: 0mm 0mm 0mm 0mm !important;
+        padding: 0mm !important;
+        font-size: 10px !important;
+    }
+
+    #header,
+    #footer,
+    #sidebar,
+    #chat,
+    .growl-animated,
+    .m-btn {
+        display: none !important;
+    }
+
+    .imprimir {
+        padding: 30px !important;
+        -webkit-print-color-adjust: exact !important;
+    }
+    .imprimir .card {
+        position: relative !important;
+        background: #fff !important;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5) !important;
+        margin-bottom: 30px !important;
+    }
+
+    .imprimir .card-header {
+        position: relative !important;
+    }
+    .imprimir .ch-alt, .imprimir .lv-header-alt {
+        background: #f7f7f7 !important;
+    }
+    .imprimir .card-header, .imprimir .lv-header-alt {
+        padding: 20px;
+        margin-bottom: 20px;
+        margin: -60px -30px 25px -30px;
+    }
+    .imprimir .block-header {
+        display: none !important;
+    }
+
+    .imprimir .highlight {
+        background: #f7f7f7 !important;
+    }
+    .imprimir table.Table thead{
+        display: table-header-group !important;
+    }
+    .imprimir table.Table tbody{
+        display: table-row-group !important;
+    }
+    .imprimir table.Tabla{
+      border-collapse: collapse !important; 
+      page-break-after: auto !important; 
+      font-size: 6pt !important;
+    }
+    .imprimir table.Tabla tr, table.Tabla td{
+        page-break-inside: avoid !important;
+        page-break-after: auto !important;
+    }
+    
+    .imprimir table.Tabla td, table.Tabla th{
+      border: 1px #999 solid !important;
+      color: #000 !important;
+    }
+    .imprimir table.Tabla caption{
+      font-weight: bold !important;
+      background: #ddd !important;
+      padding: .4em !important;
+      border: 1px #999 solid !important;
+      border-bottom: none !important;
+      font-size: 9px !important;
+    }
+    
+    .equis
+    {
+        display: none !important;
+        height: 0 !important;
+        width: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    table, .table{
+        font-size: 9px !important;
+    }
+    .nombre_matriz{
+        width: 30%;
+    }
+    .matriz td:hover{
+    background: #FFC !important;
+}
+.matriz thead{
+    border: 3px solid gray;
+}
+.matriz tbody {
+    border: 2px solid yellowgreen;
+}
+.matriz tfoot {
+    border: 2px solid lightsteelblue;
+}
+
+.matriz>tfoot>tr:nth-child(odd)>td {
+    background-color: rgba(76, 80, 177, 0.12);;
+}
+
+.matriz>tfoot>tr>td {
+    border: 1px solid #ddd;
+}
+}
+table, .table{
+    font-size: 9px !important;
+}
+
+.matriz td:hover{
+    background: #FFC !important;
+}
+.matriz thead{
+    border: 3px solid gray;
+}
+.matriz tbody {
+    border: 2px solid yellowgreen;
+}
+.matriz tfoot {
+    border: 2px solid lightsteelblue;
+}
+
+.matriz>tfoot>tr:nth-child(odd)>td {
+    background-color: rgba(76, 80, 177, 0.12);;
+}
+
+.matriz>tfoot>tr>td {
+    border: 1px solid #ddd;
+}
+.nombre_matriz{
+        width: 30%;
+    }

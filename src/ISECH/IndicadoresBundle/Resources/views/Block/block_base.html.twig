@@ -1,0 +1,28 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('bundles/indicadores/css/style.css') }}" type="text/css" media="all"  />
+    <link rel="stylesheet" href="{{ asset('bundles/indicadores/css/ionicons.min.css') }}" type="text/css" media="all"  />
+    
+{% endblock %}
+
+{% block javascripts %}
+<script>
+$(document).ready(function() {
+    	$(".span6").attr("class","");		
+    });
+</script>
+{% endblock %}
+
+<div id="cms-block-{{ block.id }}" class="cms-block cms-block-element">
+    {% block block %}EMPTY CONTENT{% endblock %}
+</div>

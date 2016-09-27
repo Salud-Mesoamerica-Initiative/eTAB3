@@ -1,0 +1,305 @@
+{% extends 'IndicadoresBundle:CRUD:edit.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+<script src="{{ asset('bundles/indicadores/js/UserAdmin/edit.js') }}" type="text/javascript"></script>
+<script src="{{ asset('bundles/indicadores/js/jquery/jquery-ui/js/jquery.ui.core.js') }}"></script>
+<script src="{{ asset('bundles/indicadores/js/jquery/jquery-ui/js/jquery.ui.datepicker.js') }}"></script>
+<style>
+.CalendarClass img
+{
+	margin-top: -15px;
+}
+.CalendarClass
+{
+	width: 100%;
+	border-radius:2px;
+}
+</style>
+	<script type="text/javascript">
+	var micontrol="";var che=true;
+	$(function() {
+		// se obtiene el uniqid que genera en auto symfony al create
+		var uniqid = $("[class=form-horizontal]").attr("action").split('=');
+		// se obtiene el id del campo dateOfBirth
+		var idcontrol = uniqid[1] + '_dateOfBirth';
+		micontrol = uniqid[1];
+		// se ocultan los 3 combos del dateOfBirth
+		document.getElementById(uniqid[1]+"_dateOfBirth_day").style.display="none";
+		document.getElementById(uniqid[1]+"_dateOfBirth_month").style.display="none";
+		document.getElementById(uniqid[1]+"_dateOfBirth_year").style.display="none";
+		// se agrega el input text calendar
+		$("#"+idcontrol).append("<div class='CalendarClass'><input type='text' id='dob' readonly='true' style='width:48%; border-radius:4px; height:35px;'/></div>");
+		// logica del datetimepicker
+		var g=new Date();
+		$("#dob").datepicker({
+			changeMonth: true,
+			changeYear: true,
+			duration:"fast",
+			dateFormat: 'dd/mm/yy',
+			constrainInput: true,
+			firstDay: 1,
+			closeText: 'X',
+			showOn: 'button',
+			buttonImage: "{{ asset('bundles/indicadores/images/calendar.gif') }}",
+			buttonImageOnly: true,
+			buttonText: 'Clic para seleccionar una fecha',
+			yearRange: '1900:'+g.getFullYear(),
+			showButtonPanel: false,
+			prevText: '<Ant',
+	      	nextText: 'Sig>',
+			monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+			monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+			dayNames: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
+			dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sa'],
+			onSelect: function(dateText, inst){
+				// al seleccionar una fecha en el calendar se posicionan esos valores en los 3 combos
+				// para que el guardado y lectura sea transparente para el symfony 
+				$("#"+uniqid[1]+"_dateOfBirth_day option[value="+dateText.split('/')[0]*1+"]").attr("selected",true);
+				$("#"+uniqid[1]+"_dateOfBirth_month option[value="+dateText.split('/')[1]*1+"]").attr("selected",true);
+				$("#"+uniqid[1]+"_dateOfBirth_year option[value="+dateText.split('/')[2]+"]").attr("selected",true);
+			}			
+		});
+		// se llena el input text del calendar con los valores seleccionados de los 3 combos (para updates)
+		// agregar ceros a la izquierda como corresponda
+		var dia = $("#"+uniqid[1]+"_dateOfBirth_day").val();
+		if (dia != '')
+		{
+			var mes = $("#"+uniqid[1]+"_dateOfBirth_month").val();
+			if (dia.length == 1)
+				dia = "0"+dia;
+			if (mes.length == 1)
+				mes = "0"+mes;
+			$("#dob").val(dia+"/"+mes+"/"+$("#"+uniqid[1]+"_dateOfBirth_year").val());
+		}
+		$("#field_actions_"+uniqid[1]+"_groups").append("<button type='button' id='miboton'  class='btn btn-success' style='margin-left:10px;'><i class='glyphicon glyphicon-refresh'></i> Refrescar Lista </button>");
+		$(".icon-plus").attr("class","glyphicon glyphicon-plus-sign");
+		$( "#"+uniqid[1]+"_groups").attr("class","unstyled col-md-12");
+		
+		$("#miboton").click(function(e){
+		    
+			var checkboxes = $( "#"+uniqid[1]+"_groups li" ).length;
+			var cont="0";
+			for (var x=0; x < checkboxes; x++) {
+				if(document.getElementById(uniqid[1]+"_groups_"+x))
+			 	{
+					if(document.getElementById(uniqid[1]+"_groups_"+x).checked)
+			  		cont = cont + document.getElementById(uniqid[1]+"_groups_"+x).value + "_";
+			 	}
+			}
+			
+			
+			var url="{{path('_inicio')}}migroup/"+uniqid[1]+"/"+cont;
+			$.ajax({
+			type: "GET",
+			url: url,
+			})
+			.done(function(dato)
+			{			
+				$("#field_widget_"+uniqid[1]+"_groups").html('<div class="panel panel-default">'+		  
+				  '<div class="panel-body" style=" max-height:280px; overflow:auto; ">'+
+					dato+
+				  '</div>'+
+				'</div>');
+					
+			});
+		});
+		$(".popover").attr("style","top:-100%; margin-left:100%; width:600px; display: block; z-index:9999999999;");
+		var url=$(".sonata-ba-action").attr("href");
+		
+		var idcontrol=uniqid[1];
+		$("#"+idcontrol+"_jurisdiccion ").attr("class","list-group");
+		$("#"+idcontrol+"_jurisdiccion li").attr("class","list-group-item");
+		$("#"+idcontrol+"_jurisdiccion").parent('div').html('<div class="panel panel-default">'+		  
+		  '<div class="panel-body" style=" max-height:280px; overflow:auto; ">'+
+			$("#"+idcontrol+"_jurisdiccion").parent().html()+
+		  '</div>'+
+		'</div>');	
+		
+		var filtro='<div class="panel panel-default">'+
+				'<div class="panel-heading">'+
+					"Filtros: "+
+				 '</div>'+
+				 '<div class="panel-body" style=" max-height:420px; overflow:auto; ">'+
+				 '<table class="col-lg-12"><tr><td width="50%">'+
+				 	'<div class="form-group" >'+
+					 '<label class="control-label col-lg-4">Jurisdiccion</label>'+
+						'<div class="col-lg-8">'+
+						'<select id="jurisdiccion" class="form-control"></select>'+
+					 '</div></div></td><td>'+
+					 '<div class="form-group" >'+
+					'<label class="control-label col-lg-4">Municipio</label>'+
+						'<div class="col-lg-8">'+
+						'<select id="municipio" class="form-control"></select>'+
+					 '</div></div></td></tr><tr><td>'+
+					 '<div class="form-group" >'+
+					'<label class="control-label col-lg-4">Localidad</label>'+
+						'<div class="col-lg-8">'+
+						'<select id="localidad" class="form-control"></select>'+
+					 '</div></div></td><td>'+
+					 '<div class="form-group" >'+
+					'<label class="control-label col-lg-4">Tipo Unidad</label>'+
+						'<div class="col-lg-8">'+
+						'<select id="tipo" class="form-control"></select>'+
+					 '</div></div></td></tr><tr><td colspan="2">'+
+					 '<div class="input-group col-lg-12">'+                          
+                          '<input type="text" id="search" class="form-control" placeholder="Buscar..." autocomplete="off">'+
+						  '<span class="input-group-addon btn btn-success" id="buscar"><i class="glyphicon glyphicon-search"></i></span>'+
+                        '</div>'+
+					 '</td></table>'+				                                                
+				  '</div>'+
+			'</div>'+
+		  '<div class="panel-body" style=" max-height:280px; overflow:auto; ">'+
+			'<table id="'+idcontrol+'_cluesx" class="table table-bordered table-striped table-condensed"></table>'+
+		  '</div>';
+		
+		$("#"+idcontrol+"_clues ").html("");
+		$("#"+idcontrol+"_clues").parent('div').attr("class","col-lg-8");
+		$("#"+idcontrol+"_clues ").attr("class","list-group");
+		$("#"+idcontrol+"_clues").parent('div').html('<div class="panel panel-default">'+		  
+			filtro+
+		'</div>');
+		
+		
+		mostrarClues();
+				
+		$.ajax({
+			type: "POST",	
+			dataType:"json",		
+			url: Routing.generate("filtro_inicial"),
+			data:{'id':''},
+			success: function(response)
+			{			
+				if(response.jurisdiccion)
+				{
+					
+					var option='<option value="">Seleccione</option>';	
+					for(var i=0;i<response.jurisdiccion.length;i++)
+						option+='<option value="'+response.jurisdiccion[i].id+'">'+response.jurisdiccion[i].jurisdiccion+'</option>';	
+					$("#jurisdiccion").html(option);
+				}
+				if(response.tipo)
+				{	
+					var option='<option value="">Seleccione</option>';
+					for(var i=1;i<response.tipo.length;i++)	
+						option+='<option value="'+response.tipo[i].tipo_unidad+'">'+response.tipo[i].tipo_unidad+'</option>';
+					$("#tipo").html(option);
+				}
+			}
+		});
+					
+		
+		$("#jurisdiccion").change(function(e) 
+		{
+			$("#div_carga").attr("style","display:block");
+			$("#municipio").html("");
+			$("#localidad").html("");
+			$.ajax({
+				type: "POST",	
+				dataType:"json",		
+				url: Routing.generate("municipio"),
+				data:{'id':this.value},
+				success: function(response)
+				{			
+					if(response)
+					{						
+						var option='<option value="">Seleccione</option>';	
+						for(var i=0;i<response.length;i++)
+							option+='<option value="'+response[i].id+'">'+response[i].descripcion+'</option>';	
+						$("#municipio").html(option);
+					}					
+				}
+			});
+			mostrarClues()
+        });
+		$("#municipio").change(function(e) 
+		{
+			$("#div_carga").attr("style","display:block");
+			$("#localidad").html("");
+			$.ajax({
+				type: "POST",	
+				dataType:"json",		
+				url: Routing.generate("localidad"),
+				data:{'id':this.value},
+				success: function(response)
+				{			
+					if(response)
+					{						
+						var option='<option value="">Seleccione</option>';	
+						for(var i=0;i<response.length;i++)
+							option+='<option value="'+response[i].id+'">'+response[i].descripcion+'</option>';	
+						$("#localidad").html(option);					
+					}									
+				}
+			});
+			mostrarClues();
+        });
+		$("#tipo, #localidad").change(function(e) 
+		{
+			$("#div_carga").attr("style","display:block");
+			mostrarClues();
+		});
+		
+		$("#buscar").click(function(e) 
+		{
+			$("#div_carga").attr("style","display:block");
+			mostrarClues();
+		});
+				
+	});
+	function mostrarClues()
+	{		
+		$("#"+micontrol+"_clues").html("");
+		var j=$("#jurisdiccion").val();
+		var m=$("#municipio").val();
+		var l=$("#localidad").val();
+		var t=$("#tipo").val();
+		
+		var q=$("#search").val();
+		
+		$.ajax({
+			type: "POST",	
+			dataType:"json",		
+			url: Routing.generate("clues"),
+			data:{'j':j,'m':m,'l':l,'t':t,'q':q},
+			success: function(response)
+			{			
+				if(response)
+				{						
+					var option='<thead><tr><th><input id="allcheckbox" type="checkbox" ></th><th>Clues</th><th>Nombre</th><th>Jurisdicción</th><th>Municipio</th><th>Localidad</th><th>Tipo Unidad</th></tr></thead><tbody style="font-size:12px">';	
+					for(var i=0;i<response.datos.length;i++)
+					{
+						check="";
+						if(response.check.search(response.datos[i].id)>0)
+							check='checked="checked"';
+						option+='<tr><td><input type="checkbox" class="checkbox1" id="'+micontrol+'_clues_'+i+'" name="'+micontrol+'[clues][]" value="'+response.datos[i].id+'" '+check+'></td><td><label for="'+micontrol+'_clues_'+i+'">'+response.datos[i].id+'</label></td><td><label for="'+micontrol+'_clues_'+i+'"> '+response.datos[i].descripcion+'</label></td><td><label for="'+micontrol+'_clues_'+i+'"> '+response.datos[i].jurisdiccion+'</label></td><td><label for="'+micontrol+'_clues_'+i+'"> '+response.datos[i].municipio+'</label></td><td><label for="'+micontrol+'_clues_'+i+'"> '+response.datos[i].localidad+'</label></td><td><label for="'+micontrol+'_clues_'+i+'">'+response.datos[i].tipo_unidad+'</label></td></tr>';
+					}
+						
+					$("#"+micontrol+"_cluesx").html(option+'</tbody>');
+					$("#allcheckbox").click(function(e) 
+					{
+						$(".checkbox1").attr('checked', che);
+						if(che)
+							$(".checkbox1").addClass("fa fa-check-square-o");
+						else 
+							$(".checkbox1").removeClass("fa fa-check-square-o");
+						che=!che;
+					}); 
+					
+					$(".checkbox1").on("click", function () 
+					{
+						if(this.checked)
+							$(this).addClass("fa fa-check-square-o");
+						else 
+							$(this).removeClass("fa fa-check-square-o");
+					});					
+				}	
+				$("#div_carga").attr("style","display:none");								
+			}
+		});
+	}
+	</script>
+{% endblock %}
+
+
+ 

@@ -1,0 +1,404 @@
+{# Modificado para que agregar el botón para ir al listado #}
+
+{% extends 'IndicadoresBundle::standard_layout.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/indicadores/js/pivotTable/pivot.css') }}" type="text/css" media="all" />    
+    <link rel="stylesheet" href="{{ asset('bundles/indicadores/css/FichaTecnicaAdmin/pivotTable.css') }}" type="text/css" media="all" />    
+	
+{% endblock %}        
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script src="{{ asset('bundles/indicadores/js/FichaTecnicaAdmin/pivotTable.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/indicadores/js/pivotTable/pivot.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/indicadores/js/pivotTable/pivot.es.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/indicadores/js/pivotTable/gcharts_renderers.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/indicadores/js/rasterizeHTML.allinone.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/indicadores/js/jquery.searchFilter.js') }}" type="text/javascript"></script>
+	
+<style>
+.ui-autocomplete { max-height: 200px; overflow:visible; z-index:999999999}
+
+.modal-dialog {
+    color: #000;
+    padding: 0px;
+	box-shadow: 0px;
+    background: transparent;
+    background-clip: padding-box;
+    border: 0px solid #acacac;
+    border: 0px solid rgba(0,0,0,.333);
+    outline: 0;
+    position: static;    
+}
+.modal-dialog .tab-content .col-lg-12
+{
+ 	max-height:300px; 
+ 	overflow: auto;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="div_carga" class='affix' style="z-index:999999999;">
+    <img id="cargador" src="{{ asset('bundles/indicadores/images/ajax-loader.gif') }}"/>
+</div>
+<nav class="navbar navbar-default navbar-fixed-top toolbar-tablero" style="margin-top:50px; background:#FFFFFF" role="navigation">
+    <div class="container-fluid">
+    	<div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#collapseTwo">
+        <span class="sr-only">Toggle navigation</span>
+        <i class="glyphicon glyphicon-wrench"></i>
+      </button>
+    </div>
+        <div class="collapse navbar-collapse" id="collapseTwo">
+            <a class="btn dropdown-toggle btn-success navbar-btn" href="#myModalMenu" data-toggle="modal" id="mimodal" >
+                <i class="glyphicon glyphicon-flag"></i> <span class="hidden-xs">{{"indicadores"|trans}}</span>
+            </a> 
+            <span id="opcion_exportar" style="display:none">
+            <button id='export' class="btn btn-info" title="{{'_exportar_tabla_datos_'|trans}}"><span class="glyphicon glyphicon-list-alt"></span></button>            
+            <button id='ver_ficha' class="btn btn-info" title="{{'ver_ficha_tecnica'|trans}}"><span class="glyphicon glyphicon-briefcase"></span> </button>  
+            <button id='export_grp' class="btn btn-primary" title="{{'_exportar_grafico_'|trans}}"><span class="glyphicon glyphicon-picture"></span> </button> 
+            </span>                    
+        </div>
+    </div>
+</nav>
+<div class="container-fluid" id="contenedor_tablero">
+    <div class="row" id="titulo_header" style="display:none">
+    	<div class="col-md-12">
+	    <div class="page-header" style="padding:1px; margin-top:0px"><h1 id="header_sala"></h1></div> 
+        </div>
+    </div>
+
+	<div class="content tab-pane active" id="output"></div>
+</div>
+<div class="content tab-pane" id="tab1" >            
+    <div id="output" ></div>
+</div>
+<a id="dlink" style="display:none;"></a>
+<!-- Modal Menu-->  
+<div id="myModalMenu" class="modal fade" style="z-index:99999999;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+            <h4 class="modal-tilte">{{"_Titulo_indicador"|trans}} </h4>
+        </div>
+        <div class="modal-body">
+        
+            <ul class="nav nav-tabs">
+                <li class="active">
+                <a href="#s53beb59d6d27d_1" data-toggle="tab">
+                <i class="glyphicon glyphicon-exclamation-sign has-errors hide" data-original-title="" title=""></i>
+                {{"_agregar_filtro_"|trans}} ({{clasificacionUso|length}})
+                </a>
+                </li>
+                <li>
+                <a href="#s53beb59d6d27d_2" data-toggle="tab">
+                <i class="glyphicon glyphicon-exclamation-sign has-errors hide" data-original-title="" title=""></i>
+                <i class="glyphicon glyphicon-star"></i> 
+                {{"favoritos"|trans}} (<span id='cantidad_favoritos'>{{app.user.favoritos|length}}</span>)
+                </a>
+                </li>
+            </ul>
+            <div class="tab-content">
+            	<div class="tab-pane active" id="s53beb59d6d27d_1">
+                	
+                    <div class="col-lg-12"><br />
+                        <div class="form-group">
+                            <label for="s53beb59d6d27d_establecimiento">
+                            {{'clasificacion_uso-eTAB'|trans}}
+                            </label>
+                            <select class="form-control" id="clasificacion_00">
+                            <option value="xxx">
+                                {{"_no_clasificados_"|trans}} (<span id='cantidad_no_clasificados'>{{indicadores_no_clasificados|length}})
+                            </option>
+                            {% for clasificacion in clasificacionUso %}
+                                {% if clasificacion.codigo == app.user.clasificacionUso.codigo|default('') %}
+                                <option value="{{clasificacion.id}}">
+                                     {{clasificacion.descripcion}}
+                                    {% for categoria in categorias%}
+                                        {% if categoria.indicadores|length > 0 and categoria.cat.descripcion==clasificacion.descripcion   %}
+                                            ({{categoria.indicadores|length}})
+                                        {% endif %}
+                                    {% endfor %}
+                                </option>
+                                {% else %}
+                                <option value="{{clasificacion.id}}" >
+                                    {{clasificacion.descripcion}}                                        
+                                </option>
+                                {% endif %}
+                            {% endfor %}
+                           </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label for="s53beb59d6d27d_establecimiento">
+                            {{'clasificacion_tecnica'|trans}}
+                            </label>
+                            <select class="form-control" id="clasificacion_11">
+                            
+                           </select>
+                        </div>
+                    </div>
+                
+                    <div class="col-lg-12">
+                        <div class="input-group">
+                          <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                          <input type="text" id="search_1" class="form-control" placeholder="Buscar..." autocomplete="off">
+                        </div>
+                        <br />
+                    </div>
+                    
+                    <div class="col-lg-12">
+                    	<ul id="miclasificacion" class="list-group" >
+                            {% for indicador in indicadores_no_clasificados %}
+                            
+                                <li class='list-group-item'
+                                     style="height:100%; min-height:55px; width:100%; display:block;">
+                                    <a class="indicador pull-left btn btn-default" style="margin-right:15px" data-id='{{indicador.id}}' data-name='{{indicador.nombre}}'
+                                    data-unidad-medida='{{indicador.unidadMedida}}' id='{{indicador.id}}'>
+                                    <i class="glyphicon glyphicon-ok"></i>
+                                    </a>
+                                    {{indicador.nombre}}  <div class="clearfix"></div>                                  
+                                </li>
+                            
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="tab-pane" id="s53beb59d6d27d_2">
+                	<div class="col-lg-12"><br />
+                    	<div class="input-group">
+                          <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                          <input type="text" id="search_2" class="form-control"  placeholder="Buscar...">
+                        </div> 
+                        <br />                       
+                    </div>
+                    <div class="col-lg-12">
+                        <ul class="list-group" id='listado-favoritos' >
+                            {% for indicador in app.user.favoritos %}
+                            	
+                            	<li class='list-group-item'
+                                     style="height:100%; min-height:55px; width:100%; display:block;">
+                                     <a class="indicador pull-left btn btn-default" style="margin-right:15px" data-id='{{indicador.id}}' data-name='{{indicador.nombre}}'
+                                    data-unidad-medida='{{indicador.unidadMedida}}' id='{{indicador.id}}'>
+                                    <i class="glyphicon glyphicon-ok"></i>
+                                    </a>
+                                    {{indicador.nombre}}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        <!-- fin body -->        
+    	</div>
+        <div class="modal-footer" style="margin-top:-20px">
+            <button class="btn btn-warning" data-dismiss="modal" aria-hidden="true">{{'_cerrar_'|trans}}</button>
+        </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div id="myModal2" class="modal fade" style="z-index:99999999;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="myModalLabel2"></h3>
+            </div>
+
+            <div class="modal-body">
+                <span class='info' id='sql'></span>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-danger" data-dismiss="modal" aria-hidden="true">{{'_cerrar_'|trans}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="fichaTecnica" class="modal fade" style="z-index:99999999;" aria-labelledby="fichaTecnicaTitle">
+    <div class="modal-dialog">
+        <div class="modal-content span12">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 id="fichaTecnicaTitle"></h4>
+            </div>
+
+            <div class="modal-body">
+                <span class='info' id='fichaTecnicaContent'></span>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-danger" data-dismiss="modal" aria-hidden="true">{{'_cerrar_'|trans}}</button>
+            </div>
+        </div>
+    </div>
+</div>    
+<script>
+$(document).ready(function(){
+								
+	$("#search_1").keyup(function(e) {   
+		valor=this.value.toLowerCase();                                                                
+		$('#miclasificacion').find('li').each(function(i,ele)
+		{			
+			var buscar=" "+$.trim($(ele).text().toLowerCase());																								
+			if(buscar.indexOf(valor)<1)
+				$("#miclasificacion li:nth-child("+(i+1)+")").attr("style","display:none");
+			else 
+				$("#miclasificacion li:nth-child("+(i+1)+")").removeAttr("style");
+			if(valor=="")										
+				$("#miclasificacion li:nth-child("+(i+1)+")").removeAttr("style");
+		});
+	});	
+	$("#clasificacion_00").change(function(e) {
+		var uso=$(this).val();
+		var valor=this.value.toLowerCase();	
+		che="";
+		if(valor=="xxx")
+		{
+			valor=$("#clasificacion_00 option:nth-child(2)").val();								
+			indicadoresList(valor,"che","");
+			$("#clasificacion_11").html("");
+		}
+		else
+		{
+			$("#miclasificacion").html("");
+			$.ajax({
+				url: Routing.generate("clasificacionTecnica",{'uso':uso,'ficha':"x"}),
+				dataType:"json",	
+				type: 'POST',
+				error: function() 
+				{
+					$("#clasificacion_11").html(li);
+				},
+				success: function(result) 
+				{
+					var li="<option value=''>Seleccione</option>";
+					for (i = 0; i < result.length; i++) 
+					{
+						li+='<option value="'+result[i].id+'" >'+result[i].value+'</option>';
+					}
+					$("#clasificacion_11").html(li);				
+				}
+			});
+			indicadoresList(valor,"","");
+		}
+	});
+	$("#clasificacion_11").change(function(e) {		
+		indicadoresList($("#clasificacion_00").val(),"",$(this).val());
+	});	
+	
+	$("#search_5").keyup(function(e) {   
+		valor=this.value.toLowerCase();                                                                
+		$('#misalax3').find('li').each(function(i,ele)
+		{			
+			var buscar=" "+$.trim($(ele).text().toLowerCase());																								
+			if(buscar.indexOf(valor)<1)
+				$("#misalax3 li:nth-child("+(i+1)+")").attr("style","display:none");
+			else 
+				$("#misalax3 li:nth-child("+(i+1)+")").removeAttr("style");
+			if(valor=="")										
+				$("#misalax3 li:nth-child("+(i+1)+")").removeAttr("style");
+		});
+	});		
+	
+								
+	$("#search_4").keyup(function(e) {   
+		valor=this.value.toLowerCase();                                                                
+		$('#misalax2').find('li').each(function(i,ele)
+		{			
+			var buscar=" "+$.trim($(ele).text().toLowerCase());																								
+			if(buscar.indexOf(valor)<1)
+				$("#misalax2 li:nth-child("+(i+1)+")").attr("style","display:none");
+			else 
+				$("#misalax2 li:nth-child("+(i+1)+")").removeAttr("style");
+			if(valor=="")										
+				$("#misalax2 li:nth-child("+(i+1)+")").removeAttr("style");
+		});
+	});	
+	
+	$("#search_3").keyup(function(e) {   
+		valor=this.value.toLowerCase();                                                                
+		$('#misalax').find('li').each(function(i,ele)
+		{			
+			var buscar=" "+$.trim($(ele).text().toLowerCase());																								
+			if(buscar.indexOf(valor)<1)
+				$("#misalax li:nth-child("+(i+1)+")").attr("style","display:none");
+			else 
+				$("#misalax li:nth-child("+(i+1)+")").removeAttr("style");
+			if(valor=="")										
+				$("#misalax li:nth-child("+(i+1)+")").removeAttr("style");
+		});
+	});	
+	
+	$("#search_2").keyup(function(e) {   
+		valor=this.value.toLowerCase();                                                                
+		$('#listado-favoritos').find('li').each(function(i,ele)
+		{			
+			var buscar=" "+$.trim($(ele).text().toLowerCase());																								
+			if(buscar.indexOf(valor)<1)
+				$("#listado-favoritos li:nth-child("+(i+1)+")").attr("style","display:none");
+			else 
+				$("#listado-favoritos li:nth-child("+(i+1)+")").removeAttr("style");
+			if(valor=="")										
+				$("#listado-favoritos li:nth-child("+(i+1)+")").removeAttr("style");
+		});
+	});	
+	
+	$('body').on('click','a.indicador',function() {
+        var id_indicador = $(this).attr('id');
+        var nombre_indicador = $(this).attr('data-name');
+        var derivers = $.pivotUtilities.derivers;
+        
+        delete $.pivotUtilities.renderers['Heatmap'] ;
+        delete $.pivotUtilities.renderers['Row Heatmap'];
+        delete $.pivotUtilities.renderers['Col Heatmap'];
+        
+        var renderers = $.extend($.pivotUtilities.renderers,
+                $.pivotUtilities.gchart_renderers);
+        $('#myModalMenu').modal('hide');
+        $.getJSON(Routing.generate('get_datos_indicador', {id: id_indicador}), function(mps) {
+            $("#output").pivotUI(mps, {
+                renderers: renderers
+            });                    
+
+            $("#titulo_header").attr("style","display:");
+            $('#header_sala').html('<span class="glyphicon glyphicon-flag"></span> ' + nombre_indicador );            
+        });
+    });
+});
+
+function indicadoresList(valor,che,ft)
+{
+	$("#miclasificacion").html("");
+	
+	$.ajax({
+		type: "POST",
+		dataType:"JSON",								
+		url:(Routing.generate("change_clasificacion_uso",{codigo_clasificacion:valor})),
+		data:{ajax:"ajax",che:che,ft:ft},
+		success: function(datos) 
+		{
+			var li="";
+			for(var c=0;c<datos.length; c++)
+			{
+				li=li+'<li class="list-group-item" style="height:100%; min-height:55px; width:100%; display:block;">'+
+				'<a class="indicador pull-left btn btn-default" style="margin-right:15px" data-id="'+datos[c].id+'"'+
+				'id="'+datos[c].id+'" data-name="'+datos[c].nombre+'" data-unidad-medida = "'+datos[c].unidadMedida+'"'+
+                'onclick="cargar_indicador('+datos[c].id+',\''+datos[c].nombre+'\')">'+
+				'<i class="glyphicon glyphicon-ok"></i>'+
+				'</a>'+datos[c].nombre+'<div class="clearfix"></div></li>';										
+			}
+			if(li=="")
+				li="<div class='alert alert-warning col-lg-12'>No hay resultados</div>";					
+			$("#miclasificacion").append(li);
+		}
+	});
+}
+</script>
+{% endblock %}

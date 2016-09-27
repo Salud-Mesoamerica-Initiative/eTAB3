@@ -1,0 +1,467 @@
+establecimiento: 'Establecimiento'
+last_fuente: 'Fuente'
+contacto: 'Contacto'
+correo_electronico: 'Correo Electrónico'
+telefono: 'Número telefónico'
+cargo: 'Cargo'
+nombre_establecimiento: 'Nombre del establecimento'
+descripcion: 'Descripción'
+codigo: 'Código'
+uso_catalogo: 'Describirá campos de catálogos'
+no_catalogo_y_describir_catalogo: 'Está marcada la casilla Describirá campos de catálogos, Por lo tanto, No debe de tener Catálogo asociado'
+formula: 'Fórmula'
+Formula: 'Fórmula'
+ayuda_ingreso_formula: 'Para utilizar variables escriba las iniciales de la variable entre llaves. Ej.: {NAI} / {PTDA} * 100 '
+vars_sel_diff_vars_formula: 'Las variables utilizadas en la fórmula deben coincidir con las variables seleccionadas'
+sintaxis_invalida: 'La fórmula contiene errores de sintaxis'
+sintaxis_invalida_variables_entre_llaves: 'La fórmula contiene errores de sintaxis, las variables deben ir entre llaves({ }) '
+catalogo: 'Catálogo asociado'
+comentario: 'Comentario'
+formato_xxxx-xxxx: 'Formato XXXX-XXXX'
+elija_catalogo: 'Debe seleccionar un catálogo'
+marque_uso_en_catalogo: 'Ha especificado el nombre de un catálogo, debe marcar esta opción'
+categoria_indicador: 'Categoría de Indicadores'
+categoria: 'Categoría'
+alertas: 'Alertas'
+indicador: 'Indicador'
+limite_inferior: 'Límite inferior'
+limite_superior: 'Límite superior'
+color: 'Color'
+indicador_alertas-eTAB: 'Alertas de indicador'
+comentario: 'Comentario'
+elija_al_menos_una_variable: 'Debe elegir al menos una variable'
+campos_indicador: Dimensiones del indicador
+nombre_archivo_mapa: Nombre del archivo del mapa
+cerrar_sesion: 'Cerrar Sesión'
+favoritos: 'Favoritos'
+'form_campo_obigatorio': '¡Los campos con * son Obligatorios!'
+'clasificacion_tecnica': 'Clasificación Técnica'
+
+
+'clasificacion_tecnica-eTAB' : 'Clasificación Técnica'
+'Clasificacion Tecnica List': 'Clasificación Técnica - Listado'
+'Clasificacion Tecnica Delete': 'Clasificación Técnica - Borrar'
+
+significado_campo-eTAB: Significado de campos
+nombre_campo: Nombre del campo
+significado: Significado
+
+'Origen Datos List': 'Origen de datos - Listado'
+'Origen Datos Delete': 'Origen de datos - Borrar'
+'Origen Datos Create': 'Origen de datos- Crear'
+'Origen Datos Edit': 'Origen de datos - Editar'
+
+'User List': 'Usuarios'
+'User Delete': 'Borrar usuario'
+'User Edit': 'Editar usuario'
+'usuario_indicadores-eTAB': 'Usuarios de indicadores'
+'nombre_usuario': Usuario
+
+'responsable_datos-eTAB': 'Responsable de Datos'
+'Responsable Dato List': 'Responsable de Dato - Listado'
+'Responsable Dato Delete': 'Responsable de Dato - Borrar'
+'Responsable Dato Create': 'Responsable de Dato - Crear'
+'Responsable Dato Edit': 'Responsable de Dato - Editar'
+
+'fuente_datos-eTAB' : 'Fuente de Datos'
+'Fuente Dato List': 'Fuente de Dato - Listado'
+'Fuente Dato Delete': 'Fuente de Dato - Borrar'
+'Fuente Dato Create': 'Fuente de Dato - Crear'
+'Fuente Dato Edit': 'Fuente de Dato - Editar'
+
+'responsable_indicador-eTAB': 'Responsable de Indicador'
+'Responsable Indicador List': 'Responsable de Indicador - Listado'
+'Responsable Indicador Delete': 'Responsable de Indicador - Borrar'
+'Responsable Indicador Create': 'Responsable de Indicador - Crear'
+'Responsable Indicador Edit': 'Responsable de Indicador - Editar'
+
+'clasificacion_privacidad-eTAB': 'Clasificación de privacidad'
+'Clasificacion Privacidad List': 'Clasificación de Privacidad - Listado'
+'Clasificacion Privacidad Delete': 'Clasificación de Privacidad - Borrar'
+'Clasificacion Privacidad Create': 'Clasificación de Privacidad - Crear'
+'Clasificacion Privacidad Edit': 'Clasificación de Privacidad - Editar'
+
+'clasificacion_nivel-eTAB': 'Clasificación Según Nivel'
+'Clasificacion Nivel List': 'Clasificación Según Nivel - Listado'
+'Clasificacion Nivel Delete': 'Clasificación Según Nivel - Borrar'
+'Clasificacion Nivel Create': 'Clasificación Según Nivel - Crear'
+'Clasificacion Nivel Edit': 'Clasificación Según Nivel - Editar'
+
+'clasificacion_uso-eTAB': 'Clasificación Según Uso'
+'Clasificacion Uso List': 'Clasificación Según Uso - Listado'
+'Clasificacion Uso Delete': 'Clasificación Según Uso - Borrar'
+'Clasificacion Uso Create': 'Clasificación Según Uso - Crear'
+'Clasificacion Uso Edit': 'Clasificación Según Uso - Editar'
+
+'sentencia': Sentencia SQL
+
+'Variable Dato List': 'Variable de Dato - Listado'
+'Variable Dato Delete': 'Variable de Dato - Borrar'
+'Variable Dato Create': 'Variable de Dato - Crear'
+'Variable Dato Edit': 'Variable de Dato - Editar'
+
+'Significado Campo List': 'Significado Campo - Listado'
+'Significado Campo Delete': 'Significado Campo - Borrar'
+'Significado Campo Create': 'Significado Campo - Crear'
+'Significado Campo Edit': 'Significado Campo - Editar'
+
+'Conexion List': 'Conexión - Listado'
+'Conexion Delete': 'Conexión - Borrar'
+'Conexion Create': 'Conexión - Crear'
+'Conexion Edit': 'Conexión - Editar'
+
+'Ficha Tecnica List': 'Ficha Técnica - Listado'
+'Ficha Tecnica Delete': 'Ficha Técnica - Borrar'
+'Ficha Tecnica Create': 'Ficha Técnica - Crear'
+'Ficha Tecnica Edit': 'Ficha Técnica - Editar'
+
+'Indicador Alertas List': 'Alertas Indicador - Listado'
+'Indicador Alertas Delete': 'Alertas Indicador - Borrar'
+'Indicador Alertas Create': 'Alertas Indicador - Crear'
+'Indicador Alertas Edit': 'Alertas Indicador - Editar'
+'es_acumulado': 'Es un indicador acumulado'
+
+conexion_bd-eTAB : 'Conexión a Base de Datos'
+nombre_conexion : 'Nombre de la conexión'
+nombre_base_datos: 'Nombre de la base de datos'
+motor: 'Motor de base de datos'
+puerto: 'Puerto'
+ip: 'Dirección IP'
+usuario: 'Usuario'
+Clave: 'Clave'
+instancia: 'Instancia'
+Repetir clave: 'Repetir Clave'
+claves_no_coinciden: 'Las claves ingresadas no son iguales'
+probar_conexion: 'Probar Conexión'
+conexion_error: 'Error en la conexión'
+conexion_success: 'Conexión exitosa'
+nombre_consulta: 'Nombre de consulta'
+sentencia_sql: 'Sentencia SQL'
+conexiones: 'Conexiones'
+catalogos: 'Catálogos'
+probar_sentencia: 'Probar Sentencia SQL'
+sentencia_error: 'La sentencia SQL contiene errores'
+sentencia_success: 'Prueba de sentencia SQL exitosa'
+nombre_variable: 'Nombre de la variable'
+nombre: 'Nombre'
+iniciales: 'Iniciales'
+confiabilidad: 'Confiabilidad (%)'
+solo_select: 'La consulta solo puede contener sentencias SELECT, no puede contener sentencias UPDATE, DELETE, INSERT o CREATE'
+formulas_indicadores: 'Fórmulas de indicadores'
+variables-eTAB: 'Variable de Dato'
+
+nombre_indicador: 'Nombre del Indicador'
+tema: 'Tema'
+concepto: 'Concepto'
+objetivo: 'Objetivo'
+uso: 'Uso'
+definicion_operativa: 'Definición Operativa'
+ficha_tecnica-eTAB: 'Ficha Técnica'
+unidad_medida: 'Unidad de medida'
+periodicidad: 'Periodicidad'
+estandar_nacional: 'Estándar Nacional'
+presentacion: 'Presentación'
+btn_create_and_config_data_source: 'Crear y configurar origen de datos'
+action_merge: 'Fusionar'
+action_load_data: 'Cargar Datos'
+archivo_asociado: 'Archivo asociado'
+archivo_UltimaActualizacion: 'Ultima Actualización'
+subir_nuevo_archivo: 'Subir nuevo archivo'
+origen_datos: 'Origen de Datos'
+origen_datos_archivo: 'Cargar datos desde archivo: Hoja de cálculo (Excel y OpenOffice/LibreOffice) o archivo de texto (CSV) '
+origen_datos_sql: 'Cargar datos desde sentencia SQL'
+tipo_campo_cambiado_a: 'Tipo de campo cambiado a'
+significado_campo_cambiado_a: 'Significado de campo cambiado a'
+flash_batch_load_data_success: 'Se ha iniciado el proceso de carga de datos para los orígenes especificados'
+mensaje_fusionar: 'Elija los campos que serán parte del origen fusionado (Solo se pueden fusionar campos de igual tipo y significado)'
+origen_fusionado: 'Origen fusionado'
+datos_origen_fusionado: 'Datos del origen fusionado'
+
+sonata_user: 'Usuarios y grupos'
+catalogos: 'Catálogos'
+origen_datos: 'Orígenes de datos'
+indicadores: 'Indicadores'
+indicadorestes: 'TES-Menú'
+origen_no_configurado: 'Origen de datos no válido, debe configurar todos sus campos, edite el origen de datos para realizar la configuración.'
+origen_dato-eTAB: 'Origen de datos'
+error: 'Error'
+es_catalogo: 'Es Catálogo'
+datos_generales: 'Datos Generales'
+indicador_tablero: 'Tablero'
+users: Usuarios
+groups: Grupos
+
+fusion:
+  no_catalogos: 'No se permite fusionar catálogos, alternativamente puede crear una hoja de cálculo con los datos requeridos y cargarlos al catálogo'
+  no_fusionados: 'No se permite utilizar orígenes fusionados en otras fusiones'
+  selecione_2_o_mas_elementos: 'Seleccione 2 o más elementos'
+  es_fusionado: 'Es fusionado'
+  origen_fusionado_creado: 'Origen fusionado creado correctamente'
+  fusiona_siguientes_origenes: 'Fusiona los siguientes orígenes: '
+
+javascript:
+  elija_tipo_dato: 'Elija el tipo de dato'
+  elija_significado_dato: 'Elija el significado del dato'
+  configure_campos: 'Configure los campos: se muestra solo una parte de los datos'
+  nombre_campo: 'Nombre del campo'
+  tipo: 'Tipo'
+  significado: 'Significado'
+  datos_muestra: 'Datos de muestra'
+  dimension: 'Dimensión'
+  tipo_grafico: 'Tipo de gráfico'
+  ascendente: 'Ascendente'
+  descendente: 'Descendente'
+  ordenar_x: 'Ordenar por eje X'
+  ordenar_y: 'Ordenar por eje Y'
+  filtro_posicion: 'Filtrar por posición'
+  desde: 'Desde'
+  hasta: 'Hasta'
+  filtrar: 'Filtrar'
+  quitar_filtro: 'Quitar Filtros'
+  opciones_grafico: 'Opciones del gráfico'
+  dimension_opciones: 'Opciones de dimensión'
+  exportar_imagen: 'Exportar a Imagen'
+  notas_lectura: 'Fecha de última lectura'
+  last_reading: 'Última lectura'
+  last_update : 'Última actualizacion'
+  last_confiable : 'Confiabilidad'
+  last_fuente : 'Fuente'
+  last_nombre : 'Nombre'
+  last_origen : 'Origen'
+  last_responsable : 'Responsable'
+  last_conexion : 'Conexion'
+  origen_lectura: 'Origen de Datos'
+  cambiar_dimension: 'Cambiar dimensión'
+  ordenar: 'Orden'
+  filtrar_por_elemento: 'Filtro por elemento'
+  alertas_indicador: 'Alertas Indicador'
+  color: 'Color'
+  limite_inf: 'Límite inferior'
+  limite_sup: 'Límite superior'
+  comentario: 'Comentario'
+  rango_no_especificado: Rango no especificado
+  no_mapa: 'La variable seleccionada no tiene un mapa asociado, no se encontró el archivo o sus coordenadas no han sido definidas'
+  max_escala_y: 'Max. Eje Y'
+  max_escala_y_manual: 'Max. Eje Y Manual'
+  max_indicador: 'Máx. Indicador'
+  max_rango_alertas: 'Máx. Alertas'
+  ocultar_listado_indicadores: 'Ocultar listado de indicadores'
+  mostrar_listado_indicadores: 'Mostrar listado de indicadores'  
+  agregar_favorito: 'Marcar como favorito'
+  quitar_favorito: 'Quitar de favoritos'
+  ver_ficha_tecnica: 'Ver ficha Técnica'
+  tabla_datos: 'Tabla de datos'
+  indicador: 'Indicador'
+  descargar_grafico: 'Descargar Gráfico'
+  opciones: 'Opciones'
+  ver_sql: 'Ver SQL'
+  diccionario_transformacion-eTAB: 'Diccionario de transformación'
+  diccionario_transformacion: 'Diccionario de transformación'
+  elija_diccionario: 'Elija un diccionario'
+  quitar_indicador: 'Quitar indicador'
+  columnas: 'Columnas'
+  pastel: 'Pastel'
+  mapa: 'Mapa'
+  lineas: 'Lineas'
+  refrescar: 'Recargar'
+  guardar_imagen: 'De clic derecho sobre la imagen, luego elija "Guardar imagen como..."'
+  _nada_encontrado_ : 'No se encontraron resultados'
+  _mostrando_n_de_n_: 'Mostrando desde _START_ hasta _END_ de _TOTAL_ registros'
+  _mostrando_0_ : 'Mostrando 0 registros'
+  _filtrados_de_ : '(filtrados de _MAX_ registros)'
+  no_mas_niveles: 'No hay más niveles para descender'
+  no_graficos_asignados: 'No ha asignado los tipos de gráficos permitidos a los significados de campo'
+  recargar_origen: 'Recargar información de origen de datos'
+  ultima_lectura: 'Fecha de última lectura'
+  ultima_lectura_exp: 'Formato: dd/mm/aaaa. Se toma la fecha más antigua en que se realizó la última lectura de cada origen de datos asociado al indicador.'
+
+validacion:
+  requerido: Este dato es requerido
+  sentencia_o_archivo_no_ambas: 'Solo puede ingresar una de las dos opciones: Una sentencia SQL o un archivo. No ambas'
+  sentencia_o_archivo: 'Debe ingresar una de las dos opciones: Una sentencia SQL o un archivo'
+  sentencia_sql_origen_requeridos: 'Debe especificar la sentencia SQL y la conexión'
+  debe_elegir_una_opcion: 'Debe elegir una opción'
+  elija_al_menos_un_campo: 'Debe haber al menos un campo seleccionado'
+tablero:
+  barras: Barras
+  pastel: Pastel
+  lineas: Líneas
+  columnas: Columnas
+  tipo_grafico_principal: Tipo de gráfico principal
+  tipo_grafico_secundario: Tipo de gráfico secundario
+
+  
+_no_clasificados_ : 'Sin clasificacion'
+_interpretacion_ : 'Interpretación'
+_nivel_de_usuario_ : 'Nivel de usuario'
+_observacion_ : 'Observación'
+
+_colores_alertas_-eTAB : 'Colores - Alertas'
+'Alerta List': 'Colores - Listado'
+'Alerta Delete': 'Colores - Borrar'
+'Alerta Create': 'Colores - Crear'
+'Alerta Edit': 'Colores - Editar'
+_ayuda_codigo_color_: 'Puede ser cualquier código de color HTML. Ej.: para azul puede usar blue o #0000FF'
+_clasificacion_indicadores_: 'Clasificación'
+_tipo_no_corresponde_con_datos_: 'El tipo seleccionado no es adecuado para el campo'
+_sala_: 'Sala'
+_salas_: 'Salas'
+_agregar_area_grafico_: 'Agregar área gráfico'
+_agregar_filtro_: 'Clasificacion'
+_Titulo_indicador: 'Agregar Indicador'
+_quitar_area_grafico_: 'Quitar área gráfico'
+_search_buscar_: 'Buscar'
+_guardar_sala_: 'Guardar Sala'
+_cerrar_sala_: 'Cerrar Sala'
+_sala_situacional_: 'Sala situacional'
+_nombre_sala_: 'Nombre de sala'
+_cerrar_: 'Cerrar'
+_guardar_cambios_: 'Guardar cambios'
+_eliminar_cambios_: 'Borrar Sala'
+_quitar_indicador_: 'Quitar indicador'
+_datos_geograficos_: 'Datos geográficos'
+_escala_ : 'Escala'
+_origen_x_: 'Origen X'
+_origen_y_: 'Origen Y'
+_diccionario_aplicado_: 'diccionario de transformación aplicado'
+_regla_: Regla
+_regla_transformacion_-eTAB: 'Regla de transformación'
+_transformacion_: 'Transformación'
+_cubos_: 'Cubos OLAP'
+_datos_generales_: 'Datos generales'
+_dimensiones_:  'Dimensiones'
+_debe_guardar_para_ver_dimensiones_: 'Debe guardar para ver las dimensiones del indicador'
+_por_: 'por'
+_ocultar/mostrar_menu_principal_: 'Mostrar/Ocultar Menú principal'
+_campo_calculado_-eTAB: 'Campo calculado'
+_campos_utilizables_en_campos_calculados_: 'Campos utilizables en la fórmula'
+_variable_no_campo_: 'Ha utilizado una variable que no es parte de los campos del origen de datos'
+_exportar_: 'Exportar' 
+_tipos_graficos_: Tipos de gráficos permitidos
+change_password.flash.success: 'Contraseña ha sido cambiada con éxito'  
+_cambiar_clave_: Cambiar clave de acceso
+_ver_ficha_: Ver Ficha Técnica
+_ultima_actualizacion_: Última actualización
+_no_conexion_configurada_: No existe una conexión configurada
+_salas_situacionales_: Salas situacionales
+_indicadores_y_salas_: Indicadores y Salas
+_roles_: Roles
+_perfil_: Perfil
+_seguridad_: Seguridad
+
+maximizar: 'Máximizar'
+teclaescape: 'Presione Escape para salir'
+
+gender_unknown: 'DESCONOCIDO'
+gender_male: 'MASCULINO'
+gender_female: 'FEMENINO'
+
+de: 'De'
+a: 'A'
+indicadorespublicos: 'Indicadores Publicos'
+
+lbllenguaje: 'Idioma'
+
+_alerta_limite_inferior_: 'Límite inferior'
+_regresar_menu_principal_: Regresar al menú principal
+
+Boletin: Boletin
+'Boletin List': 'Lista de Boletines'
+sala: Sala
+grupo: Grupo
+enviar: Enviar
+creado: Creado
+actualizado: Actualizado
+
+filtro_fecha : 'Filtro por Fecha'
+formato_Max: 'El máximo permitido es:'
+btn_close: 'Cerrar'
+Cargando: 'Cargando ...'
+meta: 'Meta'
+jurisdiccion: 'Jurisdicción'
+clues: 'Clues'
+
+manual_tecnico: 'Manual Técnico'
+manual_operativo: 'Manual Operativo'
+manual_usuario: 'Manual Usuario'
+manual_tablero: 'Manual Tablero'
+
+_sala_acciones_: Acciones por sala
+_tabla_pivote_: Tabla dinámica
+_acciones_: Acciones
+_observaciones_: Observaciones
+_responsables_: Responsables
+_agregar_accion_: 'Agregar acción'
+_historial_accion_: 'Historial de acciónes'
+_compartir_sala_: 'Compartir sala'
+_usuario_con: 'Usuarios con cuenta'
+_usuario_notificacion: 'Enviar notificacion por correo a los usuarios con cuenta'
+_usuario_sin: 'Usuarios sin cuenta'
+_usuario_sin_inidicacion: 'Escribir el correo del usuario. Puede escribir mas de 1 separando por comas'
+_comentarios_: Comentarios
+_enviar_: Enviar
+_fecha_: Fecha
+_foro_: Foro de discusión
+_photo_: Foto de perfil
+
+_exportar_datos_: 'Datos'
+_exportar_datos_lbl: 'Exportar Datos'
+_exportar_datos_opciones_: 'Elige el formato para exportar'
+_exportar_datos_boton_: 'Exportar'
+_exportar_tabla_datos_: Exportar Tabla de datos
+_exportar_grafico_: Exportar gráfico
+_reporte_sala_: Reporte de sala
+_reporte_: Reporte
+_mostrar_reporte_: Mostrar Reporte
+_buscar_indicador_: Buscar indicador
+_agregar_accion_: Agregar acción
+_origen_datos_: Origen de los datos
+_clasificacion_: Clasificación
+_general_: General
+_exportar_diccionario_datos_: 'Diccionario de Datos'
+_exportar_diccionario_datos_lbl: 'Exportar Diccionario de Datos'
+_exportar_pdf_: 'Pantalla'
+
+_matriz_seguimiento_: 'Matriz de seguimiento'
+_reporte_: 'Reporte'
+_config_indicador_desempeno_: 'Configurar indicador de desempeño'
+_indicador_desempeno_: 'Indicador de desempeño'
+_capturar_matriz_: 'Captura de datos'
+_config_matriz_anio_: 'Configurar planificación por año'
+_indicador_etab_: 'Indicadores disponibles en eTAB'
+_indicador_rel_: 'Indicadores no disponibles en eTAB'
+_anio_select_: 'Seleccione un año'
+_consultar_: 'Consultar'
+_planeado_: 'Planeado'
+_real_: 'Real'
+_no_existe_planeacion_: 'No existe planeación en este año'
+_crear_planeacion_: 'Crear planeación'
+_meta_anual_: 'Meta anual'
+_inidcador_: 'Indicador'
+
+_enero_: 'Enero'
+_febrero_: 'Febrero'
+_marzo_: 'Marzo'
+_abril_: 'Abril'
+_mayo_: 'Mayo'
+_junio_: 'Junio'
+_julio_: 'Julio'
+_agosto_: 'Agosto'
+_septiembre_: 'Septiembre'
+_octubre_: 'Octubre'
+_noviembre_: 'Noviembre'
+_diciembre_: 'Diciembre'
+
+_guardar_: 'Guardar'
+_exportar_: 'Exportar'
+_imprimir_: 'Imprimir'
+
+_cargado_correctamente: 'Cargado correctamente'
+_ningun_dato_: 'No se encontro ningún dato'
+
+_guardar_ok_: 'Se guardo correctamente'
+_guardar_no_ok_: 'Ocurrio un error y no se pudo guardar :('
+
+_matriz_verP_: 'Mostrar/Ocultar Planeación'
+_matriz_verR_: 'Mostrar/Ocultar Real'
+_matriz_verV_: 'Mostrar/Ocultar Porcentaje'

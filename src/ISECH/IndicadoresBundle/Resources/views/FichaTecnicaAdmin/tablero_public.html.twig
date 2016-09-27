@@ -1,0 +1,184 @@
+{# Modificado para que agregar el botón para ir al listado #}
+
+{% extends 'IndicadoresBundle::standard_layout_public.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+<link rel="stylesheet" href="{{ asset('bundles/indicadores/css/FichaTecnicaAdmin/tablero.css') }}" type="text/css" media="all" />
+<link rel="stylesheet" href="{{ asset('bundles/indicadores/js/DataTables/media/css/jquery.dataTables.css') }}" type="text/css" media="all" />
+<link rel="stylesheet" href="{{ asset('bundles/indicadores/js/DataTables/media/css/TableTools.css') }}" type="text/css" media="all" />
+
+<!--EDITADO PARA NUEVOS TIPOS DE GRAFICOS (CSS)-->
+    <link rel="stylesheet" href="{{ asset('bundles/indicadores/css/FichaTecnicaAdmin/gauge.css') }}" type="text/css" media="all" />
+
+{% endblock %}
+    
+{% block javascripts %}
+    {{ parent() }}
+<script src="{{ asset('bundles/indicadores/js/d3.v2.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('bundles/indicadores/js/nv.d3.js') }}" type="text/javascript"></script>
+<script src="{{ asset('bundles/indicadores/js/affix.min.js') }}" type="text/javascript"></script>
+
+<script src="{{ asset('bundles/indicadores/js/FichaTecnicaAdmin/comun_public.js') }}" type="text/javascript"></script>
+    <!--EDITADO PARA NUEVOS TIPOS DE GRAFICOS-->
+    <script src="{{ asset('bundles/indicadores/js/FichaTecnicaAdmin/grafico_gauge.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/indicadores/js/FichaTecnicaAdmin/grafico_termometro.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/indicadores/js/FichaTecnicaAdmin/iopctrl.js') }}" type="text/javascript"></script>
+<script src="{{ asset('bundles/indicadores/js/FichaTecnicaAdmin/grafico_pastel.js') }}" type="text/javascript"></script>
+<script src="{{ asset('bundles/indicadores/js/FichaTecnicaAdmin/grafico_columnas.js') }}" type="text/javascript"></script>
+<script src="{{ asset('bundles/indicadores/js/FichaTecnicaAdmin/grafico_lineas.js') }}" type="text/javascript"></script>
+<script src="{{ asset('bundles/indicadores/js/FichaTecnicaAdmin/grafico_mapa.js') }}" type="text/javascript"></script>
+<script src="{{ asset('bundles/indicadores/js/FichaTecnicaAdmin/tablero_public.js') }}" type="text/javascript"></script>
+<script src="{{ asset('bundles/indicadores/js/bridge_draggable_touch.js') }}" type="text/javascript"></script>
+<script src="{{ asset('bundles/indicadores/js/jquery.ui.touch-punch.js') }}" type="text/javascript"></script>
+<script src="{{ asset('bundles/indicadores/js/rasterizeHTML.allinone.js') }}" type="text/javascript"></script>
+<script src="{{ asset('bundles/indicadores/js/DataTables/jquery.dataTables.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('bundles/indicadores/js/DataTables/ZeroClipboard.js') }}" type="text/javascript"></script>
+<script src="{{ asset('bundles/indicadores/js/DataTables/TableTools.min.js') }}" type="text/javascript"></script>
+
+<script src="{{ asset('bundles/indicadores/js/FichaTecnicaAdmin/svg-pan-zoom.js') }}" type="text/javascript"></script>
+<script src="{{ asset('bundles/indicadores/js/FichaTecnicaAdmin/control-icons.js') }}" type="text/javascript"></script>
+
+{% endblock %}
+
+{% block content %}
+<div id="div_carga" class='affix'>
+    <div id="cargador"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span></div>
+</div>
+<nav class="navbar navbar-default" role="navigation" >
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#collapseTwo">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">
+      <img src="{{ asset('bundles/indicadores/images/logo.png') }}" style="margin-top:-7px; height:34px;" /> 
+      </a>
+    </div>
+    <div class="collapse navbar-collapse" id="collapseTwo">
+    	<ul class="nav navbar-nav">
+        <li><a class="btn panel-group-toggle" data-toggle="collapse"  href="#collapseOne" title="{{'_ocultar/mostrar_menu_principal_'|trans}}">
+        <i class="glyphicon glyphicon-resize-full"></i>
+        </a></li>
+        <li>
+        <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                <i class="glyphicon glyphicon-th"></i> {{'_sala_'|trans}}
+                <span class="caret"></span>
+            </a>
+            
+            <ul class="dropdown-menu"  style="z-index:99999">                              
+                <li class="nav-header"><A sala-id='0' sala-nombre='sala publica' class='salas-id' data="{{indicadores|json_encode()}}">{{'indicadorespublicos'|trans}}</A></li>
+                {% if sala is defined %}
+                <li style='display:block'><A sala-token='{{sala[0].token}}' sala-id='{{sala[0].id}}' sala-nombre='{{sala[0].nombre}}' id='sala_publica' class='salas-id' data="{{sala.indicadores|json_encode()}}">{{sala[0].nombre}}</A></li>
+                {% endif %}
+                
+            </ul>  
+          </li>              
+        </ul>
+        </li>
+        <li>
+        {% if admin_pool is defined %}
+
+            {# MENU PRINCIPAL #}
+                <ul class="nav">
+                    {% block top_bar_before_nav %} {% endblock %}
+                    {% block sonata_top_bar_nav %}
+                      
+                    {% endblock %}
+                    {% block top_bar_after_nav %} {% endblock %}
+                </ul>
+        {% endif %}
+        </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+          	<i class="glyphicon glyphicon-user"></i>{{'lbllenguaje'|trans}}
+            <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu" role="menu">
+          <li><a href="{{ asset('bundles/indicadores/manuales/Manual-Tablero.pdf') }}" target="_blank"><i class="glyphicon glyphicon-book"></i> {{ 'manual_tablero'|trans }}</a></li>
+            <li class="divider"></li>
+            {% for locale, lenguaje in {'es_SV':'Español', 'en_US':'English'} %}
+                {% if locale == app.request.locale %}
+                    <li class='active'><A href='#'>{{lenguaje}}</a></li>
+                {% else %}
+                    <li ><a href='{{url('change_locale',{_locale:locale})}}'>{{lenguaje}}</a></li>
+                {% endif %}
+            {% endfor %}
+          </ul>
+        </li>
+       </ul>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row" id="titulo_header" style="display:none">
+    	<div class="col-md-12">
+	    <div class="page-header" ><h1 id="nombre_sala2"></h1></div> 
+        </div>
+    </div>
+</div>
+<div class="container-fluid" id="sala" >
+	  
+</div>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" style="z-index:999999999">
+  <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel">{{'_sala_situacional_'|trans}}</h3>
+        </div>
+    
+        <div class="modal-body">
+            <label for="nombre_sala">{{'_nombre_sala_'|trans}}</label>
+            <textarea id='nombre_sala' id-sala='' rows="3" style="width: 100%" class="form-control"></textarea>
+            <span class='alert' id='info_sala'></span>
+        </div>
+    
+        <div class="modal-footer">
+            <button id='elimina_sala' class="btn btn-danger" style="display:none">
+            <i class="glyphicon glyphicon-minus"></i> 
+            {{'_eliminar_cambios_'|trans}}</button>
+            
+            <button id='guardar_sala' class="btn btn-primary">
+            <i class="glyphicon glyphicon-ok"></i> 
+            {{'_guardar_cambios_'|trans}}</button>
+            
+            <button class="btn btn-warning" data-dismiss="modal" aria-hidden="true">
+            {{'_cerrar_'|trans}}</button>
+        </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div id="myModal2" class="modal fade" style="z-index:999999999">
+  <div class="modal-dialog">
+    <div class="modal-content">
+       <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 id="myModalLabel2"></h4>
+    	</div>
+        <div class="modal-body" style="max-height:400px; max-width:100%; overflow:auto;">
+        <span class='info' id='sql'></span>
+        </div>
+        <div class="modal-footer">
+        <button class="btn btn-warning" data-dismiss="modal" aria-hidden="true">{{'_cerrar_'|trans}}</button>
+        </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<script>
+$(document).ready(function()
+{
+	acciones_button();
+});
+</script>
+{% endblock %}

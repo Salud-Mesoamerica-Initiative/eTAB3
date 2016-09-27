@@ -1,0 +1,107 @@
+.glyphicon-refresh-animate
+{
+	-animation:spin .7s infinite linear;
+	-webkit-animation: spin2 .7s infinite linear;
+	font-size:3em;
+	color:#FFF;
+}
+@-webkit-keyframes spin2
+{
+	from{ -webkit-transform:rotate(0deg);}
+	to{ -webkit-transform:rotate(360deg);}
+}
+@keyframes spin
+{
+	from{ transform:scale(1) rotate(0deg);}
+	to{ transform:scale(1) rotate(360deg);}
+}
+.connection
+{
+	width:400px; padding:15px; margin:0 auto;
+}
+.bannerPublico
+{
+	width:auto;	
+	
+}
+.y.axis .tick text
+{
+	font-size:1em;
+}
+
+#contenedor_tablero
+	{
+		margin-top:112px;
+	}
+
+@media screen and (max-width:1200px)
+{
+	.y.axis .tick text
+	{
+		font-size:.7em;
+	}
+}
+@media screen and (max-width:767px)
+{
+	.connection
+	{
+		width:100%; padding:15px; margin:0 auto;
+	}
+	.bannerPublico
+	{
+		width:100%;	
+	}
+	.myMax
+	{
+		display:none;
+	}
+	
+	.y.axis .tick text
+	{
+		font-size:.7em;
+	}
+}
+@media screen and (min-width:980px)
+{
+	#contenedor_tablero
+	{
+		margin-top:0px;
+	}
+}
+@media screen and (max-width:890px)
+{
+	.bannerPublico
+	{
+		width:100%;	
+	}
+	.y.axis .tick text
+	{
+		font-size:.5m;
+	}
+}
+
+.bodysinscroll
+{
+	overflow-x: hidden;
+	overflow-y: hidden;
+	overflow:hidden;
+}
+
+
+
+#div_carga{    
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    /* Para CSS3 */
+    background: rgba(0, 0, 0, .7);
+    /* IE8*/
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#886287a7', endColorstr='#886287a7');
+    /* anteriores a IE8 */
+    -ms-filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#886287a7', endColorstr='#886287a7');
+
+    display:none;
+    z-index:9999999999999;
+}

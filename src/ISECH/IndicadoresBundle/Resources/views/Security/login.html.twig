@@ -1,0 +1,87 @@
+{% extends 'IndicadoresBundle::standard_layout_public.html.twig' %}
+
+{% block content %}
+<nav class="navbar navbar-default" role="navigation" >
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#collapseTwo">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="{{ path('_inicio', {'page': '_inicio'}) }}">
+      <img src="{{ asset('bundles/indicadores/images/logo.png') }}" height="30px" /> 
+      </a>
+    </div>
+    <div class="collapse navbar-collapse" id="collapseTwo">
+
+        <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+          	<i class="glyphicon glyphicon-user"></i>{{'lbllenguaje'|trans}}
+            <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu" role="menu">
+            {% for locale, lenguaje in {'es_SV':'Español', 'en_US':'English'} %}
+                {% if locale == app.request.locale %}
+                    <li class='active'><A href='#'>{{lenguaje}}</a></li>
+                {% else %}
+                    <li ><a href='{{url('change_locale',{_locale:locale})}}'>{{lenguaje}}</a></li>
+                {% endif %}
+            {% endfor %}
+          </ul>
+        </li>
+       </ul>
+    </div>
+</nav>
+<div class="connection" >
+    <form action="{{ path("sonata_user_admin_security_check") }}" method="post">  
+    <div class="panel panel-default">
+      <div class="panel-heading"><h4>Login</h4></div>
+      <div class="panel-body">
+            {% if error %}
+                <div class="alert alert-danger">{{ error|trans({}, 'SonataUserBundle') }}</div>
+            {% endif %}
+
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+
+            <div class="control-group">
+                
+                <div class="form-group">
+                <label for="username">{{ 'security.login.username'|trans({}, 'FOSUserBundle') }}</label>
+                   <div class="input-group">
+                        <div class="input-group-addon" style="height:45px">
+                            <i class="glyphicon glyphicon-user"></i>
+                        </div>
+                        <input type="text" id="username" name="_username" value="{{ last_username }}" class="form-control" style="height:45px"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                <label for="password">{{ 'security.login.password'|trans({}, 'FOSUserBundle') }}</label>
+                   <div class="input-group">
+                        <div class="input-group-addon" style="height:45px">
+                            <i class="glyphicon glyphicon-lock"></i>
+                        </div>
+                        <input type="password" id="password" name="_password" class="form-control" style="height:45px"/>
+                    </div>
+                </div>  
+                <div class="form-group">
+                    <label for="remember_me">
+                        <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
+                        {{ 'security.login.remember_me'|trans({}, 'FOSUserBundle') }}
+                    </label>
+                </div>
+                <div>
+                </div>
+             </div>
+        	
+      </div>
+      <div class="panel-footer">
+      <input type="submit" class="btn btn-primary" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}" />
+      </div>
+    </div>
+    </form>
+    </div>
+{% endblock content %}

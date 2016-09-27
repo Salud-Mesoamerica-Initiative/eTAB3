@@ -1,0 +1,270 @@
+parameters:
+  indicador_cache_consulta: 3600 # segundos
+  # Arreglo utilizado en el proceso de carga incremental
+  # Cada uno es un codigo de un significado de campo que representa la temporalidad
+  tiempo: {1:anio, 2:semestre, 3:cuatrimestre, 4:trimestre, 5:bimestre, 6:id_mes, 7:quincena, 8:semana}
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+    - { resource: services.xml }
+    - { resource: @IndicadoresBundle/Resources/config/admin.xml }
+
+framework:
+    #esi:             ~
+    translator:      { fallback: %locale% }
+    secret:          %secret%
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+        strict_requirements: %kernel.debug%
+    form:            true
+    csrf_protection: true
+    validation:      { enable_annotations: true }
+    templating:      { engines: ['twig'] } #assets_version: SomeVersionScheme
+    default_locale:  %locale%
+    trusted_proxies: ~
+    #trust_proxy_headers: false # Whether or not the Request object should trust proxy headers (X_FORWARDED_FOR/HTTP_CLIENT_IP)
+    session:         ~
+
+# Twig Configuration
+twig:
+    debug:            %kernel.debug%
+    strict_variables: %kernel.debug%
+    globals:
+        webRoot: 'http://localhost/etab.git/web'
+
+# Assetic Configuration
+assetic:
+    debug:          %kernel.debug%
+    use_controller: false
+    bundles:        [ ]
+    #java: /usr/bin/java
+    filters:
+        cssrewrite: ~
+        #closure:
+        #    jar: %kernel.root_dir%/Resources/java/compiler.jar
+        #yui_css:
+        #    jar: %kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver:   %database_driver%
+        host:     %database_host%
+        port:     %database_port%
+        dbname:   %database_name%
+        user:     %database_user%
+        password: %database_password%
+        charset:  UTF8
+        types:
+            json: Sonata\Doctrine\Types\JsonType
+            hstore: Application\Sonata\Doctrine\Types\Hstore           
+        mapping_types:
+            hstore: hstore
+
+    orm:
+        auto_generate_proxy_classes: %kernel.debug%
+        auto_mapping: true       
+
+# Swiftmailer Configuration
+swiftmailer:
+    transport: %mailer_transport%
+    host:      %mailer_host%
+    username:  %mailer_user%
+    password:  %mailer_password%
+    spool:     { type: memory }
+
+sonata_block:
+    default_contexts: [cms]
+    blocks:
+        sonata.admin.block.admin_list:
+            contexts:   [admin]
+
+        #sonata.admin_doctrine_orm.block.audit:
+        #    contexts:   [admin]
+
+        #sonata.block.service.text:
+        #sonata.block.service.rss:
+
+        # Some specific block from the SonataMediaBundle
+        #sonata.media.block.media:
+        #sonata.media.block.gallery:
+        #sonata.media.block.feature_media
+sonata_cache:
+    caches:
+        #esi:
+        #    servers:
+        #        - varnishadm -T 127.0.0.1:2000 {{ COMMAND }} "{{ EXPRESSION }}"
+
+        apc:
+            token:  s3cur3   # token used to clear the related cache
+            prefix: test     # prefix to ensure there is no clash between instances
+            servers:
+                - { domain: kooqit.local, ip: 127.0.0.1, port: 80}
+
+knp_menu:
+    twig:  # use "twig: false" to disable the Twig extension and the TwigRenderer
+        template: knp_menu.html.twig
+    templating: false # if true, enables the helper for PHP templates
+    default_renderer: twig # The renderer to use, list is also available by default                
+
+sonata_admin:
+    security:
+        handler: sonata.admin.security.handler.role
+    title: ' '
+    title_logo: bundles/indicadores/images/logo_salud.png
+    templates:
+        # default global templates
+        layout:  IndicadoresBundle::standard_layout.html.twig
+        ajax:    SonataAdminBundle::ajax_layout.html.twig
+
+        # default actions templates, should extend a global templates
+        list:    IndicadoresBundle:CRUD:list.html.twig
+        show:    IndicadoresBundle:CRUD:show.html.twig
+        edit:    IndicadoresBundle:CRUD:edit.html.twig
+        # se personalizó la plantilla de borrar
+        delete:  IndicadoresBundle:CRUD:delete.html.twig        
+        list_block: IndicadoresBundle:Block:block_admin_list.html.twig
+
+fos_user:
+    db_driver:        orm # can be orm or odm
+    firewall_name:    main
+    user_class:       ISECH\IndicadoresBundle\Entity\User
+    group:
+        group_class:  Application\Sonata\UserBundle\Entity\Group
+
+    profile:  # Authentication Form
+        form:
+            type:               fos_user_profile
+            handler:            fos_user.profile.form.handler.default
+            name:               fos_user_profile_form
+            validation_groups:  [Authentication] # Please note : this is not the default value
+
+sonata_user:
+    security_acl:     false
+    class:
+        user:         ISECH\IndicadoresBundle\Entity\User
+        group:        Application\Sonata\UserBundle\Entity\Group
+
+    admin: # Admin Classes
+        user:
+            class:    Application\Sonata\UserBundle\Admin\Entity\UserAdmin
+        group:
+            class:    Application\Sonata\UserBundle\Admin\Entity\GroupAdmin
+    profile:  # Profile Form (firstname, lastname, etc ...)
+        form:
+            type:               sonata_user_profile
+            handler:            sonata.user.profile.form.handler.default
+            name:               sonata_user_profile_form
+            validation_groups:  [Profile]
+
+sonata_doctrine_orm_admin:
+    templates:
+        form: [ IndicadoresBundle:Form:form_admin_fields.html.twig ]
+        filter: [ SonataDoctrineORMAdminBundle:Form:filter_admin_fields.html.twig ]
+
+old_sound_rabbit_mq:
+    connections:
+        default:
+            host:      'localhost'
+            port:      5672
+            user:      'guest'
+            password:  'guest'
+            vhost:     '/'
+    producers:
+        cargar_origen_datos:
+            connection: default
+            exchange_options: {name: 'cargar_origen_datos', type: direct}
+        guardar_registro:
+            connection: default
+            exchange_options: {name: 'guardar_registro', type: direct}
+    consumers:
+        cargar_origen_datos:
+            connection: default
+            exchange_options: {name: 'cargar_origen_datos', type: direct, durable: true}
+            queue_options:    {name: 'cargar_origen_datos', durable: true}
+            callback:         indicadores.cargar_origen_datos_servicio
+            idle_timeout: 60
+        guardar_registro:
+            connection: default
+            exchange_options: {name: 'guardar_registro', type: direct, durable: true}
+            queue_options:    {name: 'guardar_registro', durable: true}
+            callback:         indicadores.guardar_registro_origen_dato
+            idle_timeout: 60
+services:
+    my_listener:
+        class: ISECH\IndicadoresBundle\Listener\LocaleListener
+        arguments: [%locale%]
+        tags:
+            -  { name: kernel.event_subscriber }
+
+    monolog.processor.siig:
+        class: ISECH\IndicadoresBundle\FormatoVitacora
+        arguments:  ["@service_container"]
+        tags:
+            - { name: monolog.processor, handler: vitacora.siig}
+
+    vitacora.siig:
+        class: Symfony\Bridge\Monolog\Logger
+        arguments: [ACTIVIDAD]
+        calls:
+            - [pushHandler, [@monolog.handler.vitacora.siig]]
+
+    monolog.handler.vitacora.siig:
+        class: Monolog\Handler\StreamHandler
+        arguments: [%archivo_vitacora%, 200] #definido en Parameters.yml
+
+#Fr3d_LDAP
+#fr3d_ldap:
+#    driver:
+#        host:         10.10.20.2 # Servidor LDAP Zimbra
+#        port:         389    # Optional
+#    user:
+#        baseDn:          ou=people,dc=salud,dc=gob,dc=sv
+#        filter: (objectClass=organizationalPerson)
+#        attributes:          # Specify ldap attributes mapping [ldap attribute, user object method]
+#            - { ldap_attr: uid,  user_method: setUsername } # Default
+#            - { ldap_attr: mail,   user_method: setEmail }     # Optional
+#            - { ldap_attr: cn,  user_method: setName }         # Optional
+#   service:
+#       user_manager: fos_user.user_manager          # Overrides default user manager
+#       ldap_manager: fr3d_ldap.ldap_manager.default # Overrides default ldap manager
+
+mobile_detect:
+    redirect:
+        mobile: ~
+        tablet: ~
+    switch_device_view: ~
+
+swiftmailer:
+    transport:  gmail
+    #encryption: ssl
+    #auth_mode:  login
+    #host:      smtp.gmail.com
+    username:  boletin.dev.test@gmail.com
+    password:  Boletin@test
+    #spool:     { type: memory }
+    #disable_delivery:  true
+    #schiapassm2015@gmail.com
+    #bit@2013 (B mayuscula o minuscula)
+
+sensio_framework_extra:
+    view:
+        annotations: false
+
+fos_rest:
+    param_fetcher_listener: true
+    body_listener: true
+    format_listener: true
+    view:
+        view_response_listener: 'force'
+        formats:
+            xml: true
+            json : true
+        templating_formats:
+            html: true
+        force_redirects:
+            html: true
+        failed_validation: HTTP_BAD_REQUEST
+        default_engine: twig
+    routing_loader:
+        default_format: json

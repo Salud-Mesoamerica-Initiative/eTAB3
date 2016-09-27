@@ -1,0 +1,58 @@
+{% extends 'IndicadoresBundle:CRUD:edit.html.twig' %}
+
+{% block stylesheets %}
+    {{parent()}}
+    <link rel="stylesheet" href="{{ asset('bundles/indicadores/css/FichaTecnicaAdmin/form-edit.css') }}" type="text/css" media="all" />
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/indicadores/js/FichaTecnicaAdmin/ficha_tecnica_edit.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/indicadores/js/jquery.at.caret.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/indicadores/js/bridge_draggable_touch.js') }}" type="text/javascript"></script>
+    <script>
+	var idcontrol="";
+	$(document).ready(function(e) {
+        var uniqid = $("[class=form-horizontal]").attr("action").split('=');
+		idcontrol = uniqid[1];
+		$("#"+idcontrol+"_clasificacionTecnica").html('');
+		clasificacionTecnica();
+		$("#"+idcontrol+"_clasificacionUso").change(function(e) {
+           clasificacionTecnica(); 
+        });
+    });
+	function clasificacionTecnica()
+	{
+		var uso=$("#"+idcontrol+"_clasificacionUso").val();
+		var url = location.href;
+		url=(url.substring(url.search("fichatecnica")+13,url.search("edit")-1));
+		$.ajax({
+			url: Routing.generate("clasificacionTecnica",{'uso':uso,'ficha':url}),
+			dataType:"json",	
+			type: 'POST',
+			error: function() 
+			{
+				$("#"+idcontrol+"_clasificacionTecnica").html('');
+			},
+			success: function(result) 
+			{
+				var li="";
+				for (i = 0; i < result.length; i++) 
+				{
+					li+='<li class="list-group-item">'+
+						'<label>'+
+							'<input type="checkbox" id="'+idcontrol+'_clasificacionTecnica_'+(i+1)+'" name="'+idcontrol+'[clasificacionTecnica][]" value="'+result[i].id+'" '+result[i].che+'>'+
+							'<span>'+
+								result[i].value;                
+							'</span>'+
+						'</label>'+
+					'</li>';
+				}
+				$("#"+idcontrol+"_clasificacionTecnica").html(li);				
+			}
+		});
+	}
+    </script>
+{% endblock %}
+
+
+

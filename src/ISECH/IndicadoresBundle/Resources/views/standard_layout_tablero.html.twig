@@ -1,0 +1,273 @@
+{#
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+{% set _preview      = block('preview') %}
+{% set _form         = block('form') %}
+{% set _show         = block('show') %}
+{% set _list_table   = block('list_table') %}
+{% set _list_filters = block('list_filters') %}
+{% set _side_menu    = block('side_menu') %}
+{% set _content      = block('content') %}
+{% set _title        = block('title') %}
+{% set _breadcrumb   = block('breadcrumb') %}
+<!DOCTYPE html>
+<html class="no-js">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="cache-control" content="max-age=0" />
+        <meta http-equiv="cache-control" content="no-cache" />
+        <meta http-equiv="expires" content="0" />
+        <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+        <meta http-equiv="pragma" content="no-cache" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+        {% block stylesheets %}
+            <!-- jQuery code -->
+            <link rel="stylesheet" href="{{ asset('bundles/indicadores/js/jquery/jquery-ui/css/flick/jquery-ui-1.10.3.custom.min.css') }}" type="text/css" media="all" />
+            <!-- css de eTAB -->
+            <link rel="stylesheet" href="{{ asset('bundles/indicadores/js/bootstrap/css/bootstrap.min.css') }}" type="text/css" media="all"  />
+            <!-- base application asset -->
+            
+            <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/css/layout.css') }}" type="text/css" media="all" />
+            <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/css/colors.css') }}" type="text/css" media="all" />
+			<link rel="stylesheet" href="{{ asset('bundles/indicadores/css/custom_layout.css') }}" type="text/css" media="all" />
+            <link rel="stylesheet" href="{{ asset('bundles/indicadores/css/ionicons.min.css') }}" type="text/css" media="all" />
+            <link rel="stylesheet" href="{{ asset('bundles/indicadores/css/font-awesome.min.css') }}" type="text/css" media="all" />
+            <link rel="stylesheet" href="{{ asset('bundles/indicadores/css/ajaxloader.css') }}" type="text/css" media="all" />            
+        {% endblock %}
+
+        {% block javascripts %}
+        <script src="{{ asset('bundles/indicadores/js/jquery/jquery-2.0.3.min.js') }}" type="text/javascript"></script>
+            <script type="text/javascript">
+                window.SONATA_CONFIG = 
+				{
+                    CONFIRM_EXIT: {% if admin_pool is defined and admin_pool.getOption('confirm_exit') %}true{% else %}false{% endif %}
+                };
+                window.SONATA_TRANSLATIONS = {
+                    CONFIRM_EXIT: '{{ 'confirm_exit'|trans({}, 'SonataAdminBundle')|escape('js') }}'
+               };
+               
+               var sSwfPath = "{{ asset('bundles/indicadores/js/DataTables/media/swf/copy_csv_xls_pdf.swf') }}";
+            
+			$(document).ready(function() {
+				$(".icon-ok-circle").attr("class","glyphicon glyphicon-ok-circle");
+				$(".icon-ban-circle").attr("class","glyphicon glyphicon-ban-circle");
+				$(".alert-error").attr("class","alert alert-danger");
+				
+			});
+			</script>
+            
+            <script src="{{ asset('bundles/indicadores/js/jquery/jquery-ui/js/jquery-ui-1.10.3.custom.min.js') }}" type="text/javascript"></script>
+
+            <script src="{{ asset('bundles/indicadores/js/bootstrap/js/bootstrap.min.js') }}" type="text/javascript"></script>
+
+            <script src="{{ asset('bundles/sonataadmin/jquery/jquery.form.js') }}" type="text/javascript"></script>
+            {% if admin_pool is defined and admin_pool.getOption('confirm_exit') %}<script src="{{ asset('bundles/sonataadmin/jquery/jquery.confirmExit.js') }}" type="text/javascript"></script>{% endif %}
+            <script src="{{ asset('bundles/indicadores/js/base.js') }}" type="text/javascript"></script>
+
+            <script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+            <script type="text/javascript" src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+			<script>
+			
+			</script>
+            {% include (['IndicadoresBundle::messages_js.html.twig']|join) %}
+        {% endblock %}
+
+        <title>
+            eTAB
+            {#{{ 'Admin'|trans({}, 'SonataAdminBundle') }}
+
+            {% if _title is not empty %}
+                {{ _title|raw }}
+            {% else %}
+                {% if action is defined %}
+                    -
+                    {% for menu in admin.breadcrumbs(action) %}
+                        {% if not loop.first  %}
+                            &gt;
+                        {% endif %}
+                        {{ menu.label }}
+                    {% endfor %}
+                {% endif %}
+            {% endif%}#}
+        </title>
+    </head>
+    <body class="sonata-bc {% if _side_menu is empty %}sonata-ba-no-side-menu{% endif %}" style="margin-top:50px;">
+        {# initialize block value #}
+
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" style="z-index:9999999">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#collapseOne">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" id="dashboard" href="{{ path('_inicio', {'page': '_inicio'}) }}">
+      <img src="{{ asset('bundles/indicadores/images/logo.png') }}" style="margin-top:-7px; height:34px;" /> 
+      </a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="collapseOne">
+      <ul class="nav navbar-nav">
+      <!-- inicio menu -->
+      {% if admin_pool is defined %}
+	  {% set a = 0 %}
+      {# MENU PRINCIPAL #}
+        {% block top_bar_before_nav %} {% endblock %}
+        {% block sonata_top_bar_nav %}
+            {#{% if app.security.token and is_granted('ROLE_SONATA_ADMIN') %}#}
+            {% if app.security.token  %}
+                {% for group in admin_pool.dashboardgroups %}
+
+                    {% set display = (group.roles is empty or is_granted('ROLE_SUPER_ADMIN') ) %}
+                    {% for role in group.roles if not display %}
+                        {% set display = is_granted(role)%}
+                    {% endfor %}
+                    
+                    {# Do not display the group label if no item in group is available #}
+                    {% set item_count = 0 %}
+                    {% if display %}
+                        {% for admin in group.items if item_count == 0 %}
+                            {% if admin.hasroute('list') and admin.isGranted('LIST') 
+                                or (admin.hasroute('tablero') and is_granted('ROLE_USER_TABLERO'))
+                                or (admin.hasroute('cubos') and is_granted('ROLE_USER_CUBOS'))
+                            %}
+                                {% set item_count = item_count+1 %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                            
+                    {% if display and (item_count > 0) %}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ group.label|trans }} <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                            	
+                                {% for admin in group.items %}
+                                    {% if admin.hasroute('list') and admin.isGranted('LIST') %}
+                                        <li><a href="{{ admin.generateUrl('list')}}">{{ admin.label|trans }}</a></li>
+                                    {% endif %}
+                                    {% if admin.hasroute('tablero') and (is_granted('ROLE_SONATA_ADMIN') or is_granted('ROLE_USER_TABLERO')) %}
+                                    	  
+                                        <li><a href="{{ admin.generateUrl('tablero')}}">{{ 'indicador_tablero'|trans }}</a></li>
+                                    {% endif %}
+
+                                    {% if admin.hasroute('pivotTable') and (is_granted('ROLE_SONATA_ADMIN') or is_granted('ROLE_USER_PIVOT_TABLE')) %}
+                                          
+                                        <li><a href="{{ admin.generateUrl('pivotTable')}}">{{ '_tabla_pivote_'|trans }}</a></li>
+                                    {% endif %}
+
+                                    {% if admin.hasroute('matrizPlaneacion') and (is_granted('ROLE_SONATA_ADMIN') or is_granted('ROLE_MATRIZ_SEGUIMIENTO_ADMIN')) %}
+                                          
+                                        <li><a href="{{ admin.generateUrl('matrizPlaneacion')}}">{{ '_config_matriz_anio_'|trans }}</a></li>
+                                    {% endif %}
+
+                                    {% if admin.hasroute('matrizReal') and (is_granted('ROLE_SONATA_ADMIN') or is_granted('ROLE_MATRIZ_SEGUIMIENTO_USER')) %}
+                                          
+                                        <li><a href="{{ admin.generateUrl('matrizReal')}}">{{ '_capturar_matriz_'|trans }}</a></li>
+                                    {% endif %}
+
+                                    {% if admin.hasroute('matrizReporte') and (is_granted('ROLE_SONATA_ADMIN') or is_granted('ROLE_MATRIZ_SEGUIMIENTO_USER')) %}
+                                          
+                                        <li><a href="{{ admin.generateUrl('matrizReporte')}}">{{ '_reporte_'|trans }}</a></li>
+                                    {% endif %}
+                                    {# Se oculta cubos
+                                    {% if admin.hasroute('cubos') and (is_granted('ROLE_SONATA_ADMIN') or is_granted('ROLE_USER_CUBOS')) %}
+                                        <li><a href="{{ admin.generateUrl('cubos')}}">{{ '_cubos_'|trans }}</a></li>
+                                    {% endif %}
+                                    #}
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endif %}
+
+                {% endfor %}
+            {% endif %}
+        {% endblock %}
+        {% block top_bar_after_nav %} {% endblock %}
+      {% endif %}
+        <!-- fin menu -->
+      </ul>
+      <!-- usuario logueado -->
+      {% if app.user != '' %}
+      <ul class="nav navbar-nav navbar-right">
+      {% for group in admin_pool.dashboardgroups %}
+      {% for admin in group.items %}
+      {% if admin.hasroute('tablero') and (is_granted('ROLE_SONATA_ADMIN') or is_granted('ROLE_USER_TABLERO')) %}
+       <!-- <li><a href="{{ admin.generateUrl('tablero')}}"><i class="glyphicon glyphicon-dashboard"></i> {{ 'indicador_tablero'|trans }}</a></li> -->
+       <input type="hidden" value="{{ admin.generateUrl('tablero')}}" id="tablero"> 
+	  {% endif %}
+      {% endfor %}
+      {% endfor %}
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> {{app.user}} <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><A href='{{url('sonata_user_admin_security_logout')}}'>{{"cerrar_sesion"|trans}}</A></li>
+            <li><A href='{{url('fos_user_change_password')}}'>{{"_cambiar_clave_"|trans}}</A></li>
+            <li class="divider"></li>
+            {% for group in admin_pool.dashboardgroups %}
+              {% for admin in group.items %}
+              {% if admin.hasroute('tablero') and (is_granted('ROLE_SONATA_ADMIN') ) %}
+               <!-- <li><a href="{{ admin.generateUrl('tablero')}}"><i class="glyphicon glyphicon-dashboard"></i> {{ 'indicador_tablero'|trans }}</a></li> --> 
+               <li><a href="{{ asset('bundles/indicadores/manuales/Manual-Tecnico.pdf') }}" target="_blank"><i class="glyphicon glyphicon-book"></i> {{ 'manual_tecnico'|trans }}</a></li>
+               <li><a href="{{ asset('bundles/indicadores/manuales/Manual-Operativo.pdf') }}" target="_blank"><i class="glyphicon glyphicon-book"></i> {{ 'manual_operativo'|trans }}</a></li>
+               <li><a href="{{ asset('bundles/indicadores/manuales/Manual-Usuario.pdf') }}" target="_blank"><i class="glyphicon glyphicon-book"></i> {{ 'manual_usuario'|trans }}</a></li>
+               <input type="hidden" value="{{ admin.generateUrl('tablero')}}" id="tablero">     
+              {% endif %}
+              {% endfor %}
+      {% endfor %}
+            <li><a href="{{ asset('bundles/indicadores/manuales/Manual-Tablero.pdf') }}" target="_blank"><i class="glyphicon glyphicon-book"></i> {{ 'manual_tablero'|trans }}</a></li>
+            <li class="divider"></li>
+            {% for locale, lenguaje in {'es_SV':'Español', 'en_US':'English'} %}
+                {% if locale == app.request.locale %}
+                    <li class='active'><A href='#'>{{lenguaje}}</a></li>
+                {% else %}
+                    <li ><a href='{{url('change_locale',{_locale:locale})}}'>{{lenguaje}}</a></li>
+                {% endif %}
+            {% endfor %}
+          </ul>
+        </li>
+      </ul>
+      {% endif %}
+      
+      <!-- fin usuario logueado -->
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+        <!-- fin menu -->
+                
+
+    
+           
+                <div id="div_carga" class='affix'>
+                    <div id="cargador"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span></div>
+                </div>
+                {% block sonata_admin_content %}
+                    {% if _content is not empty %}
+                        {{ _content|raw }}
+                    {% endif %}
+                {% endblock %}
+           
+
+            {% block footer %}
+                <div class="container-fluid"><hr>
+                	<div style="text-align:right">
+                    	<img src="{{ asset('bundles/indicadores/images/LogoInstitucional.png') }}" height="30px" /> 
+                        <img src="{{ asset('bundles/indicadores/images/EscudoGobiernoChiapas.png') }}" height="30px" /> 
+                        <img src="{{ asset('bundles/indicadores/images/Marca.png') }}" height="30px" /> 
+                    </div>        
+                </div>
+            {% endblock %}
+       
+    </body>
+</html>

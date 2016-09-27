@@ -1,0 +1,390 @@
+<div id='menu_sala' class='btn-toolbar affix-top' data-spy="affix" data-offset-top="150" style="margin-top:5px; margin-bottom:5px;">
+    <div class="panel-group-heading btn-group">
+        <a class="btn panel-group-toggle btn-info" data-toggle="collapse"  href="#collapseOne" title="{{'_ocultar/mostrar_menu_principal_'|trans}}">
+            <i class="glyphicon glyphicon-resize-full"></i>
+        </a>
+    </div>
+    <div class='btn-group'>
+        <a href='#myModalSalas' class="btn dropdown-toggle btn-primary" data-toggle="modal" >
+            <i class="glyphicon glyphicon-th"></i> {{'_sala_'|trans}}
+        </a>
+    </div>
+
+    <div class='btn-group'>
+        <a class="btn dropdown-toggle btn-success" href="#myModalMenu" data-toggle="modal" id="mimodal" >
+            <i class="glyphicon glyphicon-align-left"></i> {{"indicadores"|trans}}
+        </a>
+        
+        </div>
+        <div class='btn-group'>
+        	<a id='agregar_fila' class="btn btn-primary" title="{{'_agregar_area_grafico_'|trans}}"><i class="ion-plus"></i></a> 
+            <a id='quitar_fila' class="btn btn-danger" title="{{'_quitar_area_grafico_'|trans}}"><i class="ion-minus"></i></a>
+        </div>
+        <div class='btn-group'>
+            <a id='quitar_indicador' class="btn btn-danger" title="{{'_quitar_indicador_'|trans}}"><i class="fa fa-eraser"></i></a> 
+            <a href="#myModal" data-toggle="modal" class="btn btn-primary" title="{{'_guardar_sala_'|trans}}"><i class="fa fa-save"></i></a>
+        </div>
+        <div class='btn-group col-lg-4' style="margin-left:-9px;">
+        <div class='btn-group'>
+        <form class="bs-example bs-example-form " role="form" >
+		    <div class="input-prepend input-group btn-group" >
+		        <span class="input-group-addon btn-info"><i class="glyphicon glyphicon-search"></i></span>
+		        <input type="text" id="search_" class="form-control" style="height:30px" placeholder="Buscar...">
+		    </div>
+		</form>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Modal Menu-->  
+<div id="myModalMenu" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+            <h4 class="modal-tilte">{{"_Titulo_indicador"|trans}} </h4>
+        </div>
+        <div class="modal-body">
+        
+            <ul class="nav nav-tabs">
+                <li class="active">
+                <a href="#s53beb59d6d27d_1" data-toggle="tab">
+                <i class="glyphicon glyphicon-exclamation-sign has-errors hide" data-original-title="" title=""></i>
+                {{"_agregar_filtro_"|trans}} ({{clasificacionUso|length}})
+                </a>
+                </li>
+                <li>
+                <a href="#s53beb59d6d27d_2" data-toggle="tab">
+                <i class="glyphicon glyphicon-exclamation-sign has-errors hide" data-original-title="" title=""></i>
+                <i class="glyphicon glyphicon-star"></i> 
+                {{"favoritos"|trans}} (<span id='cantidad_favoritos'>{{app.user.favoritos|length}}</span>)
+                </a>
+                </li>
+            </ul>
+            <div class="tab-content">
+            	<div class="tab-pane active" id="s53beb59d6d27d_1">
+                	
+                    <div class="col-lg-12"><br />
+                        <div class="form-group">
+                            <label for="s53beb59d6d27d_establecimiento">
+                            {{'_clasificacion_indicadores_'|trans}}
+                            </label>
+                            <select class="form-control" id="clasificacion_00">
+                            <option value="xxx">
+                                {{"_no_clasificados_"|trans}} (<span id='cantidad_no_clasificados'>{{indicadores_no_clasificados|length}})
+                            </option>
+                            {% for clasificacion in clasificacionUso %}
+                                {% if clasificacion.codigo == app.user.clasificacionUso.codigo|default('') %}
+                                <option value="{{clasificacion.codigo}}">
+                                    {{clasificacion.id}} .- {{clasificacion.descripcion}}
+                                    {% for categoria in categorias%}
+                                        {% if categoria.indicadores|length > 0 and categoria.cat.descripcion==clasificacion.descripcion   %}
+                                            ({{categoria.indicadores|length}})
+                                        {% endif %}
+                                    {% endfor %}
+                                </option>
+                                {% else %}
+                                <option value="{{clasificacion.codigo}}" >
+                                    {{clasificacion.id}} .- {{clasificacion.descripcion}}                                        
+                                </option>
+                                {% endif %}
+                            {% endfor %}
+                           </select>
+                        </div>
+                    </div>
+                
+                    <div class="col-lg-12">
+                        <div class="input-group">
+                          <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                          <input type="text" id="search_1" class="form-control" placeholder="Buscar..." autocomplete="off">
+                        </div>
+                        <br />
+                    </div>
+                    
+                    <div class="col-lg-12">
+                    	<div id="miclasificacion" class="list-group" >
+                            {% for indicador in indicadores_no_clasificados %}
+                            
+                                <a id='{{indicador.id}}' class='indicador list-group-item'
+                                    data-id='{{indicador.id}}'
+                                    data-unidad-medida='{{indicador.unidadMedida}}' style="height:100%; width:100%; display:block;">
+                                                {{indicador.nombre}}
+                                </a>
+                            
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="s53beb59d6d27d_2">
+                </div>
+            </div>
+        <!-- fin body -->        
+    	</div>
+        <div class="modal-footer" style="margin-top:-20px">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">{{'_cerrar_'|trans}}</button>
+        </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+
+<!-- Modal Salas-->  
+<div id="myModalSalas" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+    	<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button><h4 class="modal-tilte">{{'_salas_'|trans}} </h4></div>
+        <div class="modal-body">
+        <div class="sonata-ba-form">        
+        <form class="form-horizontal" role="form">
+            <div class="tab-content">
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                    <a href="#salas_1" data-toggle="tab">
+                    <i class="glyphicon glyphicon-exclamation-sign has-errors hide" data-original-title="" title=""></i>
+                    {{'_salas_'|trans}} ({{salas|length}})
+                    </a>
+                    </li>
+                    <li>
+                    <a href="#salas_2" data-toggle="tab">
+                    <i class="glyphicon glyphicon-exclamation-sign has-errors hide" data-original-title="" title=""></i>
+                    {{'_salas_'|trans}} X Usuario ({{salasXusuario|length}})
+                    </a>
+                    </li>
+                    <li>
+                    <a href="#salas_3" data-toggle="tab">
+                    <i class="glyphicon glyphicon-exclamation-sign has-errors hide" data-original-title="" title=""></i>
+                    {{'_salas_'|trans}} X Grupo ({{salasXgrupo|length}})
+                    </a>
+                    </li>
+                </ul>
+            
+                <div class="tab-content">
+                    <div class="tab-pane  active" id="salas_1">
+                        <fieldset>
+                        <div class="form-group"><br />                            
+                           <div id="clasificacion_" class="col-lg-11" style="margin-left:5%">
+                            <div class='btn-group'>
+                            <form class="bs-example bs-example-form " role="form" >
+                                <div class="input-prepend input-group btn-group" >
+                                    <span class="input-group-addon btn-info"><i class="glyphicon glyphicon-search"></i></span>
+                                    <input type="text" id="search_3" class="form-control" style="height:30px" placeholder="Buscar..." autocomplete="off">
+                                </div>
+                            </form>
+                            </div>
+                                <div class="list-group" id="misalax">                                    
+                                    {% for sala in salas %}
+                                        <a sala-id='{{sala.datos_sala.id}}' class="salas-id list-group-item" data="{{sala.indicadores_sala|json_encode()}}" id='a_{{sala.datos_sala.id}}' sala-nombre='{{sala.datos_sala.nombre}}' style="height:100%; width:100%; display:block;">
+                                            {{sala.datos_sala.nombre}}
+                                        </a>
+                                    {% endfor %}
+                                </div>                                   
+                           </div>
+                        </div>
+                        
+                     </fieldset>
+                  </div>
+                  
+                  <div class="tab-pane" id="salas_2">
+                  <fieldset>
+                  	<div class="form-group col-lg-11" style="margin-left:5%">
+                    <br />
+                    <div class='btn-group'>
+                    <form class="bs-example bs-example-form " role="form" >
+                        <div class="input-prepend input-group btn-group" >
+                            <span class="input-group-addon btn-info"><i class="glyphicon glyphicon-search"></i></span>
+                            <input type="text" id="search_4" class="form-control" style="height:30px" placeholder="Buscar...">
+                        </div>
+                    </form>
+                    </div>
+                        <div class="list-group" id='misalax2' >
+                            {% for sala in salasXusuario %}
+                                <a sala-id='{{sala.datos_sala.id}}' class="salas-id list-group-item" data="{{sala.indicadores_sala|json_encode()}}" id='b_{{sala.datos_sala.id}}' sala-nombre='{{sala.datos_sala.nombre}}' style="height:100%; width:100%; display:block;" >
+                                    {{sala.datos_sala.nombre}}
+                                </a>
+                            {% endfor %}
+                        </div>
+                     </div>
+                  </fieldset>
+                  </div>
+                  
+                  
+                  <div class="tab-pane" id="salas_3">
+                  <fieldset>
+                  	<div class="form-group col-lg-11" style="margin-left:5%">
+                    <br />
+                    <div class='btn-group'>
+                    <form class="bs-example bs-example-form " role="form" >
+                        <div class="input-prepend input-group btn-group" >
+                            <span class="input-group-addon btn-info"><i class="glyphicon glyphicon-search"></i></span>
+                            <input type="text" id="search_5" class="form-control" style="height:30px" placeholder="Buscar...">
+                        </div>
+                    </form>
+                    </div>
+                        <div class="list-group" id='misalax3' >                        	
+                            {% for sala in salasXgrupo %}
+                                <a sala-id='{{sala.datos_sala.id}}' class="salas-id list-group-item" data="{{sala.indicadores_sala|json_encode()}}" id='c_{{sala.datos_sala.id}}' sala-nombre='{{sala.datos_sala.nombre}}' style="height:100%; width:100%; display:block;">
+                                    {{sala.datos_sala.nombre}}
+                                </a>
+                            {% endfor %}
+                        </div>
+                     </div>
+                  </fieldset>
+                  </div>
+              </div>
+           </div>
+        </form>
+        </div>        
+    	</div>
+        <div class="modal-footer" style="margin-top:-20px">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">{{'_cerrar_'|trans}}</button>
+        </div>
+        
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<style>
+#myModalMenu li, #myModalSalas li
+{
+	cursor:pointer;
+}
+#myModalMenu li:hover, #myModalSalas li:hover
+{
+	cursor:pointer;
+	background-color:#EBEBEB;	
+}
+#myModalMenu a , #myModalSalas a
+{
+	text-decoration:none;
+}
+</style>
+<script>
+$(document).ready(function(){
+								
+	$("#search_1").keyup(function(e) {   
+		valor=this.value.toLowerCase();                                                                
+		$('#miclasificacion').find('a').each(function(i,ele)
+		{			
+			var buscar=" "+$.trim($(ele).text().toLowerCase());																								
+			if(buscar.indexOf(valor)<1)
+				$("#miclasificacion a:nth-child("+(i+1)+")").attr("style","display:none");
+			else 
+				$("#miclasificacion a:nth-child("+(i+1)+")").removeAttr("style");
+			if(valor=="")										
+				$("#miclasificacion a:nth-child("+(i+1)+")").removeAttr("style");
+		});
+	});	
+	$("#clasificacion_00").change(function(e) {
+		var valor=this.value.toLowerCase();	
+		che="";
+		if(valor=="xxx")
+		{
+			valor=$("#clasificacion_00 option:nth-child(2)").val();								
+			che="che";
+		}
+		$.ajax({
+			type: "POST",
+			dataType:"JSON",								
+			url:(Routing.generate("change_clasificacion_uso",{codigo_clasificacion:valor})),
+			data:{ajax:"ajax",che:che},
+			success: function(datos) {
+				$("#miclasificacion").html("");
+				var li="";
+				for(var c=0;c<datos.length; c++)
+				{
+					li=li+'<li class="list-group-item"><a id="'+datos[c].id+'" data-id="'+datos[c].id+'" class="indicador" onclick="recuperarDimensiones('+datos[c].id+',null);">'+datos[c].nombre+'</a></li>';
+				}
+				
+				$("#miclasificacion").append(li);
+			}
+		});
+		
+	});	
+	
+	$("#search_5").keyup(function(e) {   
+		valor=this.value.toLowerCase();                                                                
+		$('#misalax3').find('a').each(function(i,ele)
+		{			
+			var buscar=" "+$.trim($(ele).text().toLowerCase());																								
+			if(buscar.indexOf(valor)<1)
+				$("#misalax3 a:nth-child("+(i+1)+")").attr("style","display:none");
+			else 
+				$("#misalax3 a:nth-child("+(i+1)+")").removeAttr("style");
+			if(valor=="")										
+				$("#misalax3 a:nth-child("+(i+1)+")").removeAttr("style");
+		});
+	});		
+	
+								
+	$("#search_4").keyup(function(e) {   
+		valor=this.value.toLowerCase();                                                                
+		$('#misalax2').find('a').each(function(i,ele)
+		{			
+			var buscar=" "+$.trim($(ele).text().toLowerCase());																								
+			if(buscar.indexOf(valor)<1)
+				$("#misalax2 a:nth-child("+(i+1)+")").attr("style","display:none");
+			else 
+				$("#misalax2 a:nth-child("+(i+1)+")").removeAttr("style");
+			if(valor=="")										
+				$("#misalax2 a:nth-child("+(i+1)+")").removeAttr("style");
+		});
+	});	
+	
+	$("#search_3").keyup(function(e) {   
+		valor=this.value.toLowerCase();                                                                
+		$('#misalax').find('a').each(function(i,ele)
+		{			
+			var buscar=" "+$.trim($(ele).text().toLowerCase());																								
+			if(buscar.indexOf(valor)<1)
+				$("#misalax a:nth-child("+(i+1)+")").attr("style","display:none");
+			else 
+				$("#misalax a:nth-child("+(i+1)+")").removeAttr("style");
+			if(valor=="")										
+				$("#misalax a:nth-child("+(i+1)+")").removeAttr("style");
+		});
+	});	
+	
+	$("#search_2").keyup(function(e) {   
+		valor=this.value.toLowerCase();                                                                
+		$('#listado-favoritos').find('a').each(function(i,ele)
+		{			
+			var buscar=" "+$.trim($(ele).text().toLowerCase());																								
+			if(buscar.indexOf(valor)<1)
+				$("#listado-favoritos a:nth-child("+(i+1)+")").attr("style","display:none");
+			else 
+				$("#listado-favoritos a:nth-child("+(i+1)+")").removeAttr("style");
+			if(valor=="")										
+				$("#listado-favoritos a:nth-child("+(i+1)+")").removeAttr("style");
+		});
+	});	
+	function maximizar()
+	{		
+		var windowH = $(window).height();
+		$('#listado-favoritos').css({'max-height':($(window).height()/2.5)+'px'});
+		$('#listado-favoritos').css({'min-height':'70px'});
+		$('#listado-favoritos').css({'overflow':'auto'});
+		
+		$('#miclasificacion').css({'max-height':($(window).height()/2.5)+'px'});
+		$('#miclasificacion').css({'min-height':'70px'});
+		$('#miclasificacion').css({'overflow':'auto'});
+		
+		$('#misalax').css({'max-height':($(window).height()/2.5)+'px'});
+		$('#misalax').css({'min-height':'70px'});
+		$('#misalax').css({'overflow':'auto'});
+		
+		$('#misalax2').css({'max-height':($(window).height()/2.5)+'px'});
+		$('#misalax2').css({'min-height':'70px'});
+		$('#misalax2').css({'overflow':'auto'});
+		
+		$('#misalax3').css({'max-height':($(window).height()/2.5)+'px'});
+		$('#misalax3').css({'min-height':'70px'});
+		$('#misalax3').css({'overflow':'auto'});
+	}
+	window.onresize=maximizar;
+	window.onload=maximizar;
+});
+</script>
