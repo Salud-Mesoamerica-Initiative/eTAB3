@@ -214,10 +214,12 @@ class MatrizSeguimientoRESTController extends Controller {
 
         foreach ($matriz as $key => $value) {
             $value = (object) $value;
+            if(isset($value->indicadores_etab))
             foreach ($value->indicadores_etab as $ke => $ve) {                                                            
                 if(!$this->insertSeguiminetoDato($em, $existe, $value, $ke, $ve, $anio, 1))
                     $bien = false;                
             }
+            if(isset($value->indicadores_relacion))
             foreach ($value->indicadores_relacion as $ke => $ve) {                                                            
                 if(!$this->insertSeguiminetoDato($em, $existe, $value, $ke, $ve, $anio, 0))
                     $bien = false;                
@@ -430,11 +432,14 @@ class MatrizSeguimientoRESTController extends Controller {
 
         foreach ($matriz as $key => $value) {
             $value = (object) $value; 
+
+            if(isset($value->indicadores_etab))
             foreach ($value->indicadores_etab as $ke => $ve) {                                                            
                 if(!$this->insertSeguiminetoRealDato($em, $existe, $value, $ke, $ve, $anio, 1))
                     $bien = false;                
             }
             
+            if(isset($value->indicadores_relacion))
             foreach ($value->indicadores_relacion as $ke => $ve) {  
                                                                      
                 if(!$this->insertSeguiminetoRealDato($em, $existe, $value, $ke, $ve, $anio, 0))
