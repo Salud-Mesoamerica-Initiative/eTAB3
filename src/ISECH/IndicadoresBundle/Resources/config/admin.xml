@@ -268,6 +268,18 @@
             <argument>ISECH\IndicadoresBundle\Entity\MatrizSeguimiento</argument>
             <argument>IndicadoresBundle:MatrizSeguimientoREST</argument>
             <call method="setMaxPerPage"><argument>%admin_max_per_page_number%</argument></call>
-        </service>  
+        </service> 
+
+        <service id="sonata.admin.sala_acciones" class="ISECH\IndicadoresBundle\Admin\SalaAccionesAdmin">
+            <tag name="sonata.admin"
+                 manager_type="orm" 
+                 group="indicadores" 
+                 label="_sala_acciones_"
+            />
+            <argument />
+            <argument>ISECH\IndicadoresBundle\Entity\SalaAcciones</argument>
+            <argument>IndicadoresBundle:SalaAccionesAdmin</argument>
+            <call method="setMaxPerPage"><argument>%admin_max_per_page_number%</argument></call>
+        </service> 
     </services>
 </container>

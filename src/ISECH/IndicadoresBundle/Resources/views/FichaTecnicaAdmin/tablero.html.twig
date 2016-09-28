@@ -8,13 +8,20 @@
 <link rel="stylesheet" href="{{ asset('bundles/indicadores/js/DataTables/media/css/TableTools.css') }}" type="text/css" media="all" />
 
 <!--EDITADO PARA NUEVOS TIPOS DE GRAFICOS (CSS)-->
-    <link rel="stylesheet" href="{{ asset('bundles/indicadores/css/FichaTecnicaAdmin/gauge.css') }}" type="text/css" media="all" />
+<link rel="stylesheet" href="{{ asset('bundles/indicadores/css/FichaTecnicaAdmin/gauge.css') }}" type="text/css" media="all" />
+
+<!--EDITADO PARA CHECBOXES TIPO SWITCH MATERIAL (CSS)-->
+<link rel="stylesheet" href="{{ asset('bundles/indicadores/css/FichaTecnicaAdmin/material_switch.css') }}" type="text/css" media="all" />
 
 
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
+    
+<script type="text/javascript">
+var rutahome = '{{ asset('bundles/indicadores/js/DataTables/media/swf/copy_csv_xls_pdf.swf') }}';
+</script>    
 <script src="{{ asset('bundles/indicadores/js/d3.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('bundles/indicadores/js/d3pie.js') }}" type="text/javascript"></script>
 <script src="{{ asset('bundles/indicadores/js/affix.min.js') }}" type="text/javascript"></script>
@@ -25,44 +32,59 @@
 <script src="{{ asset('bundles/indicadores/js/FichaTecnicaAdmin/tablero.js') }}" type="text/javascript"></script>
 <script src="{{ asset('bundles/indicadores/js/FichaTecnicaAdmin/comun.js') }}" type="text/javascript"></script>
     
-    <!--EDITADO PARA NUEVOS TIPOS DE GRAFICOS-->
-    <script src="{{ asset('bundles/indicadores/js/SVG/rgbcolor.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('bundles/indicadores/js/SVG/StackBlur.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('bundles/indicadores/js/SVG/canvg.js') }}" type="text/javascript"></script>
-    
-    <script src="{{ asset('bundles/indicadores/js/FichaTecnicaAdmin/grafico_gauge.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('bundles/indicadores/js/FichaTecnicaAdmin/grafico_termometro.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('bundles/indicadores/js/FichaTecnicaAdmin/iopctrl.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('bundles/indicadores/js/FichaTecnicaAdmin/grafico_mapa.js') }}" type="text/javascript"></script>
-	
-    <script src="{{ asset('bundles/indicadores/js/bridge_draggable_touch.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('bundles/indicadores/js/jquery.ui.touch-punch.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('bundles/indicadores/js/rasterizeHTML.allinone.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('bundles/indicadores/js/DataTables/jquery.dataTables.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('bundles/indicadores/js/DataTables/ZeroClipboard.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('bundles/indicadores/js/DataTables/TableTools.min.js') }}" type="text/javascript"></script>
+<!--EDITADO PARA NUEVOS TIPOS DE GRAFICOS-->
+<script src="{{ asset('bundles/indicadores/js/SVG/rgbcolor.js') }}" type="text/javascript"></script>
+<script src="{{ asset('bundles/indicadores/js/SVG/StackBlur.js') }}" type="text/javascript"></script>
+<script src="{{ asset('bundles/indicadores/js/SVG/canvg.js') }}" type="text/javascript"></script>
+
+<script src="{{ asset('bundles/indicadores/js/FichaTecnicaAdmin/grafico_gauge.js') }}" type="text/javascript"></script>
+<script src="{{ asset('bundles/indicadores/js/FichaTecnicaAdmin/grafico_termometro.js') }}" type="text/javascript"></script>
+<script src="{{ asset('bundles/indicadores/js/FichaTecnicaAdmin/iopctrl.js') }}" type="text/javascript"></script>
+<script src="{{ asset('bundles/indicadores/js/FichaTecnicaAdmin/grafico_mapa.js') }}" type="text/javascript"></script>
+
+<script src="{{ asset('bundles/indicadores/js/bridge_draggable_touch.js') }}" type="text/javascript"></script>
+<script src="{{ asset('bundles/indicadores/js/jquery.ui.touch-punch.js') }}" type="text/javascript"></script>
+<script src="{{ asset('bundles/indicadores/js/rasterizeHTML.allinone.js') }}" type="text/javascript"></script>
+<script src="{{ asset('bundles/indicadores/js/DataTables/jquery.dataTables.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('bundles/indicadores/js/DataTables/ZeroClipboard.js') }}" type="text/javascript"></script>
+<script src="{{ asset('bundles/indicadores/js/DataTables/TableTools.min.js') }}" type="text/javascript"></script>
+
+<!--EDITADO PARA EXPORTACION DE DATOS-->
+<script src="{{ asset('bundles/indicadores/js/export_plugin/tableExport.js') }}" type="text/javascript"></script>
+<script src="{{ asset('bundles/indicadores/js/export_plugin/filesaver.js') }}" type="text/javascript"></script>
+<script src="{{ asset('bundles/indicadores/js/export_plugin/jquery.base64.js') }}" type="text/javascript"></script>
+<!--EXPORTACION A PNG-->
+<script src="{{ asset('bundles/indicadores/js/export_plugin/html2canvas.js') }}" type="text/javascript"></script>
+<!--EXPORTACION A PDF-->
+<script src="{{ asset('bundles/indicadores/js/export_plugin/jspdf/libs/sprintf.js') }}" type="text/javascript"></script>
+<script src="{{ asset('bundles/indicadores/js/export_plugin/jspdf/jspdf.js') }}" type="text/javascript"></script>
+<script src="{{ asset('bundles/indicadores/js/export_plugin/jspdf/libs/base64.js') }}" type="text/javascript"></script>
+
+<!--EXPORTACION A PDF DICCIONARIO DE DATOS-->
+<script src="{{ asset('bundles/indicadores/js/pdf/pdfmake.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('bundles/indicadores/js/pdf/vfs_fonts.js') }}" type="text/javascript"></script>
 
 <script>
 $(document).ready(function(){
-	$("#search_").autocomplete({
-		source: "{{ path('autoComplete_Indicador') }}",
-		select: function (a, b) 
-		{
-			var valor=b.item.value;
-			valor=valor.split("]")[0];
-			valor=valor.split("[")[1];	
-			sala_agregar_fila(); 								
-			recuperarDimensiones(valor, null);
-		},
-		position: {
-			my : "right top",
-			at: "right bottom"
-		}
-	});
-	$('#search_').click(function() {
+    $("#search_").autocomplete({
+        source: "{{ path('autoComplete_Indicador') }}",
+        select: function (a, b) 
+        {
+            var valor=b.item.value;
+            valor=valor.split("]")[0];
+            valor=valor.split("[")[1];  
+            sala_agregar_fila();                                
+            recuperarDimensiones(valor, null);
+        },
+        position: {
+            my : "right top",
+            at: "right bottom"
+        }
+    });
+    $('#search_').click(function() {
         this.value="";
     });
-	
+    
 });
 
 </script>
@@ -75,13 +97,16 @@ $(document).ready(function(){
 
 {% include 'IndicadoresBundle:FichaTecnicaAdmin:menu_tablero.html.twig' %}
 <div class="container-fluid" id="contenedor_tablero">
-    <div class="row" id="titulo_header" style="display:none">
-    	<div class="col-md-12">
-	    <div class="page-header" ><h1 id="header_sala"></h1></div> 
+    <div class="row" id="titulo_header" style="display:none;">
+        <div class="col-md-12">
+        <div class="page-header" style="padding:1px; margin-top:15px;  margin-bottom: -45px;"><h1 id="header_sala"></h1></div> 
         </div>
     </div>
 
-	<div id="sala" ></div>
+    <div id="sala">
+        
+    </div>
+
 </div>
 
 <!-- Modal -->
@@ -117,12 +142,12 @@ $(document).ready(function(){
 </div><!-- /.modal -->
 
 <div id="myModal2" class="modal fade" style="z-index:999999999">
-  <div class="modal-dialog modal-xlg">
+  <div class="modal-dialog">
     <div class="modal-content">
        <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         <h4 id="myModalLabel2"></h4>
-    	</div>
+        </div>
         <div class="modal-body" style="max-height:400px; max-width:100%; overflow:auto;">
         <span class='info' id='sql'></span>
         </div>
@@ -130,7 +155,7 @@ $(document).ready(function(){
         <button class="btn btn-warning" data-dismiss="modal" aria-hidden="true">{{'_cerrar_'|trans}}</button>
         </div>
     </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog modal-lg -->
+  </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
 
@@ -162,8 +187,8 @@ $(document).ready(function(){
                 </li>
             </ul>
             <div class="tab-content">
-            	<div class="tab-pane active" id="s53beb59d6d27d_1">
-                	
+                <div class="tab-pane active" id="s53beb59d6d27d_1">
+                    
                     <div class="col-lg-12"><br />
                         <div class="form-group">
                             <label for="s53beb59d6d27d_establecimiento">
@@ -212,11 +237,11 @@ $(document).ready(function(){
                     </div>
                     
                     <div class="col-lg-12">
-                    	<ul id="miclasificacion" class="list-group" >
+                        <ul id="miclasificacion" class="list-group" >
                             {% for indicador in indicadores_no_clasificados %}
                             
                                 <li class='list-group-item'
-                                     style="height:100%; width:100%; display:block;">
+                                     style="height:100%; min-height:55px; width:100%; display:block;">
                                     <button type="button" class="indicador pull-left btn" style="margin-right:15px" data-id='{{indicador.id}}'
                                     data-unidad-medida='{{indicador.unidadMedida}}' id='{{indicador.id}}'>
                                     <i class="glyphicon glyphicon-plus"></i>
@@ -229,8 +254,8 @@ $(document).ready(function(){
                     </div>
                 </div>
                 <div class="tab-pane" id="s53beb59d6d27d_2">
-                	<div class="col-lg-12"><br />
-                    	<div class="input-group">
+                    <div class="col-lg-12"><br />
+                        <div class="input-group">
                           <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
                           <input type="text" id="search_2" class="form-control"  placeholder="Buscar...">
                         </div> 
@@ -239,9 +264,9 @@ $(document).ready(function(){
                     <div class="col-lg-12">
                         <ul class="list-group" id='listado-favoritos' >
                             {% for indicador in app.user.favoritos %}
-                            	
-                            	<li class='list-group-item'
-                                     style="height:100%; width:100%; display:block;">
+                                
+                                <li class='list-group-item'
+                                     style="height:100%; min-height:55px; width:100%; display:block;">
                                     <button type="button" class="indicador pull-left btn" style="margin-right:15px" data-id='{{indicador.id}}'
                                     data-unidad-medida='{{indicador.unidadMedida}}' id='fav-{{indicador.id}}'>
                                     <i class="glyphicon glyphicon-plus"></i>
@@ -254,22 +279,105 @@ $(document).ready(function(){
                 </div>
             </div>
         <!-- fin body -->        
-    	</div>
+        </div>
         <div class="modal-footer" style="margin-top:-20px">
             <button class="btn btn-warning" data-dismiss="modal" aria-hidden="true">{{'_cerrar_'|trans}}</button>
         </div>
     </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog modal-lg -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div id="exportarDatos" class="modal fade" style="z-index:999999999">
+  <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel">{{'_exportar_datos_lbl'|trans}}</h3>
+        </div>
+    
+        <div class="modal-body row">
+            <div class="col-lg-12">
+                    <label>{{'_exportar_datos_opciones_'|trans}}</label>
+            </div>
+            <div class="col-lg-12">
+                <ul class="list-group" id='listado-favoritos' >                             
+                    <li class='list-group-item'>
+                        <div class="material-switch">
+                            <input id="exportar_csv" value="csv" name="exportar_opciones_radio" type="radio" checked/>
+                            <label for="exportar_csv" >CSV</label>
+                        </div>
+                    </li>
+                    <li class='list-group-item'>
+                        <div class="material-switch">
+                            <input id="exportar_xls" value="xls" name="exportar_opciones_radio" type="radio"/>
+                            <label for="exportar_xls" >XLS</label>
+                        </div>
+                    </li>
+                    <li class='list-group-item'>
+                        <div class="material-switch">
+                            <input id="exportar_xml" value="xml" name="exportar_opciones_radio" type="radio"/>
+                            <label for="exportar_xml" >XML</label>
+                        </div>
+                    </li>
+                    <!--li class='list-group-item'>
+                        <div class="material-switch">
+                            <input id="exportar_pdf" value="pdf" name="exportar_opciones_radio" type="radio"/>
+                            <label for="exportar_pdf" class="label-primary">PDF</label>
+                        </div>
+                    </li-->
+                </ul>
+            </div>
+        </div>
+    
+        <div class="modal-footer">
+            
+            <button id='exportar_datos_boton' class="btn btn-primary">
+            <i class="glyphicon glyphicon-export"></i> 
+            {{'_exportar_datos_boton_'|trans}}</button>
+            
+            <button class="btn btn-warning" data-dismiss="modal" aria-hidden="true">
+            {{'_cerrar_'|trans}}</button>
+        </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
 
+<div id="exportarDiccionarioDatos" class="modal fade" style="z-index:999999999">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel">{{'_exportar_diccionario_datos_lbl'|trans}}</h3>
+        </div>
+    
+        <div class="modal-body row">
+            <div id="contenedor_indicadores_diccionario">
+                
+            </div>
+        </div>
+    
+        <div class="modal-footer">
+            <button id='exportar_diccionario_boton' class="btn btn-primary">
+            <i class="glyphicon glyphicon-export"></i> 
+            {{'_exportar_datos_boton_'|trans}}</button>
+            
+            <button class="btn btn-warning" data-dismiss="modal" aria-hidden="true">
+            {{'_cerrar_'|trans}}</button>
+        </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
+
+{% include 'IndicadoresBundle:FichaTecnicaAdmin:compartir_sala.html.twig' %}
+{% include 'IndicadoresBundle:FichaTecnicaAdmin:accion_sala.html.twig' %}
 
 <!-- Modal Salas-->  
 <div id="myModalSalas" class="modal fade" style="z-index:99999999">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-    	<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button><h4 class="modal-tilte">{{'_salas_'|trans}} </h4></div>
+        <div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button><h4 class="modal-tilte">{{'_salas_'|trans}} </h4></div>
         <div class="modal-body">
             <div class="tab-content">
                 <ul class="nav nav-tabs" id="salax">
@@ -329,7 +437,7 @@ $(document).ready(function(){
                         <ul class="list-group" id='misalax2' >
                             {% for sala in salasXusuario %}
                                 <li  class="list-group-item" style="min-height:55px" id="u_{{sala.datos_sala.id}}">
-                                	<button type="button" class="salas-id pull-left btn" style="margin-right:15px" data="{{sala.indicadores_sala|json_encode()}}" id='b_{{sala.datos_sala.id}}' sala-nombre='{{sala.datos_sala.nombre}}' sala-id='{{sala.datos_sala.id}}'>
+                                    <button type="button" class="salas-id pull-left btn" style="margin-right:15px" data="{{sala.indicadores_sala|json_encode()}}" id='b_{{sala.datos_sala.id}}' sala-nombre='{{sala.datos_sala.nombre}}' sala-id='{{sala.datos_sala.id}}'>
                                         <i class="glyphicon glyphicon-plus"></i>
                                     </button>
                                     {{sala.datos_sala.nombre}}
@@ -357,10 +465,10 @@ $(document).ready(function(){
                         <br />                       
                      </div>
                      <div class="col-lg-12">
-                        <ul class="list-group" id='misalax3' >                        	
+                        <ul class="list-group" id='misalax3' >                          
                             {% for sala in salasXgrupo %}
                                 <li class="list-group-item" style="min-height:55px" id="g_{{sala.datos_sala.id}}">
-                                	<button type="button" class="salas-id pull-left btn" style="margin-right:15px" data="{{sala.indicadores_sala|json_encode()}}" id='c_{{sala.datos_sala.id}}' sala-nombre='{{sala.datos_sala.nombre}}' sala-id='{{sala.datos_sala.id}}'>
+                                    <button type="button" class="salas-id pull-left btn" style="margin-right:15px" data="{{sala.indicadores_sala|json_encode()}}" id='c_{{sala.datos_sala.id}}' sala-nombre='{{sala.datos_sala.nombre}}' sala-id='{{sala.datos_sala.id}}'>
                                         <i class="glyphicon glyphicon-plus"></i>
                                     </button>
                                     {{sala.datos_sala.nombre}}
@@ -371,223 +479,489 @@ $(document).ready(function(){
                   </div>
               </div>
            </div>
-    	</div>
+        </div>
         <div class="modal-footer" style="margin-top:-20px">
             <button class="btn btn-warning" data-dismiss="modal" aria-hidden="true">{{'_cerrar_'|trans}}</button>
         </div>
         
     </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog modal-lg -->
+  </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <style>
 #myModalMenu li, #myModalSalas li
 {
-	cursor:pointer;
+    cursor:pointer;
 }
 #myModalMenu li:hover, #myModalSalas li:hover
 {
-	cursor:pointer;
-	background-color:#EBEBEB;	
+    cursor:pointer;
+    background-color:#EBEBEB;   
 }
 #myModalMenu a , #myModalSalas a
 {
-	text-decoration:none;
+    text-decoration:none;
 }
 </style>
 <script>
 $(document).ready(function(){
-								
-	$("#search_1").keyup(function(e) {   
-		valor=this.value.toLowerCase();                                                                
-		$('#miclasificacion').find('li').each(function(i,ele)
-		{			
-			var buscar=" "+$.trim($(ele).text().toLowerCase());																								
-			if(buscar.indexOf(valor)<1)
-				$("#miclasificacion li:nth-child("+(i+1)+")").attr("style","display:none");
-			else 
-				$("#miclasificacion li:nth-child("+(i+1)+")").removeAttr("style");
-			if(valor=="")										
-				$("#miclasificacion li:nth-child("+(i+1)+")").removeAttr("style");
-		});
-	});	
-	$("#clasificacion_00").change(function(e) {
-		var uso=$(this).val();
-		var valor=this.value.toLowerCase();	
-		che="";
-		if(valor=="xxx")
-		{
-			valor=$("#clasificacion_00 option:nth-child(2)").val();								
-			indicadoresList(valor,"che","");
-			$("#clasificacion_11").html("");
-		}
-		else
-		{
-			$("#miclasificacion").html("");
-			$.ajax({
-				url: Routing.generate("clasificacionTecnica",{'uso':uso,'ficha':"x"}),
-				dataType:"json",	
-				type: 'POST',
-				error: function() 
-				{
-					$("#clasificacion_11").html(li);
-				},
-				success: function(result) 
-				{
-					var li="<option value=''>Seleccione</option>";
-					for (i = 0; i < result.length; i++) 
-					{
-						li+='<option value="'+result[i].id+'" >'+result[i].value+'</option>';
-					}
-					$("#clasificacion_11").html(li);				
-				}
-			});
-			indicadoresList(valor,"","");
-		}
-	});
-	$("#clasificacion_11").change(function(e) {		
-		indicadoresList($("#clasificacion_00").val(),"",$(this).val());
-	});	
-	
-	$("#search_5").keyup(function(e) {   
-		valor=this.value.toLowerCase();                                                                
-		$('#misalax3').find('li').each(function(i,ele)
-		{			
-			var buscar=" "+$.trim($(ele).text().toLowerCase());																								
-			if(buscar.indexOf(valor)<1)
-				$("#misalax3 li:nth-child("+(i+1)+")").attr("style","display:none");
-			else 
-				$("#misalax3 li:nth-child("+(i+1)+")").removeAttr("style");
-			if(valor=="")										
-				$("#misalax3 li:nth-child("+(i+1)+")").removeAttr("style");
-		});
-	});		
-	
-								
-	$("#search_4").keyup(function(e) {   
-		valor=this.value.toLowerCase();                                                                
-		$('#misalax2').find('li').each(function(i,ele)
-		{			
-			var buscar=" "+$.trim($(ele).text().toLowerCase());																								
-			if(buscar.indexOf(valor)<1)
-				$("#misalax2 li:nth-child("+(i+1)+")").attr("style","display:none");
-			else 
-				$("#misalax2 li:nth-child("+(i+1)+")").removeAttr("style");
-			if(valor=="")										
-				$("#misalax2 li:nth-child("+(i+1)+")").removeAttr("style");
-		});
-	});	
-	
-	$("#search_3").keyup(function(e) {   
-		valor=this.value.toLowerCase();                                                                
-		$('#misalax').find('li').each(function(i,ele)
-		{			
-			var buscar=" "+$.trim($(ele).text().toLowerCase());																								
-			if(buscar.indexOf(valor)<1)
-				$("#misalax li:nth-child("+(i+1)+")").attr("style","display:none");
-			else 
-				$("#misalax li:nth-child("+(i+1)+")").removeAttr("style");
-			if(valor=="")										
-				$("#misalax li:nth-child("+(i+1)+")").removeAttr("style");
-		});
-	});	
-	
-	$("#search_2").keyup(function(e) {   
-		valor=this.value.toLowerCase();                                                                
-		$('#listado-favoritos').find('li').each(function(i,ele)
-		{			
-			var buscar=" "+$.trim($(ele).text().toLowerCase());																								
-			if(buscar.indexOf(valor)<1)
-				$("#listado-favoritos li:nth-child("+(i+1)+")").attr("style","display:none");
-			else 
-				$("#listado-favoritos li:nth-child("+(i+1)+")").removeAttr("style");
-			if(valor=="")										
-				$("#listado-favoritos li:nth-child("+(i+1)+")").removeAttr("style");
-		});
-	});	
-	function maximizar()
-	{	
-		var tam=(($(window).width())-150)/3;
-		if((($(window).width())-120)<300)
-			tam=($(window).width());
-		if(tam<350&&tam>300)
-			tam=(($(window).width())-150)/2;
-		if(tam>400)
-			tam=410;
-		
-		var h1=tam/1.64;
-		var h2=tam/1.07;
-			
-		//$('.grafico').css({height:h1 , width: h2});
-		//$('.area_grafico').css({height:tam , width: tam});
-		
-		var windowH = $(window).height();
-		$('#listado-favoritos').css({'max-height':($(window).height()/2.5)+'px'});
-		$('#listado-favoritos').css({'min-height':'70px'});
-		$('#listado-favoritos').css({'overflow':'auto'});
-		
-		$('#miclasificacion').css({'max-height':($(window).height()/2.5)+'px'});
-		$('#miclasificacion').css({'min-height':'70px'});
-		$('#miclasificacion').css({'overflow':'auto'});
-		
-		$('#misalax').css({'max-height':($(window).height()/2.5)+'px'});
-		$('#misalax').css({'min-height':'70px'});
-		$('#misalax').css({'overflow':'auto'});
-		
-		$('#misalax2').css({'max-height':($(window).height()/2.5)+'px'});
-		$('#misalax2').css({'min-height':'70px'});
-		$('#misalax2').css({'overflow':'auto'});
-		
-		$('#misalax3').css({'max-height':($(window).height()/2.5)+'px'});
-		$('#misalax3').css({'min-height':'70px'});
-		$('#misalax3').css({'overflow':'auto'});
-	}
-	window.onresize=maximizar;
-	window.onload=maximizar;
+    
+        $('#exportar_datos_boton').click(function(){
+            
+            var datos = [];
+            var opcion = $('input[name=exportar_opciones_radio]:checked').val();
+            
+            var elementos = [];
+            var maxcollength = 0;
+            $('#contenedor_tablero').find('.area_grafico').each(function(i,elemento){
+                
+                var zona = $(elemento).attr('id');
+                var datasetPrincipal = JSON.parse($('#' + zona).attr('datasetPrincipal'));
+                var nombre = $('#' + zona + ' .titulo_indicador').attr('nombre');
+                
+                var item = new Object();
+                item.nombre = nombre;
+                item.datos = datasetPrincipal;
+                item.zona = zona;
+                
+                elementos[elementos.length] = item;
+                var tamanio = objSize(datasetPrincipal[0]);
+                maxcollength = (maxcollength < tamanio) ? tamanio : maxcollength;
+            });
+            
+            var tabla = '<table><tbody>';
+            for (i = 0; i < elementos.length; i++) {
+                tabla += construir_tabla(elementos[i], maxcollength);
+            }
+            tabla += '</tbody></table>';            
+                                    
+            switch(opcion){
+                case 'xls':
+                    var excelData = $(tabla).tableExport({type:'excel',escape:'false'});
+                    var blob = new Blob([excelData], {type: "text/comma-separated-values;charset=utf-8"});
+                    saveAs(blob, "reporte.xls")
+                    break;
+                case 'csv':
+                    var tdData = $(tabla).tableExport({type:'csv',escape:'false',separator: ','});                    
+                    var blob = new Blob([tdData], {type: "text/comma-separated-values;charset=utf-8"});
+                    saveAs(blob, "reporte.csv");
+                    break;
+                case 'xml':
+                    var xmldata = $(tabla).tableExport({type:'xml',escape:'false'});
+                    var blob = new Blob([xmldata], {type: "application/xml;charset=utf-8"});
+                    saveAs(blob, "reporte.xml");
+                    break;
+               // case 'pdf':
+               //     $(tabla).tableExport({type:'pdf',escape:'false',pdfLeftMargin : 10, pdfFontSize:10 });
+               //     break;
+            }
+                        
+        });
+        
+        $('#exportarDiccionarioDatos').on('shown.bs.modal', function (e) {
+            
+            $('#contenedor_indicadores_diccionario').html('');
+            $('#contenedor_tablero').find('.area_grafico').each(function(i,elemento){
+                
+                var zona = $(elemento).attr('id');
+                var nombre = $('#' + zona + ' .titulo_indicador').attr('nombre');
+                var id = $('#' + zona + ' .titulo_indicador').attr('data-id');
+                
+                $('#contenedor_indicadores_diccionario').append('<div class="col-lg-12"><ul class="list-group"><li class="list-group-item"><div class=""><label for="indicador_'+zona+'" ><input class="grafico_exportar" nombre="'+nombre+'" data-id="'+id+'" id="indicador_'+zona+'" type="checkbox" checked/> ' +nombre+'</label></div></li></ul></div>');
+            
+            });
+        
+        });
+        
+        $('#exportar_diccionario_boton').click(function(){
+                    
+            var elementos = [];
+            $('#contenedor_indicadores_diccionario').find('.grafico_exportar').each(function(i,elemento){
+                
+                if(elemento.checked){
+                    var zona = $(elemento).attr('id');
+                    var nombre = $('#' + zona).attr('nombre');
+                    var id = $('#' + zona).attr('data-id');
+
+                    var item = new Object();
+                    item.nombre = nombre;
+                    item.id = id;
+                    item.zona = zona;
+                    
+                    elementos[elementos.length] = item;   
+                }            
+        });
+            
+        var dd = {
+            content: [
+                { text: 'Diccionario de datos', style: 'subheader' }
+            ],
+            styles: {
+                    header: {
+                            fontSize: 18,
+                            bold: true,
+                            margin: [0, 0, 0, 10]
+                    },
+                    subheader: {
+                            fontSize: 16,
+                            bold: true,
+                            margin: [0, 10, 0, 5]
+                    },
+                    tableExample: {
+                            margin: [0, 5, 0, 15]
+                    },
+                    tableHeader: {
+                            bold: true,
+                            fontSize: 13,
+                            color: 'black'
+                    }
+            }
+        }
+        
+        var revisarfin = setInterval(function(){
+            
+            for(var i=0;i<elementos.length;i++){
+                if (elementos[i].datos == null){
+                    return false;
+                }
+            }
+                pdfMake.createPdf(dd).download('diccionario_indicadores.pdf');
+                cerrarintervalo();        
+            }, 500);
+            
+            function cerrarintervalo(){
+                clearInterval(revisarfin); 
+            }
+
+        $(elementos).each(function(i,elemento){
+            zona=$(this).attr("data-id");
+            $.get(Routing.generate('get_indicador_ficha',{id: elemento.id}),
+                function(resp) {
+                    var contenido = $(resp);
+                    var tabla = $('table', contenido);
+                    elemento.datos = tabla;
+                    dd.content.push(construir_arreglo(elemento));
+            }); 
+        });
+                
+                        
+        });
+        
+        function construir_arreglo(elemento) 
+        {
+            var datos = elemento.datos;
+            var nombre = elemento.nombre;
+            
+            var objeto = [];
+            
+            var titulo = new Object();
+            titulo.text = nombre;
+            titulo.style = 'subheader';
+            objeto.push(titulo);
+            
+            var contenido = new Object();
+            contenido.style = 'tableExample';
+            contenido.table = new Object();
+            contenido.table.headerRows = 1;
+            contenido.table.body = [];
+            var tabla = $(datos);
+            tabla.find('tr').each(function(i,e) {
+                
+                var $tds = $(this).find('td');
+                var $ths = $(this).find('th');
+                var clave = $ths.eq(0).text();
+                var valor = $tds.eq(0).text();
+                
+                var dato = new Object();
+                
+                if (i === 0) {
+                    
+                    headers = [];
+                    var header1 = new Object();
+                    header1.text = 'Campo';
+                    header1.style = 'tableHeader';
+                    headers.push(header1);
+                    var header1 = new Object();
+                    header1.text = 'Descripción';
+                    header1.style = 'tableHeader';
+                    headers.push(header1);
+                        
+                    contenido.table.body.push(headers);
+                    
+                }else{
+                    var fila = [clave,valor];
+                    contenido.table.body.push(fila);
+                }
+            });
+         
+            objeto.push(contenido);
+            
+            return objeto;
+        }
+        
+
+        function construir_tabla(elemento, tamanio) 
+        {
+            var zona = elemento.zona;
+            var datos = elemento.datos;
+            var nombre = elemento.nombre;
+            
+            var tabla_datos = '<tr tipo="indicador"><td tipo="nombre" colspan="'+tamanio+'">'+nombre+'</td></tr>';
+            
+            $.each(datos, function(i, fila) {
+                if (i === 0) {
+                    tabla_datos += '<tr tipo="encabezado">';
+                    var longitudfila = objSize(fila);
+                    var count = 0;
+                    for (var campo in fila) {
+                        
+                        count +=1;
+                        var colspan = (count === longitudfila && longitudfila<tamanio) ? 'colspan="'+(tamanio-longitudfila+1)+'"' : '';
+                        if (campo === 'category')
+                            campo = $('#' + zona + ' .dimension').html();
+                        else if (campo === 'measure')
+                            campo = trans.indicador + ' (' + $('#' + zona + ' .titulo_indicador').attr('formula') + ')';
+                        tabla_datos += '<td '+ colspan +'>' + campo.toUpperCase() + '</td>';
+                    }
+                    tabla_datos += '</tr>';
+                }
+
+                    tabla_datos += '<tr tipo="contenido">';
+                    var longitudfila = objSize(fila);
+                    var count = 0;                
+                    for (var i in fila){
+
+                        count +=1;
+                        var colspan = (count === longitudfila && longitudfila<tamanio) ? 'colspan="'+(tamanio-longitudfila+1)+'"' : '';
+
+                        tabla_datos += '<td '+ colspan +'>' + fila[i] + '</td>';
+                    }
+                    tabla_datos += '</tr>';
+
+            });
+            return tabla_datos;
+        }
+        
+        var objSize = function(obj) {
+            var count = 0;
+
+            if (typeof obj == "object") {
+
+                if (Object.keys) {
+                    count = Object.keys(obj).length;
+                } else if (window._) {
+                    count = _.keys(obj).length;
+                } else if (window.$) {
+                    count = $.map(obj, function() { return 1; }).length;
+                } else {
+                    for (var key in obj) if (obj.hasOwnProperty(key)) count++;
+                }
+
+            }
+
+            return count;
+        };
+
+    $("#search_1").keyup(function(e) {   
+        valor=this.value.toLowerCase();                                                                
+        $('#miclasificacion').find('li').each(function(i,ele)
+        {           
+            var buscar=" "+$.trim($(ele).text().toLowerCase());                                                                                             
+            if(buscar.indexOf(valor)<1)
+                $("#miclasificacion li:nth-child("+(i+1)+")").attr("style","display:none");
+            else 
+                $("#miclasificacion li:nth-child("+(i+1)+")").removeAttr("style");
+            if(valor=="")                                       
+                $("#miclasificacion li:nth-child("+(i+1)+")").removeAttr("style");
+        });
+    }); 
+    $("#clasificacion_00").change(function(e) {
+        var uso=$(this).val();
+        var valor=this.value.toLowerCase(); 
+        che="";
+        if(valor=="xxx")
+        {
+            valor=$("#clasificacion_00 option:nth-child(2)").val();                             
+            indicadoresList(valor,"che","");
+            $("#clasificacion_11").html("");
+        }
+        else
+        {
+            $("#miclasificacion").html("");
+            $.ajax({
+                url: Routing.generate("clasificacionTecnica",{'uso':uso,'ficha':"x"}),
+                dataType:"json",    
+                type: 'POST',
+                error: function() 
+                {
+                    $("#clasificacion_11").html(li);
+                },
+                success: function(result) 
+                {
+                    var li="<option value=''>Seleccione</option>";
+                    for (i = 0; i < result.length; i++) 
+                    {
+                        li+='<option value="'+result[i].id+'" >'+result[i].value+'</option>';
+                    }
+                    $("#clasificacion_11").html(li);                
+                }
+            });
+            indicadoresList(valor,"","");
+        }
+    });
+    $("#clasificacion_11").change(function(e) {     
+        indicadoresList($("#clasificacion_00").val(),"",$(this).val());
+    }); 
+    
+    $("#search_5").keyup(function(e) {   
+        valor=this.value.toLowerCase();                                                                
+        $('#misalax3').find('li').each(function(i,ele)
+        {           
+            var buscar=" "+$.trim($(ele).text().toLowerCase());                                                                                             
+            if(buscar.indexOf(valor)<1)
+                $("#misalax3 li:nth-child("+(i+1)+")").attr("style","display:none");
+            else 
+                $("#misalax3 li:nth-child("+(i+1)+")").removeAttr("style");
+            if(valor=="")                                       
+                $("#misalax3 li:nth-child("+(i+1)+")").removeAttr("style");
+        });
+    });     
+    
+                                
+    $("#search_4").keyup(function(e) {   
+        valor=this.value.toLowerCase();                                                                
+        $('#misalax2').find('li').each(function(i,ele)
+        {           
+            var buscar=" "+$.trim($(ele).text().toLowerCase());                                                                                             
+            if(buscar.indexOf(valor)<1)
+                $("#misalax2 li:nth-child("+(i+1)+")").attr("style","display:none");
+            else 
+                $("#misalax2 li:nth-child("+(i+1)+")").removeAttr("style");
+            if(valor=="")                                       
+                $("#misalax2 li:nth-child("+(i+1)+")").removeAttr("style");
+        });
+    }); 
+    
+    $("#search_3").keyup(function(e) {   
+        valor=this.value.toLowerCase();                                                                
+        $('#misalax').find('li').each(function(i,ele)
+        {           
+            var buscar=" "+$.trim($(ele).text().toLowerCase());                                                                                             
+            if(buscar.indexOf(valor)<1)
+                $("#misalax li:nth-child("+(i+1)+")").attr("style","display:none");
+            else 
+                $("#misalax li:nth-child("+(i+1)+")").removeAttr("style");
+            if(valor=="")                                       
+                $("#misalax li:nth-child("+(i+1)+")").removeAttr("style");
+        });
+    }); 
+    
+    $("#search_2").keyup(function(e) {   
+        valor=this.value.toLowerCase();                                                                
+        $('#listado-favoritos').find('li').each(function(i,ele)
+        {           
+            var buscar=" "+$.trim($(ele).text().toLowerCase());                                                                                             
+            if(buscar.indexOf(valor)<1)
+                $("#listado-favoritos li:nth-child("+(i+1)+")").attr("style","display:none");
+            else 
+                $("#listado-favoritos li:nth-child("+(i+1)+")").removeAttr("style");
+            if(valor=="")                                       
+                $("#listado-favoritos li:nth-child("+(i+1)+")").removeAttr("style");
+        });
+    }); 
+    function maximizar()
+    {   
+        var tam=(($(window).width())-150)/3;
+        if((($(window).width())-120)<300)
+            tam=($(window).width());
+        if(tam<350&&tam>300)
+            tam=(($(window).width())-150)/2;
+        if(tam>400)
+            tam=410;
+        
+        var h1=tam/1.64;
+        var h2=tam/1.07;
+            
+        //$('.grafico').css({height:h1 , width: h2});
+        //$('.area_grafico').css({height:tam , width: tam});
+        
+        var windowH = $(window).height();
+        $('#listado-favoritos').css({'max-height':($(window).height()/2.5)+'px'});
+        $('#listado-favoritos').css({'min-height':'70px'});
+        $('#listado-favoritos').css({'overflow':'auto'});
+        
+        $('#miclasificacion').css({'max-height':($(window).height()/2.5)+'px'});
+        $('#miclasificacion').css({'min-height':'70px'});
+        $('#miclasificacion').css({'overflow':'auto'});
+        
+        $('#misalax').css({'max-height':($(window).height()/2.5)+'px'});
+        $('#misalax').css({'min-height':'70px'});
+        $('#misalax').css({'overflow':'auto'});
+        
+        $('#misalax2').css({'max-height':($(window).height()/2.5)+'px'});
+        $('#misalax2').css({'min-height':'70px'});
+        $('#misalax2').css({'overflow':'auto'});
+        
+        $('#misalax3').css({'max-height':($(window).height()/2.5)+'px'});
+        $('#misalax3').css({'min-height':'70px'});
+        $('#misalax3').css({'overflow':'auto'});
+
+        $('#acciones_sala').css({'max-height':($(window).height()/2.5)+'px'});
+        $('#acciones_sala').css({'min-height':'70px'});
+        $('#acciones_sala').css({'overflow':'auto'});
+
+        $('#content_mensajes').css({'max-height':($(window).height()/2.5)+'px'});
+        $('#content_mensajes').css({'min-height':'70px'});
+        $('#content_mensajes').css({'overflow':'auto'});
+        
+    }
+    window.onresize=maximizar;
+    window.onload=maximizar;
 });
 function openModalSala(sala,titulo,edit)
 {
-	$('#nombre_sala').attr('id-sala', sala);
-	$('#nombre_sala').val(titulo);
-	if(edit=="0")
-	{
-		$("#elimina_sala").attr("data-id",sala);
-		$("#guardar_sala").attr("style","display:none");
-		$("#elimina_sala").attr("style","display:");
-	}
-	else
-	{		
-		$("#guardar_sala").attr("style","display:");
-		$("#elimina_sala").attr("style","display:none");
-	}
+    $('#nombre_sala').attr('id-sala', sala);
+    $('#nombre_sala').val(titulo);
+    if(edit=="0")
+    {
+        $("#elimina_sala").attr("data-id",sala);
+        $("#guardar_sala").attr("style","display:none");
+        $("#elimina_sala").attr("style","display:");
+    }
+    else
+    {       
+        $("#guardar_sala").attr("style","display:");
+        $("#elimina_sala").attr("style","display:none");
+    }
 }
 function indicadoresList(valor,che,ft)
 {
-	$("#miclasificacion").html("");
-	
-	$.ajax({
-		type: "POST",
-		dataType:"JSON",								
-		url:(Routing.generate("change_clasificacion_uso",{codigo_clasificacion:valor})),
-		data:{ajax:"ajax",che:che,ft:ft},
-		success: function(datos) 
-		{
-			var li="";
-			for(var c=0;c<datos.length; c++)
-			{
-				li=li+'<li class="list-group-item" style="height:100%; width:100%; display:block;">'+
-				'<button type="button" class="indicador pull-left btn" style="margin-right:15px" data-id="'+datos[c].id+'"'+
-				'onclick="cargar_indicador('+datos[c].id+');" id="'+datos[c].id+'">'+
-				'<i class="glyphicon glyphicon-plus"></i>'+
-				'</button>'+datos[c].nombre+'<div class="clearfix"></div></li>';										
-			}
-			if(li=="")
-				li="<div class='alert alert-warning col-lg-12'>No hay resultados</div>";					
-			$("#miclasificacion").append(li);
-			marcar_agregados();
-		}
-	});
+    $("#miclasificacion").html("");
+    
+    $.ajax({
+        type: "POST",
+        dataType:"JSON",                                
+        url:(Routing.generate("change_clasificacion_uso",{codigo_clasificacion:valor})),
+        data:{ajax:"ajax",che:che,ft:ft},
+        success: function(datos) 
+        {
+            var li="";
+            for(var c=0;c<datos.length; c++)
+            {
+                li=li+'<li class="list-group-item" style="height:100%; min-height:55px; width:100%; display:block;">'+
+                '<button type="button" class="indicador pull-left btn" style="margin-right:15px" data-id="'+datos[c].id+'"'+
+                'onclick="cargar_indicador('+datos[c].id+');" id="'+datos[c].id+'">'+
+                '<i class="glyphicon glyphicon-plus"></i>'+
+                '</button>'+datos[c].nombre+'<div class="clearfix"></div></li>';                                        
+            }
+            if(li=="")
+                li="<div class='alert alert-warning col-lg-12'>No hay resultados</div>";                    
+            $("#miclasificacion").append(li);
+            marcar_agregados();
+        }
+    });
 }
 acciones_button();
 </script>
+
 
 {% endblock %}

@@ -7,7 +7,7 @@ use ISECH\IndicadoresBundle\Entity\FichaTecnica;
 
 class FichaTecnicaRepository extends EntityRepository
 {
-	
+    
     public function getIndicadoresPublicos() {
         $em = $this->getEntityManager();                
         
@@ -19,30 +19,27 @@ class FichaTecnicaRepository extends EntityRepository
         return $query->getArrayResult();
     }
 
-	
-    public function crearIndicador(FichaTecnica $fichaTecnica, $dimension = null, $filtros = null)
-    {
+    
+    public function crearIndicador(FichaTecnica $fichaTecnica, $dimension = null, $filtros = null) {
         $em = $this->getEntityManager();
         $ahora = new \DateTime('NOW');
         $util = new \ISECH\IndicadoresBundle\Util\Util();
-        $nombre_indicador = $fichaTecnica->getId();
+        $nombre_indicador = $util->slug($fichaTecnica->getNombre());
+        $formula = strtoupper($fichaTecnica->getFormula());
 
         //Verificar si existe la tabla
         $existe = true;
         $acumulado = $fichaTecnica->getEsAcumulado();
-        
-        try 
-		{
+        try {
             $em->getConnection()->query("select count(*) from tmp_ind_$nombre_indicador");
-        } catch (\Doctrine\DBAL\DBALException $e) 
-		{
+        } catch (\Doctrine\DBAL\DBALException $e) {
             $existe = false;
         }
-        if ($fichaTecnica->getUpdatedAt() != '' and $fichaTecnica->getUltimaLectura() != '' and $existe == true and $acumulado == false) {
+        if ($fichaTecnica->getUpdatedAt() != '' and $fichaTecnica->getUltimaLectura() != '' and $existe == true) {
             if ($fichaTecnica->getUltimaLectura() < $fichaTecnica->getUpdatedAt())
                 return true;
         }
-                
+
         $campos = str_replace("'", '', $fichaTecnica->getCamposIndicador());
 
         $tablas_variables = array();
@@ -82,6 +79,7 @@ class FichaTecnicaRepository extends EntityRepository
                     ;";
                 }
             }
+
             //Crear la estructura de la tabla asociada a la variable
             $tabla = strtolower($variable->getIniciales());
             $sql .= ' CREATE TEMP TABLE IF NOT EXISTS ' . $tabla . '(';
@@ -98,6 +96,7 @@ class FichaTecnicaRepository extends EntityRepository
                 foreach ($significados as $campo) {
                     $sql .= $campo . ' ' . $tipos[$campo] . ', ';
                 }
+                $sql .= 'calculo numeric, ';
             } elseif ($origen->getEsPivote()) {
                 foreach ($campos_piv as $campo => $tipo)
                     $sql .= $campo . ' ' . $tipo . ', ';
@@ -151,11 +150,17 @@ class FichaTecnicaRepository extends EntityRepository
                 $campos_calculados = '';
             //Obtener solo los datos que se pueden procesar en el indicador
             $sql .= "DROP TABLE IF EXISTS $tabla" . "_var; ";
-            $sql .= "SELECT  $campos, SUM(calculo::numeric) AS  $tabla $campos_calculados
-                INTO TEMP  $tabla" . "_var
+            //Obtener el operador de la variable
+            $oper_ = explode('{'.$variable->getIniciales().'}', str_replace(' ', '', $formula));
+            $tieneOperadores = preg_match('/([A-Z]+)\($/', $oper_[0], $coincidencias, PREG_OFFSET_CAPTURE);
+            
+            $oper = ($tieneOperadores) ? $coincidencias[1][0] : 'SUM';
+            
+            $sql .= "SELECT  $campos, $oper(calculo::numeric) AS  $tabla $campos_calculados
+                INTO  TEMP $tabla" . "_var
                 FROM $tabla
                 GROUP BY $campos $campos_calculados_nombre
-                HAVING  SUM(calculo::numeric) > 0
+                HAVING  $oper(calculo::numeric) > 0
                     ;";
 
             //aplicar transformaciones si las hubieran
@@ -170,21 +175,13 @@ class FichaTecnicaRepository extends EntityRepository
             $tablas_variables[] = $tabla;
         }
 
-        if ($acumulado != true) {
-            $sql .= $this->crearTablaIndicador($fichaTecnica, $tablas_variables);
-        }
         try {
-            
-            $em->getConnection()->exec($sql);
-            
-            if ($acumulado == true)
-                $this->crearIndicadorAcumulado($fichaTecnica, $dimension, $filtros);                
+            $sql .= $this->crearTablaIndicador($fichaTecnica, $tablas_variables);
+            $em->getConnection()->exec($sql);            
             $fichaTecnica->setUpdatedAt($ahora);
             $em->persist($fichaTecnica);
             $em->flush();
         } catch (\PDOException $e) {
-            return $e->getMessage();
-        } catch (\Doctrine\DBAL\DBALException $e) {
             return $e->getMessage();
         }
     }
@@ -262,11 +259,10 @@ class FichaTecnicaRepository extends EntityRepository
         $em->getConnection()->exec($sql);
     }
 
-    public function crearTablaIndicador(FichaTecnica $fichaTecnica, $tablas_variables)
-    {
+    public function crearTablaIndicador(FichaTecnica $fichaTecnica, $tablas_variables) {
         $sql = '';
         $util = new \ISECH\IndicadoresBundle\Util\Util();
-        $nombre_indicador = $fichaTecnica->getId();
+        $nombre_indicador = $util->slug($fichaTecnica->getNombre());
         $campos = str_replace("'", '', $fichaTecnica->getCamposIndicador());
         $formula = $fichaTecnica->getFormula();
 
@@ -280,8 +276,6 @@ class FichaTecnicaRepository extends EntityRepository
         }
 
         $sufijoTablas = 'var';
-        if ($fichaTecnica->getEsAcumulado() == true)
-            $sufijoTablas = 'var_acum';
         $sql .= 'SELECT  ' . $campos . ',' . implode(',', $tablas_variables) .
                 " INTO tmp_ind_" . $nombre_indicador . " FROM  " . array_shift($tablas_variables) . '_' . $sufijoTablas . ' ';
         foreach ($tablas_variables as $tabla) {
@@ -290,282 +284,6 @@ class FichaTecnicaRepository extends EntityRepository
 
         return $sql;
     }
-
-    public function calcularIndicador(FichaTecnica $fichaTecnica, $dimension, $filtro_registros = null, $ver_sql = false, $filtrofecha, $user="", $return = true)
-    {
-        $util = new \ISECH\IndicadoresBundle\Util\Util();
-        $acumulado = $fichaTecnica->getEsAcumulado();
-        $formula = strtolower($fichaTecnica->getFormula());
-
-        //Recuperar las variables
-        $variables = array();
-        preg_match_all('/\{[a-z0-9\_]{1,}\}/', strtolower($formula), $variables, PREG_SET_ORDER);
-
-        $oper = 'SUM';
-        if ($acumulado) 
-		{
-            $formula = str_replace(array('{', '}'), array('MAX(', ')'), $formula);
-            $oper = 'MAX';
-        } 
-		else
-            $formula = str_replace(array('{', '}'), array('SUM(', ')'), $formula);
-
-        $denominador = explode('/', $fichaTecnica->getFormula());
-        $evitar_div_0 = '';
-        $variables_d = array();
-        if (count($denominador) > 1) {
-            preg_match('/\{.{1,}\}/', $denominador[1], $variables_d);
-            if (count($variables_d) > 0)
-                $var_d = strtolower(str_replace(array('{', '}'), array('(', ')'), array_shift($variables_d)));
-            $evitar_div_0 = 'AND ' . $var_d . ' > 0';
-        }
-
-        // Formar la cadena con las variables para ponerlas en la consulta
-        $variables_query = '';
-        foreach ($variables as $var) {
-            $v = str_replace(array('{', '}'), array('', ''), $var[0]);
-			
-            $variables_query .= "case $oper($v) when null then 0 else $oper($v) end as $v, ";
-        }
-        $variables_query = trim($variables_query, ', ');
-
-        $nombre_indicador = $fichaTecnica->getId();
-        $tabla_indicador = 'tmp_ind_' . $nombre_indicador;
-
-	    //Obtener los nombres de columnas para crear los rangos
-	    //de fechas de los datos
-    	try 
-    	{
-	        $rangocolumnas = $this->getEntityManager()->getConnection()->executeQuery("SELECT a.attname AS nombrecampo 
-			FROM pg_class c, pg_attribute a 
-			WHERE a.attrelid = c.oid and a.attnum > 0 
-			AND c.relname='".$tabla_indicador."' and a.attname in ('anio','mes')")->fetchAll();
-			
-        } catch (\PDOException $e) {
-            if($return)
-                return $e->getMessage();
-            else
-                return false;
-        } catch (\Doctrine\DBAL\DBALException $e) {
-            if($return)
-                return $e->getMessage();
-            else
-                return false;
-        }
-        
-        $camposrangos = "";
-        $filtroporfecha = "";
-        if (count($rangocolumnas)>0)
-        {
-            if (count($rangocolumnas)>=1)
-            {
-                if (isset($filtrofecha) == null)
-                {
-                    $camposrangos .= "min(anio) as min_anio, max(anio) as max_anio, ";
-                }else
-                {
-                    $filtroporfecha .= " and anio between ".$filtrofecha['aniomin']." and ".$filtrofecha['aniomax'];
-					$scampo="SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='$tabla_indicador' AND COLUMN_NAME ='mes'";
-					$reg = $this->getEntityManager()->getConnection()->executeQuery($scampo)->fetch();
-					if($reg)
-					$filtroporfecha = " and cast(concat('01-',mes,'-',anio) as date) between cast(concat('01-','".$filtrofecha['mesmin']."','-','".$filtrofecha['aniomin']."') as date) and cast(concat('01-','".$filtrofecha['mesmax']."','-','".$filtrofecha['aniomax']."') as date)";
-					
-					$scampo="SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='$tabla_indicador' AND COLUMN_NAME ='id_mes'";
-					$reg = $this->getEntityManager()->getConnection()->executeQuery($scampo)->fetch();
-					if($reg)
-					$filtroporfecha = " and cast(concat('01-',id_mes,'-',anio) as date) between cast(concat('01-','".$filtrofecha['mesmin']."','-','".$filtrofecha['aniomin']."') as date) and cast(concat('01-','".$filtrofecha['mesmax']."','-','".$filtrofecha['aniomax']."') as date)";
-					
-                    $camposrangos .= $filtrofecha['aniomin']." as min_anio, ".$filtrofecha['aniomax']." as max_anio, ";
-                }
-            }
-            if (count($rangocolumnas)==2)
-            {
-                if (isset($filtrofecha) == null)
-                {
-                    $camposrangos .= "min(mes) as min_mes, max(mes) as max_mes, ";
-                }
-                else
-                {
-                    $filtroporfecha .= " and cast(concat('01-',mes,'-',anio) as date) between cast(concat('01-','".$filtrofecha['mesmin']."','-','".$filtrofecha['aniomin']."') as date) and cast(concat('01-','".$filtrofecha['mesmax']."','-','".$filtrofecha['aniomax']."') as date)";
-                    $camposrangos .= $filtrofecha['mesmin']." as min_mes, ".$filtrofecha['mesmax']." as max_mes, ";
-                }
-            }
-        }
-        $colstemp = array();
-        foreach ($rangocolumnas as $col)
-        {
-        	array_push($colstemp, $col['nombrecampo']);
-        }
-         
-        //Verificar si es un catálogo
-        $rel_catalogo = '';
-        $otros_campos = '';
-        $grupo_extra = '';
-        $significado = $this->getEntityManager()->getRepository('IndicadoresBundle:SignificadoCampo')
-                ->findOneBy(array('codigo' => $dimension));
-        $catalogo = $significado->getCatalogo();
-        if ($catalogo != '') {
-            $rel_catalogo = " INNER JOIN  $catalogo  B ON (A.$dimension::text = B.id::text) ";
-            $dimension = 'B.descripcion';
-            $otros_campos = ' B.id AS id_category, ';
-            $grupo_extra = ', B.id ';
-        }
-		$jurisdiccion="";
-		$juris="SELECT ctljurisdiccion_id FROM user_ctljurisdiccion where user_id='$user'";
-		$juris=$this->getEntityManager()->getConnection()->executeQuery($juris)->fetchAll();
-		if($juris)
-		{			
-			$in="";
-			foreach($juris as $j)
-				$in.="'".$j["ctljurisdiccion_id"]."',";
-			$jurisdiccion=" AND id_jurisdiccion in($in'')";
-		}
-		
-		$clues="";
-		$cls="SELECT ctlclues_id FROM user_ctlclues where user_id='$user'";
-		$cls=$this->getEntityManager()->getConnection()->executeQuery($cls)->fetchAll();
-		if($cls)
-		{			
-			$in="";
-			foreach($cls as $j)
-				$in.="'".$j["ctlclues_id"]."',";
-			$clues=" AND clues in($in'')";
-		}
-		
-
-        $sql = "SELECT $camposrangos $dimension AS category, $otros_campos $variables_query, case concat('A',round(($formula)::numeric,2)) when 'A' then 0 else round(($formula)::numeric,2) end AS measure FROM $tabla_indicador A" . $rel_catalogo;
-        $sql .= ' WHERE 1=1 ' . $evitar_div_0 . $filtroporfecha.$jurisdiccion.$clues;
-		$orderid="";
-		
-        if ($filtro_registros != null) 
-		{
-            foreach ($filtro_registros as $campo => $valor) {
-                //Si el filtro es un catálogo, buscar su id correspondiente
-                $significado = $this->getEntityManager()->getRepository('IndicadoresBundle:SignificadoCampo')
-                        ->findOneBy(array('codigo' => $campo));
-                $catalogo = $significado->getCatalogo();
-                $sql_ctl = ''; 
-				
-                if ($catalogo != '') {
-                    $sql_ctl = "SELECT id FROM $catalogo WHERE descripcion ='$valor' order by id";
-                    $reg = $this->getEntityManager()->getConnection()->executeQuery($sql_ctl)->fetch();
-                    $valor = $reg['id'];					
-                }
-                $sql .= " AND A." . $campo . " = '$valor' ";
-            }
-        }
-        /*$sql .= "
-            GROUP BY $dimension $grupo_extra
-            HAVING (($formula)::numeric) > 0
-            ORDER BY $dimension";*/
-		if(stripos(strtoupper($sql),"CTL_MES")||stripos(strtoupper($sql),"CTL_MESES"))
-		$orderid="id, ";
-        $sql .= "            
-            GROUP BY $dimension $grupo_extra            
-            ORDER BY $orderid $dimension";
-			
-        try 
-		{
-            if ($ver_sql == true)
-                return $sql;
-            else
-                return $this->getEntityManager()->getConnection()->executeQuery($sql)->fetchAll();
-        } 
-		catch (\PDOException $e) 
-		{
-            if($return)
-                return $e->getMessage();
-            else
-                return false;
-        } 
-		catch (\Doctrine\DBAL\DBALException $e) 
-		{
-            if($return)
-                return $e->getMessage();
-            else
-                return false;
-        }
-    }
-    
-    public function crearCamposIndicador(FichaTecnica $fichaTecnica)
-    {
-        $em = $this->_em;
-        //Recuperar las variables
-        $variables = $fichaTecnica->getVariables();
-        $origen_campos = array();
-        $origenDato = array();
-        foreach ($variables as $k => $variable) {
-            //Obtener la información de los campos de cada origen
-            $origenDato[$k] = $variable->getOrigenDatos();
-            if ($origenDato[$k]->getEsFusionado()) {
-                $significados = explode(',', $origenDato[$k]->getCamposFusionados());
-                //Los tipos de campos sacarlos de uno de los orígenes de datos que ha sido fusionado
-                $fusionados = $origenDato[$k]->getFusiones();
-                $fusionado = $fusionados[0];
-                $tipos = array();
-                foreach ($fusionado->getAllFields() as $campo) {
-                    $tipos[$campo->getSignificado()->getCodigo()] = $campo->getTipoCampo()->getCodigo();
-                }
-                foreach ($significados as $sig) {
-                    $sig_ = str_replace("'", '', $sig);
-                    $significado = $em->getRepository('IndicadoresBundle:SignificadoCampo')->findOneBy(array('codigo' => $sig_));
-                    $llave = $significado->getCodigo() . '-' . $tipos[$sig_];
-                    $origen_campos[$origenDato[$k]->getId()][$llave]['significado'] = $sig_;
-                }
-            } elseif ($origenDato[$k]->getEsPivote()) {
-                foreach ($origenDato[$k]->getFusiones() as $or) {
-                    foreach ($or->getAllFields() as $campo) {
-                        //La llave para considerar campo comun será el mismo tipo y significado
-                        $llave = $campo->getSignificado()->getCodigo() . '-' . $campo->getTipoCampo()->getCodigo();
-                        //$llave = $campo->getSignificado()->getId();
-                        $origen_campos[$origenDato[$k]->getId()][$llave]['significado'] = $campo->getSignificado()->getCodigo();
-                    }
-                }
-            } else {
-                foreach ($origenDato[$k]->getAllFields() as $campo) {
-                    //La llave para considerar campo comun será el mismo tipo y significado
-                    $llave = $campo->getSignificado()->getCodigo() . '-' . $campo->getTipoCampo()->getCodigo();
-                    //$llave = $campo->getSignificado()->getId();
-                    $origen_campos[$origenDato[$k]->getId()][$llave]['significado'] = $campo->getSignificado()->getCodigo();
-                }
-            }
-
-            //Determinar los campos comunes (con igual significado e igual tipo)
-            $aux = $origen_campos;
-            $campos_comunes = array_shift($aux);
-            foreach ($aux as $a) {
-                $campos_comunes = array_intersect_key($campos_comunes, $a);
-            }
-        }
-        $aux = array();
-        foreach ($campos_comunes as $campo) {
-            $aux[$campo['significado']] = $campo['significado'];
-        }
-
-        if (isset($aux['calculo'])) {
-            unset($aux['calculo']);
-        }
-
-        $campos_comunes = implode(", ", $aux);
-        if ($fichaTecnica->getCamposIndicador() != '') {
-            //Si ya existen los campos sacar el orden que ya ha especificado el usuario
-            $act = explode(',', str_replace(' ', '', $fichaTecnica->getCamposIndicador()));
-            $campos_comunes = array_intersect($act, $aux);
-            //agregar los posibles campos nuevos
-            $campos_comunes = array_merge($campos_comunes, array_diff($aux, $act));
-            $campos_comunes = implode(", ", $campos_comunes);
-        }
-
-        $fichaTecnica->setCamposIndicador($campos_comunes);
-        $em->flush();
-    }
-	public function indicadorClasificacionTecnica($tecnica)
-    {
-		return $this->getEntityManager()->getConnection()->executeQuery("SELECT fichatecnica_id as id
-			FROM fichatecnica_clasificaciontecnica 
-			WHERE clasificaciontecnica_id='$tecnica'")->fetchAll();
-	}
-
     /**
      * Devuelve los datos del indicador sin procesar la fórmula
      * esto será utilizado en la tabla dinámica
@@ -623,10 +341,201 @@ class FichaTecnicaRepository extends EntityRepository
         try {
             return $this->getEntityManager()->getConnection()->executeQuery($sql)->fetchAll();
         } catch (\PDOException $e) {
-
             return $e->getMessage();
-        } catch (\Doctrine\DBAL\DBALException $e) {            
+        } catch (\Doctrine\DBAL\DBALException $e) {
             return $e->getMessage();
         }
+    }
+
+    public function calcularIndicador(FichaTecnica $fichaTecnica, $dimension, $filtro_registros = null, $ver_sql = false) {
+        $util = new \ISECH\IndicadoresBundle\Util\Util();
+        $acumulado = $fichaTecnica->getEsAcumulado();
+        $formula = str_replace(' ', '',strtolower($fichaTecnica->getFormula()));
+
+        //Recuperar las variables
+        $variables = array();
+        preg_match_all('/\{[a-z0-9\_]{1,}\}/', strtolower($formula), $variables, PREG_SET_ORDER);
+
+        $denominador = explode('/', $fichaTecnica->getFormula());
+        $evitar_div_0 = '';
+        $variables_d = array();
+        if (count($denominador) > 1) {
+            preg_match('/\{.{1,}\}/', $denominador[1], $variables_d);
+            if (count($variables_d) > 0)
+                $var_d = strtolower(str_replace(array('{', '}'), array('(', ')'), array_shift($variables_d)));
+            $evitar_div_0 = 'AND ' . $var_d . ' > 0';
+        }
+
+        // Formar la cadena con las variables para ponerlas en la consulta
+        $variables_query = '';
+        foreach ($variables as $var) {
+            $oper_ = explode($var[0], $formula);
+            $tieneOperadores = preg_match('/([A-Za-z]+)\($/', $oper_[0], $coincidencias, PREG_OFFSET_CAPTURE);
+            
+            $oper = ($tieneOperadores) ? $coincidencias[1][0] : 'SUM';
+            
+            $v = str_replace(array('{', '}'), array('', ''), $var[0]);
+            
+            $formula = str_replace($var[0], (($oper=='SUM')?$oper:'').str_replace(array('{','}'), array('(', ')'),$var[0]), $formula);
+            
+            $variables_query .= " $oper($v) as $v, ";
+        }
+        $variables_query = trim($variables_query, ', ');
+
+        $nombre_indicador = $util->slug($fichaTecnica->getNombre());
+        $tabla_indicador = 'tmp_ind_' . $nombre_indicador;
+
+        //Verificar si es un catálogo
+        $rel_catalogo = '';
+        $otros_campos = '';
+        $grupo_extra = '';
+        $significado = $this->getEntityManager()->getRepository('IndicadoresBundle:SignificadoCampo')
+                ->findOneBy(array('codigo' => $dimension));
+        $catalogo = $significado->getCatalogo();
+        if ($catalogo != '') {
+            $rel_catalogo = " INNER JOIN  $catalogo  B ON (A.$dimension::text = B.id::text) ";
+            $dimension = 'B.descripcion';
+            $otros_campos = ' B.id AS id_category, ';
+            $grupo_extra = ', B.id ';
+        }
+        
+        $filtros = '';
+        if ($filtro_registros != null) {
+            foreach ($filtro_registros as $campo => $valor) {
+                //Si el filtro es un catálogo, buscar su id correspondiente
+                $significado = $this->getEntityManager()->getRepository('IndicadoresBundle:SignificadoCampo')
+                        ->findOneBy(array('codigo' => $campo));
+                $catalogo = $significado->getCatalogo();
+                $sql_ctl = '';
+                if ($catalogo != '') {
+                    $sql_ctl = "SELECT id FROM $catalogo WHERE descripcion ='$valor'";
+                    $reg = $this->getEntityManager()->getConnection()->executeQuery($sql_ctl)->fetch();
+                    $valor = $reg['id'];
+                }
+                $filtros .= " AND A." . $campo . " = '$valor' ";
+            }
+        }
+        
+        if ($acumulado){
+            $em = $this->getEntityManager();
+            $var_n = array_pop(str_replace(array('{','}'), array('',''), $variables[0]));
+            $var_d = array_pop(str_replace(array('{','}'), array('',''), $variables[1]));
+            $filtros_ = str_replace('A.', 'AA.', $filtros_);
+            
+            //leer la primera fila para determinar el tipo de dato de la dimensión actual
+            $sql2 = "SELECT $dimension FROM $tabla_indicador LIMIT 1";
+            $operador = (is_numeric(array_pop($em->getConnection()->executeQuery($sql2)->fetch()))) ? '<=' : '=';                       
+            
+            $formula = str_replace(
+                    array('SUM('.$var_n.')', 'SUM('.$var_d.')'), 
+                    array("(SELECT SUM(AA.$var_n) FROM $tabla_indicador AA WHERE AA.$dimension $operador A.$dimension $filtros_)",
+                            "(SELECT SUM(DISTINCT AA.$var_d) FROM $tabla_indicador AA WHERE AA.$dimension $operador A.$dimension $filtros_)"), 
+                    $formula
+                    );
+            $variables_query = str_replace(
+                    array('SUM('.$var_n.')', 'SUM('.$var_d.')'), 
+                    array("(SELECT SUM(AA.$var_n) FROM $tabla_indicador AA WHERE AA.$dimension $operador A.$dimension $filtros_)",
+                            "(SELECT SUM(DISTINCT AA.$var_d) FROM $tabla_indicador AA WHERE AA.$dimension $operador A.$dimension $filtros_)"), 
+                    $variables_query
+                    );
+        }
+        
+        $sql = "SELECT $dimension AS category, $otros_campos $variables_query, round(($formula)::numeric,2) AS measure
+            FROM $tabla_indicador A" . $rel_catalogo;
+        $sql .= ' WHERE 1=1 ' . $evitar_div_0 . ' ' . $filtros;
+        
+        $sql .= "
+            GROUP BY $dimension $grupo_extra";
+        $sql .= ($acumulado)?'':"HAVING (($formula)::numeric) > 0";
+        $sql .= "ORDER BY $dimension";
+
+        try {
+            if ($ver_sql == true)
+                return $sql;
+            else
+                return $this->getEntityManager()->getConnection()->executeQuery($sql)->fetchAll();
+        } catch (\PDOException $e) {
+            return $e->getMessage();
+        } catch (\Doctrine\DBAL\DBALException $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public function crearCamposIndicador(FichaTecnica $fichaTecnica) {
+        $em = $this->_em;
+        //Recuperar las variables
+        $variables = $fichaTecnica->getVariables();
+        $origen_campos = array();
+        $origenDato = array();
+        foreach ($variables as $k => $variable) {
+            //Obtener la información de los campos de cada origen
+            $origenDato[$k] = $variable->getOrigenDatos();
+            if ($origenDato[$k]->getEsFusionado()) {
+                $significados = explode(',', $origenDato[$k]->getCamposFusionados());
+                //Los tipos de campos sacarlos de uno de los orígenes de datos que ha sido fusionado
+                $fusionados = $origenDato[$k]->getFusiones();
+                $fusionado = $fusionados[0];
+                $tipos = array();
+                foreach ($fusionado->getAllFields() as $campo) {
+                    $tipos[$campo->getSignificado()->getCodigo()] = $campo->getTipoCampo()->getCodigo();
+                }
+                foreach ($significados as $sig) {
+                    $sig_ = str_replace("'", '', $sig);
+                    $significado = $em->getRepository('IndicadoresBundle:SignificadoCampo')->findOneBy(array('codigo' => $sig_));
+                    $llave = $significado->getCodigo() . '-' . $tipos[$sig_];
+                    $origen_campos[$origenDato[$k]->getId()][$llave]['significado'] = $sig_;
+                }
+            } elseif ($origenDato[$k]->getEsPivote()) {
+                foreach ($origenDato[$k]->getFusiones() as $or) {
+                    foreach ($or->getAllFields() as $campo) {
+                        //La llave para considerar campo comun será el mismo significado
+                        $llave = $campo->getSignificado()->getCodigo();
+                        //$llave = $campo->getSignificado()->getId();
+                        $origen_campos[$origenDato[$k]->getId()][$llave]['significado'] = $campo->getSignificado()->getCodigo();
+                    }
+                }
+            } else {
+                foreach ($origenDato[$k]->getAllFields() as $campo) {
+                    //La llave para considerar campo comun será el mismo tipo y significado
+                    $llave = $campo->getSignificado()->getCodigo() . '-' . $campo->getTipoCampo()->getCodigo();
+                    //$llave = $campo->getSignificado()->getId();
+                    $origen_campos[$origenDato[$k]->getId()][$llave]['significado'] = $campo->getSignificado()->getCodigo();
+                }
+            }
+
+            //Determinar los campos comunes (con igual significado e igual tipo)
+            $aux = $origen_campos;
+            $campos_comunes = array_shift($aux);
+            foreach ($aux as $a) {
+                $campos_comunes = array_intersect_key($campos_comunes, $a);
+            }
+        }
+        $aux = array();
+        foreach ($campos_comunes as $campo) {
+            $aux[$campo['significado']] = $campo['significado'];
+        }
+
+        if (isset($aux['calculo'])) {
+            unset($aux['calculo']);
+        }
+
+        $campos_comunes = implode(", ", $aux);
+        if ($fichaTecnica->getCamposIndicador() != '') {
+            //Si ya existen los campos sacar el orden que ya ha especificado el usuario
+            $act = explode(',', str_replace(' ', '', $fichaTecnica->getCamposIndicador()));
+            $campos_comunes = array_intersect($act, $aux);
+            //agregar los posibles campos nuevos
+            $campos_comunes = array_merge($campos_comunes, array_diff($aux, $act));
+            $campos_comunes = implode(", ", $campos_comunes);
+        }
+
+        $fichaTecnica->setCamposIndicador($campos_comunes);
+        $em->flush();
+    }
+    public function indicadorClasificacionTecnica($tecnica)
+    {
+        return $this->getEntityManager()->getConnection()->executeQuery("SELECT fichatecnica_id as id
+            FROM fichatecnica_clasificaciontecnica 
+            WHERE clasificaciontecnica_id='$tecnica'")->fetchAll();
     }
 }
