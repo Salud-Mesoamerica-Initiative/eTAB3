@@ -33,6 +33,9 @@ class MatrizSeguimientoRESTController extends Controller {
         return $this->render('IndicadoresBundle:Matriz:reporte.html.twig', array('admin_pool'    => $this->container->get('sonata.admin.pool')));
     }
 
+    public function listAction(){
+        return $this->render('IndicadoresBundle:Matriz:reporte.html.twig', array('admin_pool'    => $this->container->get('sonata.admin.pool')));
+    }
     /**
      * @Route("/matriz/planeacion", name="matriz_planeacion", options={"expose"=true})
      */
