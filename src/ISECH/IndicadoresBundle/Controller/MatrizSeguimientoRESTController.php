@@ -216,12 +216,12 @@ class MatrizSeguimientoRESTController extends Controller {
             $value = (object) $value;
             if(isset($value->indicadores_etab))
             foreach ($value->indicadores_etab as $ke => $ve) {                                                            
-                if(!$this->insertSeguiminetoDato($em, $existe, $value, $ke, $ve, $anio, 1))
+                if(!$this->insertSeguiminetoDato($em, $existe, $value, $ke, $ve, $anio, TRUE))
                     $bien = false;                
             }
             if(isset($value->indicadores_relacion))
             foreach ($value->indicadores_relacion as $ke => $ve) {                                                            
-                if(!$this->insertSeguiminetoDato($em, $existe, $value, $ke, $ve, $anio, 0))
+                if(!$this->insertSeguiminetoDato($em, $existe, $value, $ke, $ve, $anio, FALSE))
                     $bien = false;                
             }
         }
@@ -435,14 +435,14 @@ class MatrizSeguimientoRESTController extends Controller {
 
             if(isset($value->indicadores_etab))
             foreach ($value->indicadores_etab as $ke => $ve) {                                                            
-                if(!$this->insertSeguiminetoRealDato($em, $existe, $value, $ke, $ve, $anio, 1))
+                if(!$this->insertSeguiminetoRealDato($em, $existe, $value, $ke, $ve, $anio, TRUE))
                     $bien = false;                
             }
             
             if(isset($value->indicadores_relacion))
             foreach ($value->indicadores_relacion as $ke => $ve) {  
                                                                      
-                if(!$this->insertSeguiminetoRealDato($em, $existe, $value, $ke, $ve, $anio, 0))
+                if(!$this->insertSeguiminetoRealDato($em, $existe, $value, $ke, $ve, $anio, FALSE))
                     $bien = false;                
             }
         }
