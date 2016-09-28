@@ -80,26 +80,14 @@
 
                 <div class="panel panel-default" ng-repeat="item in dato.matriz">
                     <div class="panel-heading">
-                        <h4>.
-                            <p class="col-sm-10"><strong>{{ '_indicador_desempeno_' | trans }}: <% item.nombre %></strong></p>
-                            <div class="pull-right">
-                                
-                                <div class="form-inline" style="margin-top:-7px">
-                                  <div class="form-group">
-                                    <label>{{ '_meta_anual_' | trans }}</label>
-                                    <input type="number" min="0" step="0.01" string-to-number class="form-control" ng-model="item.meta">
-                                  </div>                              
-                                </div>
-
-                            </div>
-                            
-                        </h4>
+                        <h4>{{ '_indicador_desempeno_' | trans }}: <% item.nombre %></strong></h4>
                     </div>
                     <div class="panel-body">
                         <table class="table table-striped table-bordered matriz">
                             <thead>
                                 <tr>
                                     <th> {{ '_inidcador_' | trans }} </th>
+                                    <th> {{ '_meta_anual_' | trans }} </th>
                                     <th> {{ '_enero_' | trans }} </th>
                                     <th> {{ '_febrero_' | trans }} </th>
                                     <th> {{ '_marzo_' | trans }} </th>
@@ -117,6 +105,7 @@
                             <tbody>
                                 <tr ng-repeat="inde in item.indicadores_etab">
                                     <td><% inde.nombre %></td>
+                                    <td width="100px"><input class="form-control" ng-model="inde.meta"></td>
                                     <td ng-repeat="k in meses" width="100px">
                                         <input type="number" min="0" step="0.01" class="form-control" string-to-number ng-model="inde[k]">                                        
                                     </td> 
@@ -125,6 +114,7 @@
                             <tfoot>
                                 <tr ng-repeat="inde in item.indicadores_relacion">
                                     <td><% inde.nombre %></td>
+                                    <td width="100px"><input class="form-control" ng-model="inde.meta"></td>
                                     <td ng-repeat="k in meses" width="100px">
                                         <input type="number" min="0" step="0.01" class="form-control" string-to-number ng-model="inde[k]">                                        
                                     </td> 
