@@ -240,62 +240,62 @@ class MatrizSeguimientoRESTController extends Controller {
     public function insertSeguiminetoDato($em, $existe, $value, $ke, $ve, $anio, $etab){
         $ve = (object) $ve; 
         try{
-            if($existe){
-                $seguimiento = $em->getRepository('IndicadoresBundle:MatrizSeguimiento')->findBy(
-                    array(
-                        'desempeno' => $value->id,
-                        'anio' => $anio,
-                        'indicador' => $ve->id,
-                        'etab' => $etab
-                    )
-                );
-                if($seguimiento)
-                    $seguimiento = $em->getRepository('IndicadoresBundle:MatrizSeguimiento')->find($seguimiento[0]->getId());
-                else{
-                    $seguimiento = new MatrizSeguimiento();
-                }
-                        
+            
+            $seguimiento = $em->getRepository('IndicadoresBundle:MatrizSeguimiento')->findBy(
+                array(
+                    'desempeno' => $value->id,
+                    'anio' => $anio,
+                    'indicador' => $ve->id,
+                    'etab' => $etab
+                )
+            );
+            if($seguimiento)
+                $seguimiento = $em->getRepository('IndicadoresBundle:MatrizSeguimiento')->find($seguimiento[0]->getId());
+            else{
+                $seguimiento = new MatrizSeguimiento();
+            }
+                    
 
-                $seguimiento->setAnio($anio);
-                $seguimiento->setEtab($etab);
-                $seguimiento->setIndicador($ve->id);
+            $seguimiento->setAnio($anio);
+            $seguimiento->setEtab($etab);
+            $seguimiento->setIndicador($ve->id);
 
-                $desempeno = $em->getRepository('IndicadoresBundle:MatrizIndicadoresDesempeno')->find($value->id);
+            $desempeno = $em->getRepository('IndicadoresBundle:MatrizIndicadoresDesempeno')->find($value->id);
 
-                $seguimiento->setDesempeno($desempeno);
-                if(isset($value->meta))
-                    $seguimiento->setMeta($value->meta); 
+            $seguimiento->setDesempeno($desempeno);
+            if(isset($value->meta))
+                $seguimiento->setMeta($value->meta); 
 
-                $em = $this->getDoctrine()->getEntityManager();
-                $em->persist($seguimiento);
-                $em->flush();
+            $em = $this->getDoctrine()->getEntityManager();
+            $em->persist($seguimiento);
+            $em->flush();
 
-                foreach ($ve as $k1 => $v1) {
-                    if($k1 != "id" && $k1 != "nombre" && $k1 != '$$hashKey'){
-                        $matrizDato = $em->getRepository('IndicadoresBundle:MatrizSeguimientoDato')->findBy(
-                            array(
-                                'matriz' => $seguimiento->getId(),
-                                'mes' => $k1
-                            )
-                        );
+            foreach ($ve as $k1 => $v1) {
+                if($k1 != "id" && $k1 != "nombre" && $k1 != '$$hashKey'){
+                    $matrizDato = $em->getRepository('IndicadoresBundle:MatrizSeguimientoDato')->findBy(
+                        array(
+                            'matriz' => $seguimiento->getId(),
+                            'mes' => $k1
+                        )
+                    );
 
-                        if($matrizDato){
-                            $matrizDato = $em->getRepository('IndicadoresBundle:MatrizSeguimientoDato')->find($matrizDato[0]->getId());
-                        }
-                        else{
-                            $matrizDato = new MatrizSeguimientoDato();                    
-                        }
-
-                        $matrizDato->setMes($k1);
-                        $matrizDato->setPlanificado($v1);
-                        $matrizDato->setMatriz($seguimiento);
-
-                        $em = $this->getDoctrine()->getEntityManager();
-                        $em->persist($matrizDato);
-                        $em->flush();
+                    if($matrizDato){
+                        $matrizDato = $em->getRepository('IndicadoresBundle:MatrizSeguimientoDato')->find($matrizDato[0]->getId());
                     }
+                    else{
+                        $matrizDato = new MatrizSeguimientoDato();                    
+                    }
+
+                    $matrizDato->setMes($k1);
+                    $matrizDato->setPlanificado($v1);
+                    $matrizDato->setMatriz($seguimiento);
+
+                    $em = $this->getDoctrine()->getEntityManager();
+                    $em->persist($matrizDato);
+                    $em->flush();
                 }
             }
+            
             return true;
         }catch(\Exception $e){
             var_dump($e->getMessage());
