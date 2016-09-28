@@ -29,6 +29,7 @@ class MatrizIndicadoresDesempenoAdmin extends Admin
         $showMapper
             ->add('id')
             ->add('nombre') 
+            ->add('orden') 
             ->add('matrizIndicadoresEtab', null, array('label' => $this->getTranslator()->trans('_indicador_etab_'),                 
                     'expanded' => true,
                     'class' => 'IndicadoresBundle:FichaTecnica',
@@ -54,6 +55,7 @@ class MatrizIndicadoresDesempenoAdmin extends Admin
 	{
         $formMapper
                 ->add('nombre', null, array('label' => $this->getTranslator()->trans('nombre')))
+                ->add('orden', null, array('label' => $this->getTranslator()->trans('orden')))
 				->add('matrizIndicadoresEtab', null, array('label' => $this->getTranslator()->trans('_indicador_etab_'),                 
                     'expanded' => true,
                     'class' => 'IndicadoresBundle:FichaTecnica',

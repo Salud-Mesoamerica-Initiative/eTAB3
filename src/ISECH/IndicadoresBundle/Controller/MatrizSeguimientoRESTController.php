@@ -47,8 +47,8 @@ class MatrizSeguimientoRESTController extends Controller {
         $em = $this->getDoctrine()->getEntityManager();
 
         $connection = $em->getConnection();
-        $statement = $connection->prepare('SELECT distinct(id_desempeno) FROM matriz_seguimiento WHERE anio = :anio');
-        $statement->bindValue('anio', $anio);
+        $statement = $connection->prepare("SELECT distinct(ms.id_desempeno), mid.orden FROM matriz_seguimiento ms 
+            LEFT JOIN matriz_indicadores_desempeno mid ON mid.id = ms.id_desempeno WHERE anio = '$anio'  ORDER BY mid.orden ASC");
         $statement->execute();
         $matriz = $statement->fetchAll();
 
@@ -314,8 +314,8 @@ class MatrizSeguimientoRESTController extends Controller {
         $em = $this->getDoctrine()->getEntityManager();
 
         $connection = $em->getConnection();
-        $statement = $connection->prepare('SELECT distinct(id_desempeno) FROM matriz_seguimiento WHERE anio = :anio');
-        $statement->bindValue('anio', $anio);
+        $statement = $connection->prepare("SELECT distinct(ms.id_desempeno), mid.orden FROM matriz_seguimiento ms 
+            LEFT JOIN matriz_indicadores_desempeno mid ON mid.id = ms.id_desempeno WHERE anio = '$anio'  ORDER BY mid.orden ASC");
         $statement->execute();
         $matriz = $statement->fetchAll();
 
@@ -515,8 +515,8 @@ class MatrizSeguimientoRESTController extends Controller {
         $em = $this->getDoctrine()->getEntityManager();
 
         $connection = $em->getConnection();
-        $statement = $connection->prepare('SELECT distinct(id_desempeno) FROM matriz_seguimiento WHERE anio = :anio');
-        $statement->bindValue('anio', $anio);
+        $statement = $connection->prepare("SELECT distinct(ms.id_desempeno), mid.orden FROM matriz_seguimiento ms 
+            LEFT JOIN matriz_indicadores_desempeno mid ON mid.id = ms.id_desempeno WHERE anio = '$anio'  ORDER BY mid.orden ASC");
         $statement->execute();
         $matriz = $statement->fetchAll();
 

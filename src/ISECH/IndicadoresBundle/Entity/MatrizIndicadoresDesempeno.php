@@ -31,6 +31,13 @@ class MatrizIndicadoresDesempeno
     private $nombre;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="orden", type="string", length=4, nullable=true)
+     */
+    private $orden;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="creado", type="datetime")
@@ -249,5 +256,29 @@ class MatrizIndicadoresDesempeno
     public function removeIndicators()
     {
         $this->indicators=array();
+    }
+
+    /**
+     * Set orden
+     *
+     * @param string $orden
+     *
+     * @return MatrizSeguimiento
+     */
+    public function setOrden($orden)
+    {
+        $this->orden = $orden;
+
+        return $this;
+    }
+
+    /**
+     * Get orden
+     *
+     * @return string
+     */
+    public function getOrden()
+    {
+        return $this->orden;
     }
 }
