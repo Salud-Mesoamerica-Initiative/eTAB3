@@ -66,14 +66,15 @@ class MatrizSeguimientoRESTController extends Controller {
                     
                     $indicators = array(); $i=0;
                     foreach($ind->getIndicators() as $indrs){
-                        $indicators[$i] = array('id'=>$indrs->getId(), 'nombre'=>$indrs->getNombre());
-
+                        
                         $connection = $em->getConnection();
-                        $statement = $connection->prepare("SELECT msd.mes, msd.planificado FROM matriz_seguimiento ms 
+                        $statement = $connection->prepare("SELECT msd.mes, msd.planificado, ms.meta FROM matriz_seguimiento ms 
                             LEFT JOIN matriz_seguimiento_dato msd ON msd.id_matriz = ms.id   
                             WHERE ms.anio = '$anio' and ms.etab = false and ms.id_desempeno = '".$value->id_desempeno."' and indicador = '".$indrs->getId()."'");
                         $statement->execute();
                         $meses = $statement->fetchAll();
+
+                        $indicators[$i] = array('id'=>$indrs->getId(), 'nombre'=>$indrs->getNombre(), 'meta' => $meses[0]["meta"]);
 
                         foreach ($meses as $km => $vm) {
                             $vm = (object) $vm;
@@ -83,16 +84,17 @@ class MatrizSeguimientoRESTController extends Controller {
                     }
 
                     $etab = array(); $i=0;
-                    foreach($ind->getMatrizIndicadoresEtab() as $indrs){
-                        $etab[$i] = array('id'=>$indrs->getId(), 'nombre'=>$indrs->getNombre());
+                    foreach($ind->getMatrizIndicadoresEtab() as $indrs){                        
 
                         $connection = $em->getConnection();
-                        $statement = $connection->prepare("SELECT msd.mes, msd.planificado FROM matriz_seguimiento ms 
+                        $statement = $connection->prepare("SELECT msd.mes, msd.planificado, ms.meta FROM matriz_seguimiento ms 
                             LEFT JOIN matriz_seguimiento_dato msd ON msd.id_matriz = ms.id   
                             WHERE ms.anio = '$anio' and ms.etab = true and ms.id_desempeno = '".$value->id_desempeno."' and indicador = '".$indrs->getId()."'");
                         $statement->execute();
                         $meses = $statement->fetchAll();
                         
+                        $etab[$i] = array('id'=>$indrs->getId(), 'nombre'=>$indrs->getNombre(), 'meta' => $meses[0]["meta"]);
+
                         foreach ($meses as $km => $vm) {
                             $vm = (object) $vm;
                             $etab[$i][$vm->mes] = $vm->planificado;
