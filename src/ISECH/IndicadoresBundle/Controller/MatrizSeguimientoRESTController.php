@@ -214,6 +214,7 @@ class MatrizSeguimientoRESTController extends Controller {
 
         foreach ($matriz as $key => $value) {
             $value = (object) $value;
+
             if(isset($value->indicadores_etab))
             foreach ($value->indicadores_etab as $ke => $ve) {                                                            
                 if(!$this->insertSeguiminetoDato($em, $existe, $value, $ke, $ve, $anio, TRUE))
@@ -262,7 +263,8 @@ class MatrizSeguimientoRESTController extends Controller {
                 $desempeno = $em->getRepository('IndicadoresBundle:MatrizIndicadoresDesempeno')->find($value->id);
 
                 $seguimiento->setDesempeno($desempeno);
-                $seguimiento->setMeta($value->meta); 
+                if(isset($value->meta))
+                    $seguimiento->setMeta($value->meta); 
 
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->persist($seguimiento);

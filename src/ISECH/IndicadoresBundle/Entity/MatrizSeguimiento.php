@@ -40,7 +40,7 @@ class MatrizSeguimiento
     /**
      * @var string
      *
-     * @ORM\Column(name="meta", type="string", length=15)
+     * @ORM\Column(name="meta", type="string", length=15, nullable=true)
      */
     private $meta;
 
