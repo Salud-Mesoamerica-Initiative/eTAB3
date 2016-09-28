@@ -371,13 +371,17 @@ class MatrizSeguimientoRESTController extends Controller {
 
                             if($vm->real == '' || $vm->real == null){
                                 try{
-                                    $filtros = ["mes" => $vm->mes];
-                                    $fichaTec = $fichaRepository->find($indrs->getId());
-                                    $fichaRepository->crearIndicador($fichaTec, "mes", $filtros);
-                                    $repFicha = $fichaRepository->calcularIndicador($fichaTec, "mes", $filtros, false, null, 1, 0);
 
-                                    if(!$repFicha)
+                                    $filtros = ["mes" => strtoupper($vm->mes), "anio" => $anio];
+                                    $fichaTec = $fichaRepository->find($indrs->getId());                                    
+                                    $repFicha = $fichaRepository->calcularIndicador($fichaTec, "mes", $filtros, false, null, 1, false);
+                                    
+                                    if(!$repFicha){
                                         $errores.= "<br>No se cargo linea: $ci mes: ".$vm->mes;
+                                    }
+                                    else{
+                                        $etab[$i][$vm->mes]["real"] = $repFicha[0]["measure"];
+                                    }
                                 }
                                 catch(\Exception $e){
                                     
@@ -553,6 +557,7 @@ class MatrizSeguimientoRESTController extends Controller {
                     }
 
                     $etab = array(); $i=0;
+                    $fichaRepository = $em->getRepository('IndicadoresBundle:FichaTecnica'); 
                     foreach($ind->getMatrizIndicadoresEtab() as $indrs){                        
 
                         $connection = $em->getConnection();
@@ -566,6 +571,24 @@ class MatrizSeguimientoRESTController extends Controller {
                             $vm = (object) $vm;
                             $etab[$i][$vm->mes]["planificado"] = $vm->planificado;
                             $etab[$i][$vm->mes]["real"] = $vm->real;
+
+                            if($vm->real == '' || $vm->real == null){
+                                try{
+
+                                    $filtros = ["mes" => strtoupper($vm->mes), "anio" => $anio];
+                                    $fichaTec = $fichaRepository->find($indrs->getId());                                    
+                                    $repFicha = $fichaRepository->calcularIndicador($fichaTec, "mes", $filtros, false, null, 1, false);
+                                    
+                                    if($repFicha){
+                                        $etab[$i][$vm->mes]["real"] = $repFicha[0]["measure"];
+                                    }                                    
+                                }
+                                catch(\Exception $e){
+                                    
+                                }
+                            }else{
+                                $etab[$i][$vm->mes]["real"] = $vm->real;
+                            }                            
                         }
                         $i++;
                     }

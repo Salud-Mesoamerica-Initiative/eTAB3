@@ -125,8 +125,15 @@
                                             <ul class="list-group" ng-init="status[inde.id][k] = inde[k].real / inde[k].planificado * 100">
                                                 <li ng-show="verR" class="list-group-item" align="center"><% inde[k].real %></li>
                                                 <li style="background: cornflowerblue;" ng-show="verP" class="list-group-item" align="center"><% inde[k].planificado %></li>                                         
-                                                <li ng-show="verV" class="list-group-item" align="center"><strong ng-if="status[inde.id][k] > 0"><% status[inde.id][k] | number : 2 %> %</strong></li>
-                                            </ul>                                        
+                                                <li ng-show="verV" class="list-group-item" align="center">
+                                                    <strong ng-if="status[inde.id][k] > 0"><% status[inde.id][k] | number : 2 %> %</strong>
+                                                </li>
+                                            </ul>    
+                                            <strong style="color:white" ng-show="!verV && status[inde.id][k] > 0">
+                                                <div align="center">
+                                                    <% status[inde.id][k] | number : 2 %> %
+                                                </div>
+                                            </strong>                                    
                                         </td>                                    
                                     </tr>
                                 </tbody>
