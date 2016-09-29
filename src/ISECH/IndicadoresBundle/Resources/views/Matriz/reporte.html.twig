@@ -121,7 +121,7 @@
                                     <tr ng-repeat="inde in item.indicadores_etab">
                                         <td class="nombre_matriz"><% inde.nombre %></td>
                                         <td class="nombre_matriz" width="100px"><% inde.meta %></td>
-                                        <td ng-repeat="k in meses" width="110px" style="background: <% status[inde.id][k] > 0 && status[inde.id][k] < 70 ? 'red' : status[inde.id][k] >= 70 && status[inde.id][k] < 85 ? 'yellow' : status[inde.id][k] >= 85 ? 'green' : ''; %> !important">
+                                        <td ng-repeat="k in meses" width="110px" style="background: <% status[inde.id][k] > 0 && status[inde.id][k] < 70 ? 'red' : status[inde.id][k] >= 70 && status[inde.id][k] < 85 ? 'gold' : status[inde.id][k] >= 85 ? 'limegreen' : ''; %> !important; ">
                                             <ul class="list-group" ng-init="status[inde.id][k] = inde[k].real / inde[k].planificado * 100">
                                                 <li ng-show="verR" class="list-group-item" align="center"><% inde[k].real %></li>
                                                 <li style="background: cornflowerblue;" ng-show="verP" class="list-group-item" align="center"><% inde[k].planificado %></li>                                         
@@ -129,7 +129,7 @@
                                                     <strong ng-if="status[inde.id][k] > 0"><% status[inde.id][k] | number : 2 %> %</strong>
                                                 </li>
                                             </ul>    
-                                            <strong style="color:white" ng-show="!verV && status[inde.id][k] > 0">
+                                            <strong style="color:#FFF; font-weight:900; text-shadow: 1px 1px 1px #000;" ng-show="!verV && status[inde.id][k] > 0">
                                                 <div align="center">
                                                     <% status[inde.id][k] | number : 2 %> %
                                                 </div>
@@ -141,13 +141,13 @@
                                     <tr ng-repeat="inde in item.indicadores_relacion">
                                         <td class="nombre_matriz"><% inde.nombre %></td>
                                         <td class="nombre_matriz" width="100px"><% inde.meta %></td>
-                                        <td ng-repeat="k in meses" width="110px" style="background: <% status[inde.id][k] > 0 && status[inde.id][k] < 70 ? 'red' : status[inde.id][k] >= 70 && status[inde.id][k] < 85 ? 'yellow' : status[inde.id][k] >= 85 ? 'green' : ''; %> !important">
+                                        <td ng-repeat="k in meses" width="110px" style="background: <% status[inde.id][k] > 0 && status[inde.id][k] < 70 ? 'red' : status[inde.id][k] >= 70 && status[inde.id][k] < 85 ? 'gold' : status[inde.id][k] >= 85 ? 'limegreen' : ''; %> !important;">
                                             <ul class="list-group" ng-init="status[inde.id][k] = inde[k].real / inde[k].planificado * 100">
                                                 <li ng-show="verR" class="list-group-item" align="center"><% inde[k].real %></li>
                                                 <li style="background: cornflowerblue;" ng-show="verP" class="list-group-item" align="center"><% inde[k].planificado %></li>                                          
                                                 <li ng-show="verV" class="list-group-item" align="center"><strong ng-if="status[inde.id][k] > 0"><% status[inde.id][k] | number : 2 %> %</strong></li>
                                             </ul> 
-                                            <strong style="color:white" ng-show="!verV && status[inde.id][k] > 0">
+                                            <strong style="color:#FFF; font-weight:900; text-shadow: 1px 1px 1px #000;" ng-show="!verV && status[inde.id][k] > 0">
                                                 <div align="center">
                                                     <% status[inde.id][k] | number : 2 %> %
                                                 </div>
