@@ -186,7 +186,7 @@ file that was distributed with this source code.
                                         <li><a href="{{ admin.generateUrl('matrizReal')}}">{{ '_capturar_matriz_'|trans }}</a></li>
                                     {% endif %}
 
-                                    {% if admin.hasroute('matrizReporte') and (is_granted('ROLE_SONATA_ADMIN') or is_granted('ROLE_MATRIZ_SEGUIMIENTO_USER') or is_granted('ROLE_MATRIZ_SEGUIMIENTO_USER_REPORTE')) %}
+                                    {% if admin.hasroute('matrizReporte') and (is_granted('ROLE_SONATA_ADMIN') or is_granted('ROLE_MATRIZ_SEGUIMIENTO_USER_REPORTE')) %}
                                           
                                         <li><a href="{{ admin.generateUrl('matrizReporte')}}">{{ '_reporte_'|trans }}</a></li>
                                     {% endif %}
