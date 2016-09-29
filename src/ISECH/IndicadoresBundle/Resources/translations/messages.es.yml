@@ -37,7 +37,6 @@ favoritos: 'Favoritos'
 'form_campo_obigatorio': '¡Los campos con * son Obligatorios!'
 'clasificacion_tecnica': 'Clasificación Técnica'
 
-
 'clasificacion_tecnica-eTAB' : 'Clasificación Técnica'
 'Clasificacion Tecnica List': 'Clasificación Técnica - Listado'
 'Clasificacion Tecnica Delete': 'Clasificación Técnica - Borrar'
@@ -290,7 +289,6 @@ tablero:
   tipo_grafico_principal: Tipo de gráfico principal
   tipo_grafico_secundario: Tipo de gráfico secundario
 
-  
 _no_clasificados_ : 'Sin clasificacion'
 _interpretacion_ : 'Interpretación'
 _nivel_de_usuario_ : 'Nivel de usuario'
@@ -337,17 +335,17 @@ _campo_calculado_-eTAB: 'Campo calculado'
 _campos_utilizables_en_campos_calculados_: 'Campos utilizables en la fórmula'
 _variable_no_campo_: 'Ha utilizado una variable que no es parte de los campos del origen de datos'
 _exportar_: 'Exportar' 
-_tipos_graficos_: Tipos de gráficos permitidos
+_tipos_graficos_: 'Tipos de gráficos permitidos'
 change_password.flash.success: 'Contraseña ha sido cambiada con éxito'  
-_cambiar_clave_: Cambiar clave de acceso
-_ver_ficha_: Ver Ficha Técnica
-_ultima_actualizacion_: Última actualización
-_no_conexion_configurada_: No existe una conexión configurada
-_salas_situacionales_: Salas situacionales
-_indicadores_y_salas_: Indicadores y Salas
-_roles_: Roles
-_perfil_: Perfil
-_seguridad_: Seguridad
+_cambiar_clave_: 'Cambiar clave de acceso'
+_ver_ficha_: 'Ver Ficha Técnica'
+_ultima_actualizacion_: 'Última actualización'
+_no_conexion_configurada_: 'No existe una conexión configurada'
+_salas_situacionales_: 'Salas situacionales'
+_indicadores_y_salas_: 'Indicadores y Salas'
+_roles_: 'Roles'
+_perfil_: 'Perfil'
+_seguridad_: 'Seguridad'
 
 maximizar: 'Máximizar'
 teclaescape: 'Presione Escape para salir'
@@ -363,15 +361,15 @@ indicadorespublicos: 'Indicadores Publicos'
 lbllenguaje: 'Idioma'
 
 _alerta_limite_inferior_: 'Límite inferior'
-_regresar_menu_principal_: Regresar al menú principal
+_regresar_menu_principal_: 'Regresar al menú principal'
 
 Boletin: Boletin
 'Boletin List': 'Lista de Boletines'
-sala: Sala
-grupo: Grupo
-enviar: Enviar
-creado: Creado
-actualizado: Actualizado
+sala: 'Sala'
+grupo: 'Grupo'
+enviar: 'Enviar'
+creado: 'Creado'
+actualizado: 'Actualizado'
 
 filtro_fecha : 'Filtro por Fecha'
 formato_Max: 'El máximo permitido es:'
@@ -398,26 +396,26 @@ _usuario_con: 'Usuarios con cuenta'
 _usuario_notificacion: 'Enviar notificacion por correo a los usuarios con cuenta'
 _usuario_sin: 'Usuarios sin cuenta'
 _usuario_sin_inidicacion: 'Escribir el correo del usuario. Puede escribir mas de 1 separando por comas'
-_comentarios_: Comentarios
-_enviar_: Enviar
-_fecha_: Fecha
-_foro_: Foro de discusión
-_photo_: Foto de perfil
+_comentarios_: 'Comentarios'
+_enviar_: 'Enviar'
+_fecha_: 'Fecha'
+_foro_: 'Foro de discusión'
+_photo_: 'Foto de perfil'
 
 _exportar_datos_: 'Datos'
 _exportar_datos_lbl: 'Exportar Datos'
 _exportar_datos_opciones_: 'Elige el formato para exportar'
 _exportar_datos_boton_: 'Exportar'
-_exportar_tabla_datos_: Exportar Tabla de datos
-_exportar_grafico_: Exportar gráfico
-_reporte_sala_: Reporte de sala
-_reporte_: Reporte
-_mostrar_reporte_: Mostrar Reporte
-_buscar_indicador_: Buscar indicador
-_agregar_accion_: Agregar acción
-_origen_datos_: Origen de los datos
-_clasificacion_: Clasificación
-_general_: General
+_exportar_tabla_datos_: 'Exportar Tabla de datos'
+_exportar_grafico_: 'Exportar gráfico'
+_reporte_sala_: 'Reporte de sala'
+_reporte_: 'Reporte'
+_mostrar_reporte_: 'Mostrar Reporte'
+_buscar_indicador_: 'Buscar indicador'
+_agregar_accion_: 'Agregar acción'
+_origen_datos_: 'Origen de los datos'
+_clasificacion_: 'Clasificación'
+_general_: 'General'
 _exportar_diccionario_datos_: 'Diccionario de Datos'
 _exportar_diccionario_datos_lbl: 'Exportar Diccionario de Datos'
 _exportar_pdf_: 'Pantalla'

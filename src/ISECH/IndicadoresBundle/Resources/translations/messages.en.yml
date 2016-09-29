@@ -10,6 +10,7 @@ codigo: 'Code'
 uso_catalogo: "Will describe catalog's fields"
 no_catalogo_y_describir_catalogo: "This box describes the fields marked catalogs, therefore, should not be associated catalog"
 formula: 'Formula'
+Formula: 'Formula'
 ayuda_ingreso_formula: 'To create/name variables use its initials inside brackets e.g.: {NAI} / {PTDA} * 100 '
 vars_sel_diff_vars_formula: 'Variables used in a formula must match those that were already selected'
 sintaxis_invalida: 'Formula has errors'
@@ -34,14 +35,15 @@ nombre_archivo_mapa: Map's image file name
 cerrar_sesion: 'Logout'
 favoritos: 'Favourites'
 'form_campo_obigatorio': '¡Fields with * are Required!'
+'clasificacion_tecnica': 'Technical Classification'
 
 'clasificacion_tecnica-eTAB' : 'Technical Classification'
 'Clasificacion Tecnica List': 'Technical Classification - Listing'
 'Clasificacion Tecnica Delete': "Technical Classification - Delete"
 
-significado_campo-eTAB: Meaning of fields
-nombre_campo: Name of field
-significado: Meaning
+significado_campo-eTAB: 'Meaning of fields'
+nombre_campo: 'Name of field'
+significado: 'Meaning'
 
 'Origen Datos List': 'Data Sources - Listing'
 'Origen Datos Delete': 'Data Sources - Delete'
@@ -135,7 +137,7 @@ conexion_success: 'Connection successful'
 nombre_consulta: 'Query name'
 sentencia_sql: 'SQL statement'
 conexiones: 'Connections'
-catalogos: 'Catalogs-english'
+catalogos: 'Catalogs'
 probar_sentencia: 'Test SQL statement'
 sentencia_error: 'SQL statement has errors'
 sentencia_success: 'SQL test was successful'
@@ -253,6 +255,7 @@ javascript:
   opciones: 'Options'
   ver_sql: 'View SQL'
   diccionario_transformacion-eTAB: 'Transformation Dictionary'
+  diccionario_transformacion: 'Dictionary of transformation'
   elija_diccionario: 'Choose a dictionary'
   quitar_indicador: 'Remove indicator'
   columnas: 'Columns'
@@ -267,6 +270,7 @@ javascript:
   _filtrados_de_ : '(filtered from _MAX_ total records)'  
   no_mas_niveles: 'No more levels to descend'
   no_graficos_asignados: 'No assigned graph types allowed to field meanings'
+  recargar_origen: 'Reload data source information'
   ultima_lectura: 'Last Read'
   ultima_lectura_exp: 'Format: dd / mm / yyyy. You take the earliest date on which the last reading of each data source was performed'
 
@@ -331,110 +335,131 @@ _campo_calculado_-eTAB: 'Calculated Field'
 _campos_utilizables_en_campos_calculados_: 'Usable fields in the formula '
 _variable_no_campo_: 'You have used a variable that doesnt belong to the fields in the data source'
 _exportar_: 'Export'
-_tipos_graficos_: Graph types allowed
+_tipos_graficos_: 'Graph types allowed'
 change_password.flash.success: 'Password has been successfully changed'
-_cambiar_clave_: Change password
-'Barras': 'Bars'
-'Pastel': 'Pie'
-'Lineas': 'Line'
-'Columnas': 'Columns'
-'Mapa': 'Map'
-'Termometro': 'Thermometer'
-'Odometro': 'Odometer'
-'crear_pivote': 'create_pivot'
-'Diccionario List': 'Dictionary Listing'
-'Regla Transformacion List': 'Rule Transformation Listing'
-'javascript.diccionario_transformacion': 'Transformation Dictionary'
-'Campo List': 'Calculated Field Listing'
-'origen_dato': 'data_source'
-'responsable_datos': 'manager_source'
-'fuente_datos': 'data_source'
-'clasificacion_tecnica': 'classification technique'
-'Nombre': 'Name'
-'Tema': 'Topic'
-'Concepto': 'Concept'
-'Unidad Medida': 'Unit of Measure'
-'Es Acumulado': 'is Accumulated'
-'Clasificacion Privacidad': 'Privacy Ranking'
-'Periodo': 'Period'
-'Confiabilidad': 'Reliability'
-'Observacion': 'Observation'
-'Campos Indicador': 'fields Indicator'
-maximizar: 'Maximize'
-teclaescape: 'Press Escape to Exit'
+_cambiar_clave_: 'Change password'
+_ver_ficha_: 'See Technical Data Sheet'
+_ultima_actualizacion_: 'Last Updated'
+_no_conexion_configurada_: 'There is no connection configured'
+_salas_situacionales_: 'Situational Salas'
+_indicadores_y_salas_: 'Indicators and Salas'
+_roles_: 'Roles'
+_profile_: 'Profile'
+_seguridad_: 'Security'
+
+maximize: 'Maximize'
+teclaescape: 'Press Escape to exit'
+
 gender_unknown: 'UNKNOWN'
 gender_male: 'MALE'
 gender_female: 'FEMALE'
 
-de: 'From'
-a: 'To'
-indicadorespublicos: 'Public Indicators'
+from: 'De'
+to: 'A'
+indicadorespublicos: 'Indicators Public'
+
 lbllenguaje: 'Language'
 
-_alerta_limite_inferior_: 'Lower limit'
-_regresar_menu_principal_: Return to main menu
+_alerta_limite_inferior_: 'lower limit'
+_regresar_menu_principal_: 'Back to main menu'
 
+Newsletter: 'Newsletter'
+'Bulletin List': 'List Newsletters'
+Hall: 'Hall'
+Group: 'Group'
+send: 'Send'
+created: 'Created'
+Updated: 'Updated'
 
-Boletin: Bulletin
-'Boletin List': 'Bulletin Listing'
-sala: Room
-grupo: Group
-enviar: Send
-creado: Created
-actualizado: Updated
-
-filtro_fecha : 'Filter by Date'
-formato_Max: 'The maximum allowed is:'
+filtro_fecha: 'Filter by Date'
+formato_Max: 'The maximum allowed is'
 btn_close: 'Close'
-Cargando: 'Loading ...'
-meta: 'Meta'
-jurisdiccion: 'Jurisdicción'
-clues: 'Clues'
+Loading: 'Loading ...'
+goal: 'Meta'
+Jurisdiction: 'Jurisdiction'
+Clues: 'Clues'
 
 manual_tecnico: 'Technical Manual'
 manual_operativo: 'Operating Manual'
 manual_usuario: 'User Manual'
-manual_tablero: 'Dashboard Manual'
+manual_tablero: 'Board Manual'
 
-_sala_acciones_: Actions by room
-_tabla_pivote_: Pivote table
-_acciones_: Actions
-_observaciones_: Observations
-_responsables_: Responsibles
-_agregar_accion_: Add action
-_historial_accion_: History actions
+_sala_acciones_: 'Actions by room'
+_tabla_pivote_: 'Pivot Table'
+_acciones_: 'Actions'
+_observaciones_: 'Remarks'
+_Maintainers_: 'Responsible'
+_agregar_accion_: 'Add Action'
+_historial_accion_: 'action history'
 _compartir_sala_: 'Share room'
-_usuario_con : ' Users with account '
-_usuario_notificacion : 'Send notification mail to users with account '
-_usuario_sin : 'Users no account '
-_usuario_sin_inidicacion : 'Write the mail user. You can enter more than 1 separated by commas '
-_comentarios_: Comments
-_enviar_: Send
-_fecha_: Date
-_foro_ : Discussion foro
-_photo_ : Profile Picture
+_usuario_con: 'Users with account'
+_usuario_notificacion: 'Send notification mail to users account'
+_usuario_sin: 'People without'
+_usuario_sin_inidicacion: 'Write the user´s mail. You can enter more than 1 separated by commas'
+_comentarios_: 'Comments'
+_enviar_: 'Send'
+_fecha_: 'Date'
+_foro_: 'Discussion'
+_photo_: 'Profile photo'
 
-_exportar_datos_: 'Export Data'
-_exportar_datos_opciones_: 'Choose the format to export'
+_exportar_datos_: 'Data'
+_exportar_datos_lbl: 'Export Data'
+_exportar_datos_opciones_: 'Choose the format to export '
 _exportar_datos_boton_: 'Export'
-_exportar_tabla_datos_: Export data table
-_exportar_grafico_: Export graph
-_reporte_sala_: Room Report
+_exportar_tabla_datos_: Export Data Table
+_exportar_grafico_: Export graphic
+_reporte_sala_: Report room
 _reporte_: Report
 _mostrar_reporte_: Show Report
 _buscar_indicador_: Search indicator
 _agregar_accion_: Add Action
-_origen_datos_: Data Source
-_general_: General
+_origen_datos_: Source of data
 _clasificacion_: Classification
-_exportar_diccionario_datos_: 'Export Data Dictionary'
-_exportar_pdf_: 'Screen'
+_general_: General
+_exportar_diccionario_datos_: 'Data Dictionary'
+_exportar_diccionario_datos_lbl: 'Export Data Dictionary'
+_exportar_pdf_: 'Display'
 
-_matriz_seguimiento_: 'Matriz de seguimiento'
-_reporte_: 'Reporte'
-_config_indicador_desempeno_: 'Configurar indicador de desempeño'
-_indicador_desempeno_: 'Indicador de desempeño'
-_capturar_matriz_: 'Captura de datos'
-_config_matriz_anio_: 'Configurar planificación por año'
-_indicador_etab_: 'Indicadores disponibles en eTAB'
-_indicador_rel_: 'Indicadores no disponibles en eTAB'
+_matriz_seguimiento_: 'Monitoring Matrix'
+_reporte_: 'Report'
+_config_indicador_desempeno_: 'Set performance indicator'
+_indicador_desempeno_: 'performance indicator'
+_capturar_matriz_: 'Data capture'
+_config_matriz_anio_: 'Set year planning'
+_indicador_etab_: 'Indicators available in Etab'
+_indicador_rel_: 'Indicators not available in Etab'
+_anio_select_: 'Select a year'
+_consultar_: 'Check'
+_planeado_: 'Planned'
+_real_: 'Real'
+_no_existe_planeacion_: 'There is no planning in this year'
+_crear_planeacion_: 'Create planning'
+_meta_anual_: 'annual Meta'
+_inidcador_: 'Indicator'
+
+_enero_: 'January'
+_febrero_: 'February'
+_marzo_: 'March'
+_abril_: 'Abril'
+_mayo_: 'May'
+_junio_: 'May'
+_julio_: 'Julio'
+_agosto_: 'August'
+_septiembre_: 'September'
+_octubre_: 'October'
+_noviembre_: 'Noviembre'
+_diciembre_: 'December'
+
+_guardar_: 'Save'
+_exportar_: 'Export'
+_imprimir_: 'Print'
+
+_cargado_correctamente: 'loaded correctly'
+_ningun_dato_: 'no data is Not found'
+
+_guardar_ok_: 'I was saved successfully'
+_guardar_no_ok_: 'An error occurred and could not be saved :('
+
+_matriz_verP_: Show / Hide Planning '
+_matriz_verR_: Show / Hide Real '
+_matriz_verV_: Show / Hide Percent '
