@@ -263,6 +263,7 @@
             <tag name="sonata.admin" 
                  manager_type="orm" 
                  group="_matriz_seguimiento_" 
+                 label="_reporte_"
             />
             <argument />
             <argument>ISECH\IndicadoresBundle\Entity\MatrizSeguimiento</argument>

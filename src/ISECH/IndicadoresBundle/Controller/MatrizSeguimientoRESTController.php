@@ -571,24 +571,24 @@ class MatrizSeguimientoRESTController extends Controller {
                             $vm = (object) $vm;
                             $etab[$i][$vm->mes]["planificado"] = $vm->planificado;
                             $etab[$i][$vm->mes]["real"] = $vm->real;
+                           
+                            try{
 
-                            if($vm->real == '' || $vm->real == null){
-                                try{
+                                $filtros = ["mes" => strtoupper($vm->mes), "anio" => $anio];
+                                $fichaTec = $fichaRepository->find($indrs->getId());                                    
+                                $repFicha = $fichaRepository->calcularIndicador($fichaTec, "mes", $filtros, false, null, 1, false);
+                                
+                                if($repFicha){
+                                    $etab[$i][$vm->mes]["real"] = $repFicha[0]["measure"];
+                                }
+                                else{
+                                    $etab[$i][$vm->mes]["real"] = $vm->real;
+                                }
 
-                                    $filtros = ["mes" => strtoupper($vm->mes), "anio" => $anio];
-                                    $fichaTec = $fichaRepository->find($indrs->getId());                                    
-                                    $repFicha = $fichaRepository->calcularIndicador($fichaTec, "mes", $filtros, false, null, 1, false);
-                                    
-                                    if($repFicha){
-                                        $etab[$i][$vm->mes]["real"] = $repFicha[0]["measure"];
-                                    }                                    
-                                }
-                                catch(\Exception $e){
-                                    
-                                }
-                            }else{
-                                $etab[$i][$vm->mes]["real"] = $vm->real;
-                            }                            
+                            }
+                            catch(\Exception $e){
+                                
+                            }                          
                         }
                         $i++;
                     }
