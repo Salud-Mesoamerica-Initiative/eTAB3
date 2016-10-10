@@ -73,8 +73,10 @@ class MatrizSeguimientoRESTController extends Controller {
                             WHERE ms.anio = '$anio' and ms.etab = false and ms.id_desempeno = '".$value->id_desempeno."' and indicador = '".$indrs->getId()."'");
                         $statement->execute();
                         $meses = $statement->fetchAll();
-
-                        $indicators[$i] = array('id'=>$indrs->getId(), 'nombre'=>$indrs->getNombre(), 'meta' => $meses[0]["meta"]);
+                        $meta = 0;
+                        if(isset($meses[0]))
+                            $meta = $meses[0]["meta"];
+                        $indicators[$i] = array('id'=>$indrs->getId(), 'nombre'=>$indrs->getNombre(), 'meta' => $meta);
 
                         foreach ($meses as $km => $vm) {
                             $vm = (object) $vm;
@@ -92,8 +94,10 @@ class MatrizSeguimientoRESTController extends Controller {
                             WHERE ms.anio = '$anio' and ms.etab = true and ms.id_desempeno = '".$value->id_desempeno."' and indicador = '".$indrs->getId()."'");
                         $statement->execute();
                         $meses = $statement->fetchAll();
-                        
-                        $etab[$i] = array('id'=>$indrs->getId(), 'nombre'=>$indrs->getNombre(), 'meta' => $meses[0]["meta"]);
+                        $meta = 0;
+                        if(isset($meses[0]))
+                            $meta = $meses[0]["meta"];
+                        $etab[$i] = array('id'=>$indrs->getId(), 'nombre'=>$indrs->getNombre(), 'meta' => $meta);
 
                         foreach ($meses as $km => $vm) {
                             $vm = (object) $vm;
