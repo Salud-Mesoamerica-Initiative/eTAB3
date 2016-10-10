@@ -384,7 +384,10 @@ class MatrizSeguimientoRESTController extends Controller {
                                         $errores.= "<br>No se cargo linea: $ci mes: ".$vm->mes;
                                     }
                                     else{
-                                        $etab[$i][$vm->mes]["real"] = $repFicha[0]["measure"];
+                                        $measure = '';
+                                        if(isset($repFicha[0]))
+                                            $measure = $repFicha[0]["measure"];
+                                        $etab[$i][$vm->mes]["real"] = $measure;
                                     }
                                 }
                                 catch(\Exception $e){
@@ -549,8 +552,10 @@ class MatrizSeguimientoRESTController extends Controller {
                             WHERE ms.anio = '$anio' and ms.etab = false and ms.id_desempeno = '".$value->id_desempeno."' and indicador = '".$indrs->getId()."'");
                         $statement->execute();
                         $meses = $statement->fetchAll();
-
-                        $indicators[$i] = array('id'=>$indrs->getId(), 'nombre'=>$indrs->getNombre(), 'meta' => $meses[0]["meta"]);
+                        $meta = '';
+                        if(isset($meses[0]))
+                            $meta = $meses[0]["meta"];
+                        $indicators[$i] = array('id'=>$indrs->getId(), 'nombre'=>$indrs->getNombre(), 'meta' => $meta);
 
                         foreach ($meses as $km => $vm) {
                             $vm = (object) $vm;                            
@@ -570,7 +575,10 @@ class MatrizSeguimientoRESTController extends Controller {
                             WHERE ms.anio = '$anio' and ms.etab = true and ms.id_desempeno = '".$value->id_desempeno."' and indicador = '".$indrs->getId()."'");
                         $statement->execute();
                         $meses = $statement->fetchAll();
-                        $etab[$i] = array('id'=>$indrs->getId(), 'nombre'=>$indrs->getNombre(), 'meta' => $meses[0]["meta"]);
+                        $meta = '';
+                        if(isset($meses[0]))
+                            $meta = $meses[0]["meta"];
+                        $etab[$i] = array('id'=>$indrs->getId(), 'nombre'=>$indrs->getNombre(), 'meta' => $meta);
                         foreach ($meses as $km => $vm) {
                             $vm = (object) $vm;
                             $etab[$i][$vm->mes]["planificado"] = $vm->planificado;
@@ -583,7 +591,10 @@ class MatrizSeguimientoRESTController extends Controller {
                                 $repFicha = $fichaRepository->calcularIndicador($fichaTec, "mes", $filtros, false, null, 1, false);
                                 
                                 if($repFicha){
-                                    $etab[$i][$vm->mes]["real"] = $repFicha[0]["measure"];
+                                    $measure = '';
+                                    if(isset($repFicha[0]))
+                                        $measure = $repFicha[0]["measure"];
+                                    $etab[$i][$vm->mes]["real"] = $measure;
                                 }
                                 else{
                                     $etab[$i][$vm->mes]["real"] = $vm->real;
