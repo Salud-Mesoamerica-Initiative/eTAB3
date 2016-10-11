@@ -183,13 +183,11 @@ old_sound_rabbit_mq:
             exchange_options: {name: 'cargar_origen_datos', type: direct, durable: true}
             queue_options:    {name: 'cargar_origen_datos', durable: true}
             callback:         indicadores.cargar_origen_datos_servicio
-            idle_timeout: 60
         guardar_registro:
             connection: default
             exchange_options: {name: 'guardar_registro', type: direct, durable: true}
             queue_options:    {name: 'guardar_registro', durable: true}
             callback:         indicadores.guardar_registro_origen_dato
-            idle_timeout: 60
 services:
     my_listener:
         class: ISECH\IndicadoresBundle\Listener\LocaleListener
