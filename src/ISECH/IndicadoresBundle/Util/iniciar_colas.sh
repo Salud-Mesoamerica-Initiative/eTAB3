@@ -1,7 +1,7 @@
 #!/bin/bash
 
 PHP=`which php`
-CONSOLE="$PHP ../var/console --env=prod"
+CONSOLE="$PHP ../app/console --env=prod"
 
 cd "$( dirname "${BASH_SOURCE[0]}" )";
 
@@ -11,7 +11,7 @@ PATH="../../../.."
 
 #for CONSUMER in $CONSUMERS
 #    do
-/usr/bin/nohup $PHP $PATH/var/console rabbitmq:consumer cargar_origen_datos > $PATH"/var/logs/rabbitmq_cargar_origen_datos.log" &
-/usr/bin/nohup $PHP $PATH/var/console rabbitmq:consumer guardar_registro > $PATH"/var/logs/rabbitmq_guardar_registro.log" &
+/usr/bin/nohup $PHP $PATH/app/console rabbitmq:consumer cargar_origen_datos > $PATH"/var/logs/rabbitmq_cargar_origen_datos.log" &
+/usr/bin/nohup $PHP $PATH/app/console rabbitmq:consumer guardar_registro > $PATH"/var/logs/rabbitmq_guardar_registro.log" &
 #done
 
