@@ -385,7 +385,7 @@ class FichaTecnicaRepository extends EntityRepository
         }
         $variables_query = trim($variables_query, ', ');
 
-        $nombre_indicador = $fichaTecnica->getId();
+        $nombre_indicador = $util->slug($fichaTecnica->getNombre());
         $tabla_indicador = 'tmp_ind_' . $nombre_indicador;
 
         //Obtener los nombres de columnas para crear los rangos
