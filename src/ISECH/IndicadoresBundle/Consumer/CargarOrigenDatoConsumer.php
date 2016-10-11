@@ -31,13 +31,13 @@ class CargarOrigenDatoConsumer implements ConsumerInterface
         $fecha = new \DateTime("now");
         $ahora = $fecha->format('Y-m-d H:i:s');
 
-        //Leeré los datos en grupos de 10,000
-        $tamanio = 10000;
+        //Leeré los datos en grupos de 100,000
+        $tamanio = 100000;
         try {
             if ($origenDato->getSentenciaSql() != '') {
                 // Recorrer cada conexión que tenga asociado el origen de datos
                 foreach ($origenDato->getConexiones() as $cnx) {
-                    $leidos = 10001;
+                    $leidos = 100001;
                     $i = 0;
                     $nombre_conexion = $cnx->getNombreConexion();
                     if ($cnx->getIdMotor()->getCodigo() != 'pdo_dblib') {
