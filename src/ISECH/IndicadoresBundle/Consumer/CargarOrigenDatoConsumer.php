@@ -1,5 +1,7 @@
 <?php
+
 namespace ISECH\IndicadoresBundle\Consumer;
+
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -8,21 +10,27 @@ use ISECH\IndicadoresBundle\Entity\ReporteActualizacion;
 class CargarOrigenDatoConsumer implements ConsumerInterface
 {
     protected $container;
+
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }
+
     public function execute(AMQPMessage $msg)
     {
         $msg = unserialize($msg->body);
         $em = $this->container->get('doctrine.orm.entity_manager');
         $error = false;
+
         $idOrigen = $msg['id_origen_dato'];
         $origenDato = $em->find('IndicadoresBundle:OrigenDatos', $idOrigen);
         $nombre_conexion = null;
+
         $campos_sig = $msg['campos_significados'];
+
         $fecha = new \DateTime("now");
         $ahora = $fecha->format('Y-m-d H:i:s');
+
         //Leeré los datos en grupos de 10,000
         $tamanio = 100000;
         try {
@@ -39,16 +47,21 @@ class CargarOrigenDatoConsumer implements ConsumerInterface
                             $where = '';
                             if(!empty($msg['limites']['valorSuperior']) || !empty($msg['limites']['valorInferior'])) {
                                 $where = 'WHERE 1=1 ';
+
                                 if(!empty($msg['limites']['valorSuperior']))
                                     $where .= ' AND '.$msg['limites']['campoSuperior'].'>'.$msg['limites']['valorSuperior'];
+
                                 if(!empty($msg['limites']['valorInferior'])) {
                                     $where .= ' OR ('.$msg['limites']['campoSuperior'].'='.$msg['limites']['valorSuperior'].' AND '
                                             .$msg['limites']['campoInferior'].'>'.$msg['limites']['valorInferior'].')';
                                 }
                             }
+
                             $sql_aux = 'SELECT * FROM (' . $sql . ') AS sqlOriginal '.$where.
                                     ' LIMIT ' . $tamanio . ' OFFSET ' . $i * $tamanio;
+
                             $datos = $em->getRepository('IndicadoresBundle:OrigenDatos')->getDatos($sql_aux, $cnx);
+
                             $this->enviarDatos($idOrigen, $datos, $campos_sig, $ahora, $nombre_conexion, $msg);
                             $leidos = count($datos);
                             $i++;
@@ -65,16 +78,20 @@ class CargarOrigenDatoConsumer implements ConsumerInterface
         } catch (\Exception $exc) {
             $error = true;
             $origenDatos = $em->find('IndicadoresBundle:OrigenDatos', $msg['id_origen_dato']);
+
             // Crear el registro para el reporte de actualizacion
             $reporteActualizacion = new ReporteActualizacion;
+
             $reporteActualizacion->setOrigenDatos($origenDatos);
             $reporteActualizacion->setEstatusAct($em->find('IndicadoresBundle:EstatusActualizacion', 2));
             $reporteActualizacion->setFecha(new \DateTime('now'));
             $reporteActualizacion->setReporte($exc->getMessage());
+
             $em->persist($reporteActualizacion);
             $em->flush();
         }
-        if(!$error) {
+
+        /*if(!$error) {
             //Después de enviados todos los registros para guardar, mandar mensaje para borrar los antiguos
             $msg_guardar = array('id_origen_dato' => $idOrigen,
                 'method' => 'DELETE',
@@ -83,9 +100,10 @@ class CargarOrigenDatoConsumer implements ConsumerInterface
             );
             $this->container->get('old_sound_rabbit_mq.guardar_registro_producer')
                     ->publish(serialize($msg_guardar));
-        }
+        }*/
         return true;
     }
+
     public function enviarDatos($idOrigen, $datos, $campos_sig, $ultima_lectura, $nombre_conexion, $msg)
     {
         //Esta cola la utilizaré solo para leer todos los datos y luego mandar uno por uno
@@ -135,4 +153,5 @@ class CargarOrigenDatoConsumer implements ConsumerInterface
                     ->publish(serialize($msg_guardar));
         }
     }
+
 }
