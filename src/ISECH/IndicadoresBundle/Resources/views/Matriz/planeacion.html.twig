@@ -56,7 +56,10 @@
                   </span>
                 </p>
             </div>
-            <div class="col-md-6" ng-if="noPlaneacion">
+            <div class="col-md-2">
+                <button type="button" class="btn btn-default" ng-click="crearPlaneacion(ruta ,anio)"><i class="glyphicon glyphicon-refresh"></i></button>
+            </div>
+            <div class="col-md-4" ng-if="noPlaneacion">
                 <span>{{ '_no_existe_planeacion_' | trans }}</span>
                 <button type="button" class="btn btn-default" ng-click="crearPlaneacion('{{ path('matriz_planeacion_crear') }}', anio)"><i class="glyphicon glyphicon-check"></i> {{ '_crear_planeacion_' | trans }}</button>
             </div>
