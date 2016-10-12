@@ -104,6 +104,8 @@
                                 <tr ng-repeat="inde in item.indicadores_etab">
                                     <td><% inde.nombre %></td>
                                     <td ng-repeat="k in meses" width="100px">
+                                        <br>
+                                        <span><% inde[k].planificado %></span>
                                         <input type="number" min="0" step="0.01" class="form-control" string-to-number ng-model="inde[k].real" readonly>                                        
                                     </td>                                    
                                 </tr>
@@ -112,6 +114,8 @@
                                 <tr ng-repeat="inde in item.indicadores_relacion">
                                     <td><% inde.nombre %></td>
                                     <td ng-repeat="k in meses" width="100px">
+                                        <br>
+                                        <span><% inde[k].planificado %></span>
                                         <input type="number" min="0" step="0.01" class="form-control" string-to-number ng-model="inde[k].real">                                        
                                     </td>                                    
                                 </tr>                        
