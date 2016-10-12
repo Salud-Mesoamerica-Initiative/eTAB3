@@ -24,7 +24,7 @@ class FichaTecnicaRepository extends EntityRepository
         $em = $this->getEntityManager();
         $ahora = new \DateTime('NOW');
         $util = new \ISECH\IndicadoresBundle\Util\Util();
-        $nombre_indicador = $util->slug($fichaTecnica->getNombre());
+        $nombre_indicador = substr($util->slug($fichaTecnica->getNombre()), 0, 55);
         $formula = strtoupper($fichaTecnica->getFormula());
 
         //Verificar si existe la tabla
@@ -262,7 +262,7 @@ class FichaTecnicaRepository extends EntityRepository
     public function crearTablaIndicador(FichaTecnica $fichaTecnica, $tablas_variables) {
         $sql = '';
         $util = new \ISECH\IndicadoresBundle\Util\Util();
-        $nombre_indicador = $util->slug($fichaTecnica->getNombre());
+        $nombre_indicador = substr($util->slug($fichaTecnica->getNombre()), 0, 55);
         $campos = str_replace("'", '', $fichaTecnica->getCamposIndicador());
         $formula = $fichaTecnica->getFormula();
 
@@ -291,7 +291,7 @@ class FichaTecnicaRepository extends EntityRepository
     public function getDatosIndicador(FichaTecnica $fichaTecnica) {
         $util = new \ISECH\IndicadoresBundle\Util\Util();
 
-        $nombre_indicador = $util->slug($fichaTecnica->getNombre());
+        $nombre_indicador = substr($util->slug($fichaTecnica->getNombre()), 0, 55);
         $tabla_indicador = 'tmp_ind_' . $nombre_indicador;
 
         $campos = array();
@@ -385,7 +385,7 @@ class FichaTecnicaRepository extends EntityRepository
         }
         $variables_query = trim($variables_query, ', ');
 
-        $nombre_indicador = $util->slug($fichaTecnica->getNombre());
+        $nombre_indicador = substr($util->slug($fichaTecnica->getNombre()), 0, 55);
         $tabla_indicador = 'tmp_ind_' . $nombre_indicador;
 
         //Obtener los nombres de columnas para crear los rangos
