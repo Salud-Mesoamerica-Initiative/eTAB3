@@ -47,3 +47,15 @@
 .matriz>tfoot>tr>td {
     border: 1px solid #ddd;
 }
+.matriz-planeacion{
+    display: block;
+    height: 20px;
+    width: 100%;
+    background: cornflowerblue;
+    border-radius: 3px;
+       
+}
+.matriz-planeacion-texto{
+    color: white; 
+    text-shadow: 1px 1px 1px #000;
+}

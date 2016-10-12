@@ -104,15 +104,7 @@
                                 <tr ng-repeat="inde in item.indicadores_etab">
                                     <td><% inde.nombre %></td>
                                     <td ng-repeat="k in meses" width="100px">
-                                        <div align="center" style="
-                                            display: block;
-                                            height: 20px;
-                                            width: 100%;
-                                            background: cornflowerblue;
-                                            border-radius: 3px;
-                                            color: white;
-                                            text-shadow: 1px 1px 1px #000;
-                                        "><% inde[k].planificado %></div>
+                                        <div align="center" class="matriz-planeacion matriz-planeacion-texto"><% inde[k].planificado %></div>
                                         <input type="number" min="0" step="0.01" class="form-control" string-to-number ng-model="inde[k].real" readonly>                                        
                                     </td>                                    
                                 </tr>
@@ -121,15 +113,7 @@
                                 <tr ng-repeat="inde in item.indicadores_relacion">
                                     <td><% inde.nombre %></td>
                                     <td ng-repeat="k in meses" width="100px">
-                                        <div align="center" style="
-                                            display: block;
-                                            height: 20px;
-                                            width: 100%;
-                                            background: cornflowerblue;
-                                            border-radius: 3px;
-                                            color: white;
-                                            text-shadow: 1px 1px 1px #000;
-                                        "><% inde[k].planificado %></div>
+                                        <div align="center" class="matriz-planeacion matriz-planeacion-texto"><% inde[k].planificado %></div>
                                         <input type="number" min="0" step="0.01" class="form-control" string-to-number ng-model="inde[k].real">                                        
                                     </td>                                    
                                 </tr>                        
