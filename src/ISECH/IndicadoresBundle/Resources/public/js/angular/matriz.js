@@ -42,6 +42,22 @@ App
         }
     };
 })
+//exportar tabla a xls
+.directive('exportarTabla', function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs){
+            element.bind('click', function(evt){
+                evt.preventDefault();
+
+                var blob = new Blob([document.getElementById('exportable').innerHTML], {
+                    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+                });
+                saveAs(blob, "matriz.xls");                
+            })
+        }
+    };
+})
 //imprimir un div que contenga la la clase imprimir
 .directive('imprimirDiv', function () 
 {
