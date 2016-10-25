@@ -50,7 +50,7 @@ App
             element.bind('click', function(evt){
                 evt.preventDefault();
                 var titulo = $("#tituloReporte").html();
-                var excelData = "<table><tr><th colspan='14'><h1>" + titulo + " (MEXICO) <h1></th></tr></table>" + '<table class="table table-bordered table-striped"> <thead> <tr> <th>Color</th> <th>Límite inferior</th> <th>Límite superior</th> <th></th> <th></th> <th></th> <th>Informacion</th> </tr> </thead> <tbody> <tr> <td style="background:red">0 - 69.99</td> <td>0</td> <td>69.99</td> <th></th> <th></th> <th></th> <th style="background:blueviolet">Real</th> </tr> <tr> <td style="background:#FFCC00">70 - 84.99</td> <td>70</td> <td>84.99</td> <th></th> <th></th> <th></th> <th style="background:cornflowerblue">Planificado</th> </tr> <tr> <td style="background:green">85 - 100</td> <td>85</td> <td>100</td> <th></th> <th></th> <th></th> <th style="background:darkgray; color:#FFF; font-weight:900; text-shadow: 1px 1px 1px #000;">Status</th> </tr> </tbody> </table>'
+                var excelData = "<table><tr><th colspan='15'><h1>" + titulo + " (MEXICO) <h1></th></tr></table>" + '<table class="table table-bordered table-striped"> <thead> <tr> <th></th><th>Color</th> <th>Límite inferior</th> <th>Límite superior</th> <th></th> <th></th> <th></th> <th>Informacion</th> </tr> </thead> <tbody> <tr> <th></th><td style="background:red">0 - 69.99</td> <td>0</td> <td>69.99</td> <th></th> <th></th> <th></th> <th style="background:darkgray">Real</th> </tr> <tr> <th></th><td style="background:#FFCC00">70 - 84.99</td> <td>70</td> <td>84.99</td> <th></th> <th></th> <th></th> <th style="background:cornflowerblue">Planificado</th> </tr> <tr> <th></th><td style="background:green">85 - 100</td> <td>85</td> <td>100</td> <th></th> <th></th> <th></th> <th style="color:#000; font-weight:900; text-shadow: 1px 1px 1px #000;">Status</th> </tr> </tbody> </table>';
 
                 excelData += document.getElementById('exportable').innerHTML;
                 var blob = new Blob([excelData], {type: "text/comma-separated-values;charset=utf-8"});
@@ -91,7 +91,7 @@ App
                     document.body.appendChild(iframe);  
 
                     var titulo = $("#tituloReporte").html();
-                    
+
                     var mywindow =  document.getElementById('printf');
                     mywindow.contentWindow.document.write('<html lang="es" ng-app="App">'
 +' <head>'

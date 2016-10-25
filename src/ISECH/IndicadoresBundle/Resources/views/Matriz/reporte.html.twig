@@ -180,25 +180,26 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="inde in item.indicadores_etab">
+                                    <tr valign="middle" ng-repeat="inde in item.indicadores_etab">
                                         <td class="nombre_matriz"><% inde.nombre %></td>
                                         <td class="nombre_matriz"><% inde.fuente %></td>
                                         <td class="nombre_matriz" width="100px"><% inde.meta %></td>
                                         <td ng-repeat="k in meses" width="110px" style="background: <% status[inde.id][k] > 0 && status[inde.id][k] < 70 ? 'red' : status[inde.id][k] >= 70 && status[inde.id][k] < 85 ? 'gold' : status[inde.id][k] >= 85 ? 'limegreen' : ''; %> !important; ">
                                             <table width="100%" class="list-group" ng-init="status[inde.id][k] = inde[k].real / inde[k].planificado * 100">
                                                 <tbody style="border:none">
-                                                    <tr style="background: blueviolet;" ng-show="verR" class="list-group-item matriz-planeacion-texto" align="center"><th><% inde[k].real %></th></tr>
-                                                    <tr style="background: cornflowerblue;" ng-show="verP" class="list-group-item matriz-planeacion-texto" align="center"><th><% inde[k].planificado %></th></tr>                                       
-                                                    <tr style="background: darkgray;" ng-show="status[inde.id][k] > 0" class="list-group-item" align="center">
+                                                    <tr ng-if="inde[k].planificado > 0 && inde[k].real <= 0 && verR && verP" class="list-group-item matriz-planeacion-texto" align="center"><th>&nbsp</th></tr>
+                                                    <tr style="background: darkgray;" ng-if="verR && inde[k].real > 0" class="list-group-item matriz-planeacion-texto" align="center"><th><% inde[k].real %></th></tr>
+                                                    <tr style="background: cornflowerblue;" ng-if="verP && inde[k].planificado > 0" class="list-group-item matriz-planeacion-texto" align="center"><th><% inde[k].planificado %></th></tr>                                       
+                                                    <tr ng-show="status[inde.id][k] > 0" class="list-group-item" align="center">
                                                         <th>
-                                                            <strong style="color:#FFF; font-weight:900; text-shadow: 1px 1px 1px #000;" >
+                                                            <strong ng-if="status[inde.id][k] > 0" style="font-weight:900; text-shadow: 1px 1px 1px #FFF;" >
                                                                 <div align="center">
                                                                     <% status[inde.id][k] | number : 2 %> %
                                                                 </div>
                                                             </strong>
                                                         </th>
                                                     </tr>
-                                                    <tr ng-show="false"><th></th></tr>
+                                                    
                                                 </tbody>
                                             </table>    
                                                                                 
@@ -206,18 +207,19 @@
                                     </tr>
                                 </tbody>
                                 <tfoot>
-                                    <tr ng-repeat="inde in item.indicadores_relacion">
+                                    <tr valign="middle" ng-repeat="inde in item.indicadores_relacion">
                                         <td class="nombre_matriz"><% inde.nombre %></td>
                                         <td class="nombre_matriz"><% inde.fuente %></td>
                                         <td class="nombre_matriz" width="100px"><% inde.meta %></td>
                                         <td ng-repeat="k in meses" width="110px" style="background: <% status[inde.id][k] > 0 && status[inde.id][k] < 70 ? 'red' : status[inde.id][k] >= 70 && status[inde.id][k] < 85 ? 'gold' : status[inde.id][k] >= 85 ? 'limegreen' : ''; %> !important;">
                                             <table width="100%" class="list-group" ng-init="status[inde.id][k] = inde[k].real / inde[k].planificado * 100">
                                                 <tbody style="border:none">
-                                                    <tr style="background: blueviolet;" ng-show="verR" class="list-group-item matriz-planeacion-texto" align="center"><th><% inde[k].real %></th></tr>
-                                                    <tr style="background: cornflowerblue;" ng-show="verP" class="list-group-item matriz-planeacion-texto" align="center"><th><% inde[k].planificado %></th></tr>                                       
-                                                    <tr style="background: darkgray;" ng-show="status[inde.id][k] > 0" class="list-group-item" align="center">
+                                                    <tr ng-if="inde[k].planificado > 0 && inde[k].real <= 0 && verR && verP" class="list-group-item matriz-planeacion-texto" align="center"><th>&nbsp</th></tr>
+                                                    <tr style="background: darkgray;" ng-if="verR && inde[k].real > 0" class="list-group-item matriz-planeacion-texto" align="center"><th><% inde[k].real %></th></tr>
+                                                    <tr style="background: cornflowerblue;" ng-if="verP && inde[k].planificado > 0" class="list-group-item matriz-planeacion-texto" align="center"><th><% inde[k].planificado %></th></tr>                                       
+                                                    <tr ng-show="status[inde.id][k] > 0" class="list-group-item" align="center">
                                                         <th>
-                                                            <strong style="color:#FFF; font-weight:900; text-shadow: 1px 1px 1px #000;" >
+                                                            <strong ng-if="status[inde.id][k] > 0" style="font-weight:900; text-shadow: 1px 1px 1px #FFF;" >
                                                                 <div align="center">
                                                                     <% status[inde.id][k] | number : 2 %> %
                                                                 </div>
