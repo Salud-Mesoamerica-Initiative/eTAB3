@@ -90,6 +90,7 @@
                             <thead>
                                 <tr>
                                     <th> {{ '_inidcador_' | trans }} </th>
+                                    <th> {{ '_fuente_' | trans }} </th>
                                     <th> {{ '_meta_anual_' | trans }} </th>
                                     <th> {{ '_enero_' | trans }} </th>
                                     <th> {{ '_febrero_' | trans }} </th>
@@ -108,6 +109,7 @@
                             <tbody>
                                 <tr ng-repeat="inde in item.indicadores_etab">
                                     <td><% inde.nombre %></td>
+                                    <td><% inde.fuente %></td>
                                     <td width="100px"><input class="form-control" ng-model="inde.meta"></td>
                                     <td ng-repeat="k in meses" width="100px">
                                         <input type="number" min="0" step="0.01" class="form-control" string-to-number ng-model="inde[k]">                                        
@@ -117,22 +119,11 @@
                             <tfoot>
                                 <tr ng-repeat="inde in item.indicadores_relacion">
                                     <td><% inde.nombre %></td>
+                                    <td><% inde.fuente %></td>
                                     <td width="100px"><input class="form-control" ng-model="inde.meta"></td>
                                     <td ng-repeat="k in meses" width="100px">
                                         <input type="number" min="0" step="0.01" class="form-control" string-to-number ng-model="inde[k]">                                        
                                     </td> 
-                                    <!--<td><input type="number" min="0" step="0.01" string-to-number ng-model="indr.enero" class="form-control"></td>
-                                    <td><input type="number" min="0" step="0.01" string-to-number ng-model="indr.febrero" class="form-control"></td>
-                                    <td><input type="number" min="0" step="0.01" string-to-number ng-model="indr.marzo" class="form-control"></td>
-                                    <td><input type="number" min="0" step="0.01" string-to-number ng-model="indr.abril" class="form-control"></td>
-                                    <td><input type="number" min="0" step="0.01" string-to-number ng-model="indr.mayo" class="form-control"></td>
-                                    <td><input type="number" min="0" step="0.01" string-to-number ng-model="indr.junio" class="form-control"></td>
-                                    <td><input type="number" min="0" step="0.01" string-to-number ng-model="indr.julio" class="form-control"></td>
-                                    <td><input type="number" min="0" step="0.01" string-to-number ng-model="indr.agosto" class="form-control"></td>
-                                    <td><input type="number" min="0" step="0.01" string-to-number ng-model="indr.septiembre" class="form-control"></td>
-                                    <td><input type="number" min="0" step="0.01" string-to-number ng-model="indr.octubre" class="form-control"></td>
-                                    <td><input type="number" min="0" step="0.01" string-to-number ng-model="indr.noviembre" class="form-control"></td>
-                                    <td><input type="number" min="0" step="0.01" string-to-number ng-model="indr.diciembre" class="form-control"></td>-->
                                 </tr>
                             </tfoot>
                         </table>

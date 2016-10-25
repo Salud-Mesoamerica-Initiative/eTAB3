@@ -76,7 +76,7 @@ class MatrizSeguimientoRESTController extends Controller {
                         $meta = 0;
                         if(isset($meses[0]))
                             $meta = $meses[0]["meta"];
-                        $indicators[$i] = array('id'=>$indrs->getId(), 'nombre'=>$indrs->getNombre(), 'meta' => $meta);
+                        $indicators[$i] = array('id'=>$indrs->getId(), 'nombre'=>$indrs->getNombre(), 'fuente' => $indrs->getFuente(), 'meta' => $meta);
 
                         foreach ($meses as $km => $vm) {
                             $vm = (object) $vm;
@@ -97,7 +97,7 @@ class MatrizSeguimientoRESTController extends Controller {
                         $meta = 0;
                         if(isset($meses[0]))
                             $meta = $meses[0]["meta"];
-                        $etab[$i] = array('id'=>$indrs->getId(), 'nombre'=>$indrs->getNombre(), 'meta' => $meta);
+                        $etab[$i] = array('id'=>$indrs->getId(), 'nombre'=>$indrs->getNombre(), 'fuente' => 'eTAB', 'meta' => $meta);
 
                         foreach ($meses as $km => $vm) {
                             $vm = (object) $vm;
@@ -337,7 +337,7 @@ class MatrizSeguimientoRESTController extends Controller {
                     
                     $indicators = array(); $i=0;
                     foreach($ind->getIndicators() as $indrs){
-                        $indicators[$i] = array('id'=>$indrs->getId(), 'nombre'=>$indrs->getNombre());
+                        $indicators[$i] = array('id'=>$indrs->getId(), 'nombre'=>$indrs->getNombre(), 'fuente' => $indrs->getFuente());
 
                         $connection = $em->getConnection();
                         $statement = $connection->prepare("SELECT msd.mes, msd.planificado, msd.real FROM matriz_seguimiento ms 
@@ -360,7 +360,7 @@ class MatrizSeguimientoRESTController extends Controller {
                     $errores = ""; $ci = 0;
                     foreach($ind->getMatrizIndicadoresEtab() as $indrs){
                         $ci++;
-                        $etab[$i] = array('id'=>$indrs->getId(), 'nombre'=>$indrs->getNombre());
+                        $etab[$i] = array('id'=>$indrs->getId(), 'nombre'=>$indrs->getNombre(), 'fuente' => 'eTAB');
 
                         $connection = $em->getConnection();
                         $statement = $connection->prepare("SELECT msd.mes, msd.planificado, msd.real FROM matriz_seguimiento ms 
@@ -555,7 +555,7 @@ class MatrizSeguimientoRESTController extends Controller {
                         $meta = '';
                         if(isset($meses[0]))
                             $meta = $meses[0]["meta"];
-                        $indicators[$i] = array('id'=>$indrs->getId(), 'nombre'=>$indrs->getNombre(), 'meta' => $meta);
+                        $indicators[$i] = array('id'=>$indrs->getId(), 'nombre'=>$indrs->getNombre(), 'fuente' => $indrs->getFuente(), 'meta' => $meta);
 
                         foreach ($meses as $km => $vm) {
                             $vm = (object) $vm;                            
@@ -578,7 +578,7 @@ class MatrizSeguimientoRESTController extends Controller {
                         $meta = '';
                         if(isset($meses[0]))
                             $meta = $meses[0]["meta"];
-                        $etab[$i] = array('id'=>$indrs->getId(), 'nombre'=>$indrs->getNombre(), 'meta' => $meta);
+                        $etab[$i] = array('id'=>$indrs->getId(), 'nombre'=>$indrs->getNombre(),  'fuente' => 'eTAB', 'meta' => $meta);
                         foreach ($meses as $km => $vm) {
                             $vm = (object) $vm;
                             $etab[$i][$vm->mes]["planificado"] = $vm->planificado;

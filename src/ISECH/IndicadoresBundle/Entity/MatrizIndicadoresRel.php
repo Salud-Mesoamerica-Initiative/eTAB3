@@ -29,6 +29,13 @@ class MatrizIndicadoresRel
     private $nombre;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="fuente", type="string", length=500, nullable=true)
+     */
+    private $fuente;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="creado", type="datetime")
@@ -93,6 +100,29 @@ class MatrizIndicadoresRel
     public function getNombre()
     {
         return $this->nombre;
+    }
+
+    /**
+     * Set fuente
+     *
+     * @param string $fuente
+     * @return MatrizIndicadoresRel
+     */
+    public function setFuente($fuente)
+    {
+        $this->fuente = $fuente;
+    
+        return $this;
+    }
+
+    /**
+     * Get fuente
+     *
+     * @return string 
+     */
+    public function getFuente()
+    {
+        return $this->fuente;
     }
 
     /**

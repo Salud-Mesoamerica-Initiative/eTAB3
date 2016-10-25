@@ -19,10 +19,12 @@ class MatrizIndicadoresRelAdmin extends Admin
     {
         if($this->getRequest()->get('_sonata_admin') == 'sonata.admin.indicadores_rel') {
             $formMapper
-                ->add('desempeno', null, array('label' => $this->getTranslator()->trans('_indicador_desempeno_')));
+                ->add('desempeno', null, array('label' => $this->getTranslator()->trans('_indicador_desempeno_')))
+                ->add('fuente', null, array('label' => $this->getTranslator()->trans('_fuente_')));
         }
         $formMapper
-                ->add('nombre', null, array('label' => $this->getTranslator()->trans('nombre')))                
+                ->add('nombre', null, array('label' => $this->getTranslator()->trans('nombre')))   
+                ->add('fuente', null, array('label' => $this->getTranslator()->trans('_fuente_')))             
         ;
     }
 
@@ -31,6 +33,7 @@ class MatrizIndicadoresRelAdmin extends Admin
         $datagridMapper
                 ->add('nombre', null, array('label' => $this->getTranslator()->trans('nombre')))
                 ->add('desempeno', null, array('label' => $this->getTranslator()->trans('_indicador_desempeno_')))
+                ->add('fuente', null, array('label' => $this->getTranslator()->trans('_fuente_')))
         ;
     }
 
@@ -39,6 +42,7 @@ class MatrizIndicadoresRelAdmin extends Admin
         $listMapper
                 ->addIdentifier('nombre', null, array('label' => $this->getTranslator()->trans('nombre')))
                 ->add('desempeno', null, array('label' => $this->getTranslator()->trans('_indicador_desempeno_')))
+                ->add('fuente', null, array('label' => $this->getTranslator()->trans('_fuente_')))
 
         ;
     }
