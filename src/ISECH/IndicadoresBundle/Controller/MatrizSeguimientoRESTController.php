@@ -359,6 +359,9 @@ class MatrizSeguimientoRESTController extends Controller {
                     $fichaRepository = $em->getRepository('IndicadoresBundle:FichaTecnica');            
                     $errores = ""; $ci = 0;
                     foreach($ind->getMatrizIndicadoresEtab() as $indrs){
+                        $fichaTec = $fichaRepository->find($indrs->getId());
+                        $fichaRepository->crearIndicador($fichaTec);
+
                         $ci++;
                         $etab[$i] = array('id'=>$indrs->getId(), 'nombre'=>$indrs->getNombre(), 'fuente' => 'eTAB');
 
@@ -568,7 +571,9 @@ class MatrizSeguimientoRESTController extends Controller {
                     $etab = array(); $i=0;
                     $fichaRepository = $em->getRepository('IndicadoresBundle:FichaTecnica'); 
                     foreach($ind->getMatrizIndicadoresEtab() as $indrs){                        
-
+                        $fichaTec = $fichaRepository->find($indrs->getId());
+                        $fichaRepository->crearIndicador($fichaTec);
+                        
                         $connection = $em->getConnection();
                         $statement = $connection->prepare("SELECT msd.mes, msd.planificado, msd.real, ms.meta FROM matriz_seguimiento ms 
                             LEFT JOIN matriz_seguimiento_dato msd ON msd.id_matriz = ms.id   
