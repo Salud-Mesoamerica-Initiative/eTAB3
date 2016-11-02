@@ -337,8 +337,21 @@ App
         );  
     }
 
-    $scope.exportarPlaneacion = function() {        
-    }   
+    $scope.valorAbsoluto = function(inde, status, id, k) {  
+        if(!angular.isUndefined(inde[k])){
+            if(angular.isUndefined(status[id]))
+                status[id] = [];
+            if(angular.isUndefined(status[id][k]))
+                status[id][k] = '';
+            if(inde[k].real != null && inde[k].planificado != null)
+                status[id][k] = inde[k].real / inde[k].planificado * 100;  
+            else
+                status[id][k] = -1;
+            if(isNaN(status[id][k]))
+                status[id][k] = -1;
+            console.log(k, inde[k], status[id][k]);
+        }
+    }    
 
     $scope.imprimir_mensaje = function(mensaje,tipo,id){
         id = angular.isUndefined(id) ? "#feedback_bar" : "#result_factura_test" +  ", #" +id;

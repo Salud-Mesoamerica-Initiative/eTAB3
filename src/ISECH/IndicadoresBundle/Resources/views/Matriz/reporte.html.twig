@@ -211,8 +211,8 @@
                                         <td class="nombre_matriz"><% inde.nombre %></td>
                                         <td class="nombre_matriz"><% inde.fuente %></td>
                                         <td class="nombre_matriz" width="100px"><% inde.meta %></td>
-                                        <td ng-repeat="k in meses" width="110px" style="background: <% status[inde.id][k] >= 0 && status[inde.id][k] < 70 ? 'red' : status[inde.id][k] >= 70 && status[inde.id][k] < 85 ? 'gold' : status[inde.id][k] >= 85 ? 'limegreen' : ''; %> !important;">
-                                            <table width="100%" class="list-group" ng-init="status[inde.id][k] = inde[k].real / inde[k].planificado * 100; ">
+                                        <td ng-repeat="k in meses" width="110px" ng-init="valorAbsoluto(inde, status, inde.id, k)" style="background: <% (status[inde.id][k] >= 0) && status[inde.id][k] < 70 ? 'red' : status[inde.id][k] >= 70 && status[inde.id][k] < 85 ? 'gold' : status[inde.id][k] >= 85 ? 'limegreen' : ''; %> !important;">
+                                            <table width="100%" class="list-group" >
                                                 <tbody style="border:none">
                                                     
                                                     <tr style="background: darkgray;" ng-if="verR && inde[k].real >= 0" class="list-group-item matriz-planeacion-texto" align="center"><th><% inde[k].real %></th></tr>
