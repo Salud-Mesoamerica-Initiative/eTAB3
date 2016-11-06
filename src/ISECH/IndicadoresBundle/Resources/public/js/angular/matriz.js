@@ -363,28 +363,30 @@ App
     var temporalK = [];
     $scope.acumularAbsoluto = function(ind) {          
         if($scope.acumular[ind.id]){ 
-            var acumulado = 0;
+            var acumulado = 0; var index = 0;
             temporal[ind.id] = ind;
             temporalK[ind.id] = [];
-            angular.forEach(ind, function(v, k){
-                if(!isNaN(v.real) && v != null && v != ''){                    
-                    temporalK[ind.id][k] = v.real;
+            angular.forEach(ind, function(v, k){                
+                if(!isNaN(v.real) && v != null && v != '' && v.planificado != null && v.planificado != ''){                        
+                    temporalK[ind.id][$scope.meses[index]] = v.real;
                     acumulado = acumulado + (v.real * 1);
                     v.real = acumulado;
                 }
-                $scope.valorAbsoluto(ind, ind.id, k);
+                $scope.valorAbsoluto(ind, ind.id, $scope.meses[index]);
+                index++;
             });
         }
         else{
-            var id = ind.id;
+            var id = ind.id; var index = 0;
             ind = [];
             angular.forEach(temporal[id], function(v, k){                 
-                v.real = temporalK[id][k];
-                $scope.valorAbsoluto(temporal[id], temporal[id].id, k);
+                v.real = temporalK[id][$scope.meses[index]];
+                $scope.valorAbsoluto(temporal[id], temporal[id].id, $scope.meses[index]);
+                index++;
             });                                           
             ind = temporal[id];                                                       
         }
-    }    
+    }   
 
     $scope.imprimir_mensaje = function(mensaje,tipo,id){
         id = angular.isUndefined(id) ? "#feedback_bar" : "#result_factura_test" +  ", #" +id;
