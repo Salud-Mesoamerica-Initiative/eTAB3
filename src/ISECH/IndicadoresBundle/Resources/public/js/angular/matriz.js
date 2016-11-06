@@ -336,20 +336,31 @@ App
             }
         );  
     }
-
-    $scope.valorAbsoluto = function(inde, status, id, k) {  
-        if(!angular.isUndefined(inde[k])){
-            if(angular.isUndefined(status[id]))
-                status[id] = [];
-            if(angular.isUndefined(status[id][k]))
-                status[id][k] = '';
-            if(inde[k].real != null && inde[k].planificado != null)
-                status[id][k] = inde[k].real / inde[k].planificado * 100;  
-            else
-                status[id][k] = -1;
-            if(isNaN(status[id][k]))
-                status[id][k] = -1;
-            console.log(k, inde[k], status[id][k]);
+    $scope.temporal = [];
+    var temporal = [];
+    var temporalK = [];
+    $scope.acumularAbsoluto = function(ind) {          
+        if($scope.acumular[ind.id]){ 
+            var acumulado = 0;
+            temporal[ind.id] = ind;
+            temporalK[ind.id] = [];
+            angular.forEach(ind, function(v, k){
+                if(!isNaN(v.real) && v != null && v != ''){                    
+                    temporalK[ind.id][k] = v.real;
+                    acumulado = acumulado + (v.real * 1);
+                    v.real = acumulado;
+                }
+                $scope.valorAbsoluto(ind, ind.id, k);
+            });
+        }
+        else{
+            var id = ind.id;
+            ind = [];
+            angular.forEach(temporal[id], function(v, k){                 
+                v.real = temporalK[id][k];
+                $scope.valorAbsoluto(temporal[id], temporal[id].id, k);
+            });                                           
+            ind = temporal[id];                                                       
         }
     }    
 
