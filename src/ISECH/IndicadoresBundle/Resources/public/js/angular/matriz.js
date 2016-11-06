@@ -361,32 +361,49 @@ App
     $scope.temporal = [];
     var temporal = [];
     var temporalK = [];
-    $scope.acumularAbsoluto = function(ind) {          
+    $scope.acumularAbsoluto = function(ind) {
+        var indTemp = {};
+        indTemp.fuente = ind.fuente;
+        indTemp.id     = ind.id;
+        indTemp.meta   = ind.meta;
+        indTemp.nombre = ind.nombre
+        var meses = [];
+        angular.forEach($scope.meses, function(v, k){  
+            if(angular.isUndefined(meses[k]))
+                meses[k] = [];                       
+            if(!angular.isUndefined(ind[v])){                  
+                meses[k][v] = ind[v];                     
+            }                                   
+        });
+        indTemp.meses = meses;
         if($scope.acumular[ind.id]){ 
-            var acumulado = 0; var index = 0;
+            var acumulado = 0;
             temporal[ind.id] = ind;
             temporalK[ind.id] = [];
-            angular.forEach(ind, function(v, k){                
-                if(!isNaN(v.real) && v != null && v != '' && v.planificado != null && v.planificado != ''){                        
-                    temporalK[ind.id][$scope.meses[index]] = v.real;
-                    acumulado = acumulado + (v.real * 1);
-                    v.real = acumulado;
-                }
-                $scope.valorAbsoluto(ind, ind.id, $scope.meses[index]);
-                index++;
+            angular.forEach(indTemp.meses, function(m, c){                    
+                var k = $scope.meses[c];
+                var v = m[k];
+                if(!angular.isUndefined(v)){                    
+                    if(!isNaN(v.real) && v != null && v != '' && v.planificado != null && v.planificado != ''){                        
+                        temporalK[ind.id][k] = v.real;
+                        acumulado = acumulado + (v.real * 1);
+                        v.real = acumulado;
+                        ind[k].real = acumulado;
+                    }                
+                    $scope.valorAbsoluto(ind, ind.id, k); 
+                }               
             });
         }
         else{
-            var id = ind.id; var index = 0;
+            var id = ind.id;
             ind = [];
             angular.forEach(temporal[id], function(v, k){                 
-                v.real = temporalK[id][$scope.meses[index]];
-                $scope.valorAbsoluto(temporal[id], temporal[id].id, $scope.meses[index]);
-                index++;
+                v.real = temporalK[id][k];
+                $scope.valorAbsoluto(temporal[id], temporal[id].id, k);                
             });                                           
             ind = temporal[id];                                                       
         }
-    }   
+    } 
 
     $scope.imprimir_mensaje = function(mensaje,tipo,id){
         id = angular.isUndefined(id) ? "#feedback_bar" : "#result_factura_test" +  ", #" +id;
