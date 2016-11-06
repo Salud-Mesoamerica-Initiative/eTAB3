@@ -336,6 +336,28 @@ App
             }
         );  
     }
+    $scope.statusx  = [];
+    $scope.acumular = [];
+    $scope.valorAbsoluto = function(inde, id, k) {  
+        if(!angular.isUndefined(inde[k])){
+            if(angular.isUndefined($scope.statusx[id])){
+                $scope.statusx[id] = [];
+                $scope.acumular[id] = false;
+            }
+            if(angular.isUndefined($scope.statusx[id][k])){
+                $scope.statusx[id][k] = '';
+            }
+            if(inde[k].real != null && inde[k].planificado != null){                
+                $scope.statusx[id][k] = inde[k].real / inde[k].planificado * 100;                
+            }
+            else{
+                $scope.statusx[id][k] = -1;
+            }
+            if(isNaN($scope.statusx[id][k]))
+                $scope.statusx[id][k] = -1; 
+
+        }
+    } 
     $scope.temporal = [];
     var temporal = [];
     var temporalK = [];
