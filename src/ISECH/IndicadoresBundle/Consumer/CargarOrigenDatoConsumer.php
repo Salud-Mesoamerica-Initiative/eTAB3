@@ -91,7 +91,7 @@ class CargarOrigenDatoConsumer implements ConsumerInterface
             $em->flush();
         }
 
-        /*if(!$error) {
+        if(!$error) {
             //Después de enviados todos los registros para guardar, mandar mensaje para borrar los antiguos
             $msg_guardar = array('id_origen_dato' => $idOrigen,
                 'method' => 'DELETE',
@@ -100,7 +100,7 @@ class CargarOrigenDatoConsumer implements ConsumerInterface
             );
             $this->container->get('old_sound_rabbit_mq.guardar_registro_producer')
                     ->publish(serialize($msg_guardar));
-        }*/
+        }
         return true;
     }
 

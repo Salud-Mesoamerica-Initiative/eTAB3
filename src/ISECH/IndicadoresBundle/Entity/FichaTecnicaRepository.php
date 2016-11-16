@@ -358,14 +358,31 @@ class FichaTecnicaRepository extends EntityRepository
         preg_match_all('/\{[a-z0-9\_]{1,}\}/', strtolower($formula), $variables, PREG_SET_ORDER);
 
         $oper = 'SUM';
+        
         if ($acumulado) 
         {
             $formula = str_replace(array('{', '}'), array('MAX(', ')'), $formula);
             $oper = 'MAX';
         } 
-        else
-            $formula = str_replace(array('{', '}'), array('SUM(', ')'), $formula);
-
+        else{
+            $formula = str_replace('{', '|', $formula);
+            $formula = explode("}", $formula);
+            $append = ""; $i = 0;
+            foreach ($formula as $key => $value) {  
+                if($i == 0){
+                    $opera = "";
+                    $value1 = substr($value, 1);
+                }
+                else{
+                    $opera = substr($value, 0,1);
+                    $value1 = substr($value, 2);
+                }
+                if($value1)
+                    $append .= "$opera (case SUM($value1) is null when true then 0 else SUM($value1) end)";
+                $i++;
+            }
+            $formula = $append;
+        }
         $denominador = explode('/', $fichaTecnica->getFormula());
         $evitar_div_0 = '';
         $variables_d = array();
@@ -380,8 +397,8 @@ class FichaTecnicaRepository extends EntityRepository
         $variables_query = '';
         foreach ($variables as $var) {
             $v = str_replace(array('{', '}'), array('', ''), $var[0]);
-            
-            $variables_query .= "case $oper($v) when null then 0 else $oper($v) end as $v, ";
+            // $opera = "(select $oper($v) from tmp_ind_" . $nombre_indicador." where $v is not null)";
+            $variables_query .= "$oper($v) as $v, ";
         }
         $variables_query = trim($variables_query, ', ');
 

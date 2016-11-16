@@ -88,6 +88,9 @@ function dibujarGrafico(zona, dimension)
 	{
     	///////crear la cadena con el rango de datos
     	////
+    	var datos = JSON.stringify(resp.datos);
+    	datos = datos.replace(/null/gi, "\"NM\"");
+    	resp.datos = JSON.parse(datos);
     	mensajerango = "";
     	val = resp.datos[0];
         if (typeof val !='undefined')
