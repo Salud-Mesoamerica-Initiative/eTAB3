@@ -364,22 +364,26 @@ class FichaTecnicaRepository extends EntityRepository
             $formula = str_replace(array('{', '}'), array('MAX(', ')'), $formula);
             $oper = 'MAX';
         } 
-        else{
+        else{ 
             $formula = str_replace('{', '|', $formula);
             $formula = explode("}", $formula);
             $append = ""; $i = 0;
-            foreach ($formula as $key => $value) {  
-                if($i == 0){
-                    $opera = "";
-                    $value1 = substr($value, 1);
+            foreach ($formula as $key => $value) { 
+                if($value != "*100"){
+                    if($i == 0){
+                        $opera = "";
+                        $value1 = substr($value, 1);
+                    }
+                    else{
+                        $opera = substr($value, 0,1);
+                        $value1 = substr($value, 2);
+                    }
+                    if($value1)
+                        $append .= "$opera (case SUM($value1) is null when true then 0 else SUM($value1) end)";
+                    $i++;
+                }else{
+                    $append .= $value;
                 }
-                else{
-                    $opera = substr($value, 0,1);
-                    $value1 = substr($value, 2);
-                }
-                if($value1)
-                    $append .= "$opera (case SUM($value1) is null when true then 0 else SUM($value1) end)";
-                $i++;
             }
             $formula = $append;
         }
