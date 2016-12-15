@@ -39,10 +39,14 @@ class GuardarRegistroOrigenDatoConsumer implements ConsumerInterface
 
             try {
                 //probar borrar todo antes de insertar
+                $this->em->getConnection()->beginTransaction();
+                $sql = '';
                 if($msg['es_incremental'] == true) {
                 } else {
                     $sql = "DELETE FROM fila_origen_dato WHERE id_origen_dato='$msg[id_origen_dato]';";
                 }
+
+                $this->em->getConnection()->exec($sql);
                 //
                 $sql = "INSERT INTO fila_origen_dato(id_origen_dato, datos, ultima_lectura)
                         VALUES ";
@@ -60,8 +64,6 @@ class GuardarRegistroOrigenDatoConsumer implements ConsumerInterface
                 $sth = $this->em->getConnection()->prepare($sql);
                 $sth->bindParam(':id_origen_dato', $msg['id_origen_dato']);
                 $sth->bindParam(':ultima_lectura', $msg['ultima_lectura']);
-
-                $this->em->getConnection()->beginTransaction();
                 $i = 0;
                 foreach ($msg['datos'] as $fila) {
                     foreach ($fila as $k => $value) {
