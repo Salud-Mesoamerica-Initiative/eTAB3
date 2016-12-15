@@ -33,7 +33,7 @@ class ClasificacionTecnica
     /**
      * @var string $descripcion
      *
-     * @ORM\Column(name="descripcion", type="string", length=150, nullable=false)
+     * @ORM\Column(name="descripcion", type="string", length=350, nullable=false)
      * @CustomAssert\AlphanumericPlus(message="AlphanumericPlus.Message")
      */
     private $descripcion;
