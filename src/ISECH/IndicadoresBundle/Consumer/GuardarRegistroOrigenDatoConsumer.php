@@ -38,6 +38,12 @@ class GuardarRegistroOrigenDatoConsumer implements ConsumerInterface
             }
 
             try {
+                //probar borrar todo antes de insertar
+                if($msg['es_incremental'] == true) {
+                } else {
+                    $sql = "DELETE FROM fila_origen_dato WHERE id_origen_dato='$msg[id_origen_dato]';";
+                }
+                //
                 $sql = "INSERT INTO fila_origen_dato(id_origen_dato, datos, ultima_lectura)
                         VALUES ";
                 $i = 0;
