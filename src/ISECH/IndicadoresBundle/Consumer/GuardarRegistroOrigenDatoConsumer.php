@@ -54,7 +54,7 @@ class GuardarRegistroOrigenDatoConsumer implements ConsumerInterface
                 
                 $sql = "";
                 $this->em->getConnection()->beginTransaction();
-                if($msg['es_incremental'] == true) {
+                if($msg['es_incremental'] == true || $msg['es_incremental'] == 1) {
                 } else {
                     $sql = "DELETE FROM fila_origen_dato WHERE id_origen_dato='$msg[id_origen_dato]';";
                 }
