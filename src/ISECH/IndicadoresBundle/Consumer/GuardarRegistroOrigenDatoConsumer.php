@@ -38,9 +38,22 @@ class GuardarRegistroOrigenDatoConsumer implements ConsumerInterface
             }
 
             try {
-                //probar borrar todo antes de insertar
+                //probar borrar todo antes de insertar                
+
+
+                $sql = "SELECT table_name FROM information_schema.tables WHERE table_name LIKE 'tmp_ind%'";
+                
+                $stmt = $this->em->getConnection()->prepare($sql);
+                $stmt->execute();
+                $tablas_temp = $stmt->fetchAll();
+                foreach ($tablas_temp as $key => $value) {
+                    $dl = "DROP TABLE ".$value["table_name"];
+                    $stmtd = $this->em->getConnection()->prepare($dl);
+                    $stmtd->execute();
+                }
+                
+                $sql = "";
                 $this->em->getConnection()->beginTransaction();
-                $sql = '';
                 if($msg['es_incremental'] == true) {
                 } else {
                     $sql = "DELETE FROM fila_origen_dato WHERE id_origen_dato='$msg[id_origen_dato]';";
