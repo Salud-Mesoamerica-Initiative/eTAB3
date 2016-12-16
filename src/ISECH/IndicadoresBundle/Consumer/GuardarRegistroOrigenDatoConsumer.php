@@ -39,17 +39,26 @@ class GuardarRegistroOrigenDatoConsumer implements ConsumerInterface
 
             try {
                 //probar borrar todo antes de insertar                
-
-
                 $sql = "SELECT table_name FROM information_schema.tables WHERE table_name LIKE 'tmp_ind%'";
                 
                 $stmt = $this->em->getConnection()->prepare($sql);
                 $stmt->execute();
                 $tablas_temp = $stmt->fetchAll();
+                $origenDatos = $this->em->find('IndicadoresBundle:OrigenDatos', $msg['id_origen_dato']);
                 foreach ($tablas_temp as $key => $value) {
                     $dl = "DROP TABLE ".$value["table_name"];
                     $stmtd = $this->em->getConnection()->prepare($dl);
                     $stmtd->execute();
+                    
+                    $reporteActualizacion = new ReporteActualizacion;
+                
+                    $reporteActualizacion->setOrigenDatos($origenDatos);
+                    $reporteActualizacion->setEstatusAct($this->em->find('IndicadoresBundle:EstatusActualizacion', 2));
+                    $reporteActualizacion->setFecha(new \DateTime('now'));
+                    $reporteActualizacion->setReporte($dl);
+
+                    $this->em->persist($reporteActualizacion);
+                    $this->em->flush();
                 }
                 
                 $sql = "";
@@ -57,6 +66,16 @@ class GuardarRegistroOrigenDatoConsumer implements ConsumerInterface
                 if($msg['es_incremental'] == true || $msg['es_incremental'] == 1) {
                 } else {
                     $sql = "DELETE FROM fila_origen_dato WHERE id_origen_dato='$msg[id_origen_dato]';";
+
+                    $reporteActualizacion = new ReporteActualizacion;
+                
+                    $reporteActualizacion->setOrigenDatos($origenDatos);
+                    $reporteActualizacion->setEstatusAct($this->em->find('IndicadoresBundle:EstatusActualizacion', 2));
+                    $reporteActualizacion->setFecha(new \DateTime('now'));
+                    $reporteActualizacion->setReporte($sql);
+
+                    $this->em->persist($reporteActualizacion);
+                    $this->em->flush();
                 }
 
                 $this->em->getConnection()->exec($sql);
