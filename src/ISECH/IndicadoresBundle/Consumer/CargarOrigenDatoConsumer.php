@@ -100,6 +100,28 @@ class CargarOrigenDatoConsumer implements ConsumerInterface
             );
             $this->container->get('old_sound_rabbit_mq.guardar_registro_producer')
                     ->publish(serialize($msg_guardar));*/
+
+            //probar borrar todo antes de insertar                
+            $sql = "SELECT table_name FROM information_schema.tables WHERE table_name LIKE 'tmp_ind%'";
+            
+            $stmt = $this->em->getConnection()->prepare($sql);
+            $stmt->execute();
+            $tablas_temp = $stmt->fetchAll();
+            foreach ($tablas_temp as $key => $value) {
+                $dl = "DROP TABLE ".$value["table_name"];
+                $stmtd = $this->em->getConnection()->prepare($dl);
+                $stmtd->execute();
+            }
+            
+            $sql = "";
+            
+            if($msg['es_incremental'] == true || $msg['es_incremental'] == 1) {
+            } else {
+                $sql = "DELETE FROM fila_origen_dato WHERE id_origen_dato='$msg[id_origen_dato]';";
+            }
+
+            $stmt = $this->em->getConnection()->prepare($sql);
+            $stmt->execute();
         }
         return true;
     }
