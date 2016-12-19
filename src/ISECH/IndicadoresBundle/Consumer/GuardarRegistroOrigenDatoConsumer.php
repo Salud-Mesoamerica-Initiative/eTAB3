@@ -92,7 +92,7 @@ class GuardarRegistroOrigenDatoConsumer implements ConsumerInterface
             return true;
         } elseif ($msg['method'] == 'DELETE') {
             try {
-                /*$this->em->getConnection()->beginTransaction();
+                $this->em->getConnection()->beginTransaction();
                 //Borrar los datos existentes por el momento así será pero debería haber una forma de ir a traer solo los nuevos
                 $sql = '';
                 if($msg['es_incremental'] == true) {
@@ -107,32 +107,8 @@ class GuardarRegistroOrigenDatoConsumer implements ConsumerInterface
                 }
 
                 $this->em->getConnection()->exec($sql);
-                $this->em->getConnection()->commit();*/
-
-                //probar borrar todo antes de insertar                
-                $sql = "SELECT table_name FROM information_schema.tables WHERE table_name LIKE 'tmp_ind%'";
+                $this->em->getConnection()->commit();
                 
-                $stmt = $this->em->getConnection()->prepare($sql);
-                $stmt->execute();
-                $tablas_temp = $stmt->fetchAll();
-                foreach ($tablas_temp as $key => $value) {
-                    $dl = "DROP TABLE ".$value["table_name"];
-                    $stmtd = $this->em->getConnection()->prepare($dl);
-                    $stmtd->execute();
-                }
-                
-                $sql = "";
-                
-                if($msg['es_incremental'] == true || $msg['es_incremental'] == 1) {
-                    $sql = "INSERT INTO fila_origen_dato SELECT * FROM fila_origen_dato_aux WHERE id_origen_dato='$msg[id_origen_dato]';
-                        DELETE FROM fila_origen_dato_aux WHERE id_origen_dato='$msg[id_origen_dato]' ;";
-                } else {
-                    $sql = "DELETE FROM fila_origen_dato WHERE id_origen_dato='$msg[id_origen_dato]' and ultima_lectura < '$msg[ultima_lectura]';";
-                }
-
-                $stmt = $this->em->getConnection()->prepare($sql);
-                $stmt->execute();
-
 
                 $origenDatos = $this->em->find('IndicadoresBundle:OrigenDatos', $msg['id_origen_dato']);
 
