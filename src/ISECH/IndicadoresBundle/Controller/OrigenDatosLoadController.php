@@ -284,13 +284,13 @@ class OrigenDatosLoadController extends Controller
 
                 //probar borrar todo antes de insertar                
                 $sql = "SELECT table_name FROM information_schema.tables WHERE table_name LIKE 'tmp_ind%'";
-                
-                $stmt = $this->em->getConnection()->prepare($sql);
+                $em = $this->getDoctrine()->getManager();
+                $stmt = $em->getConnection()->prepare($sql);
                 $stmt->execute();
                 $tablas_temp = $stmt->fetchAll();
                 foreach ($tablas_temp as $key => $value) {
                     $dl = "DROP TABLE ".$value["table_name"];
-                    $stmtd = $this->em->getConnection()->prepare($dl);
+                    $stmtd = $em->getConnection()->prepare($dl);
                     $stmtd->execute();
                 }
                 
@@ -302,7 +302,7 @@ class OrigenDatosLoadController extends Controller
                     $sql = "DELETE FROM fila_origen_dato WHERE id_origen_dato='$id';";
                 }
 
-                $stmt = $this->em->getConnection()->prepare($sql);
+                $stmt = $em->getConnection()->prepare($sql);
                 $stmt->execute();
 				return new Response(json_encode(array("save"=>true,"message"=>$this->batchActionLoadData(array($id)))));
             }
