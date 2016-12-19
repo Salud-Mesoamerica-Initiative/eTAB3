@@ -92,7 +92,7 @@ class GuardarRegistroOrigenDatoConsumer implements ConsumerInterface
             return true;
         } elseif ($msg['method'] == 'DELETE') {
             try {
-                $this->em->getConnection()->beginTransaction();
+               /* $this->em->getConnection()->beginTransaction();
                 //Borrar los datos existentes por el momento así será pero debería haber una forma de ir a traer solo los nuevos
                 $sql = '';
                 if($msg['es_incremental'] == true) {
@@ -107,8 +107,8 @@ class GuardarRegistroOrigenDatoConsumer implements ConsumerInterface
                 }
 
                 $this->em->getConnection()->exec($sql);
-                $this->em->getConnection()->commit();
-                
+                $this->em->getConnection()->commit();*/
+
 
                 $origenDatos = $this->em->find('IndicadoresBundle:OrigenDatos', $msg['id_origen_dato']);
 
