@@ -35,29 +35,6 @@ class CargarOrigenDatoConsumer implements ConsumerInterface
         $tamanio = 1000000;
         try {
             if ($origenDato->getSentenciaSql() != '') {
-                //probar borrar todo antes de insertar                
-                $sql = "SELECT table_name FROM information_schema.tables WHERE table_name LIKE 'tmp_ind%'";
-                
-                $stmt = $this->em->getConnection()->prepare($sql);
-                $stmt->execute();
-                $tablas_temp = $stmt->fetchAll();
-                foreach ($tablas_temp as $key => $value) {
-                    $dl = "DROP TABLE ".$value["table_name"];
-                    $stmtd = $this->em->getConnection()->prepare($dl);
-                    $stmtd->execute();
-                }
-                
-                $sql = "";
-                
-                if($msg['es_incremental'] == true || $msg['es_incremental'] == 1) {
-                    $sql = "";
-                } else {
-                    $sql = "DELETE FROM fila_origen_dato WHERE id_origen_dato='$idOrigen';";
-                }
-
-                $stmt = $this->em->getConnection()->prepare($sql);
-                $stmt->execute();
-
                 // Recorrer cada conexión que tenga asociado el origen de datos
                 foreach ($origenDato->getConexiones() as $cnx) {
                     $leidos = 1000001;

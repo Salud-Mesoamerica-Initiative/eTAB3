@@ -280,8 +280,32 @@ class OrigenDatosLoadController extends Controller
             $id = $this->getRequest()->get('id');
 			$origen = $this->getDoctrine()->getManager()->find('IndicadoresBundle:OrigenDatos', $id);
 			$valid = $this->batchActionLoadDataIsRelevant(array($id));
-			if($valid === true)            
+			if($valid === true)  {
+
+                //probar borrar todo antes de insertar                
+                $sql = "SELECT table_name FROM information_schema.tables WHERE table_name LIKE 'tmp_ind%'";
+                
+                $stmt = $this->em->getConnection()->prepare($sql);
+                $stmt->execute();
+                $tablas_temp = $stmt->fetchAll();
+                foreach ($tablas_temp as $key => $value) {
+                    $dl = "DROP TABLE ".$value["table_name"];
+                    $stmtd = $this->em->getConnection()->prepare($dl);
+                    $stmtd->execute();
+                }
+                
+                $sql = "";
+                
+                if($origen->es_incremental == true || $origen->es_incremental == 1) {
+                    $sql = "";
+                } else {
+                    $sql = "DELETE FROM fila_origen_dato WHERE id_origen_dato='$id';";
+                }
+
+                $stmt = $this->em->getConnection()->prepare($sql);
+                $stmt->execute();
 				return new Response(json_encode(array("save"=>true,"message"=>$this->batchActionLoadData(array($id)))));
+            }
 			else 
 			{
 				return new Response(json_encode(array("save"=>false,"message"=>$this->get('translator')->trans('origen_no_configurado'))));
