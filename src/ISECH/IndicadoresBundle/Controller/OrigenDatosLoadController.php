@@ -296,7 +296,7 @@ class OrigenDatosLoadController extends Controller
                 
                 $sql = "";
                 
-                if($origen->es_incremental == true || $origen->es_incremental == 1) {
+                if($origen->getActualizacionIncremental() == true || $origen->getActualizacionIncremental() == 1) {
                     $sql = "";
                 } else {
                     $sql = "DELETE FROM fila_origen_dato WHERE id_origen_dato='$id';";
