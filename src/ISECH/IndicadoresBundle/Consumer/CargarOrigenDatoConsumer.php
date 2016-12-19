@@ -127,7 +127,7 @@ class CargarOrigenDatoConsumer implements ConsumerInterface
                 $nueva_fila['origen_dato'] = $nombre_conexion;
                 $datos_a_enviar[] = $nueva_fila;
                 //Enviaré en grupos de 200
-                if ($i == 200) {
+                if ($i == 2000) {
                     $msg_guardar = array('id_origen_dato' => $idOrigen,
                         'method' => 'PUT',
                         'datos' => $datos_a_enviar,
