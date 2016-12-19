@@ -117,7 +117,7 @@ class CargarOrigenDatoConsumer implements ConsumerInterface
             
             if($msg['es_incremental'] == true || $msg['es_incremental'] == 1) {
             } else {
-                $sql = "DELETE FROM fila_origen_dato WHERE id_origen_dato='$msg[id_origen_dato]';";
+                $sql = "DELETE FROM fila_origen_dato WHERE id_origen_dato='$msg[id_origen_dato]' and ultima_lectura < '$ahora';";
             }
 
             $stmt = $this->em->getConnection()->prepare($sql);
