@@ -365,7 +365,7 @@ class FichaTecnicaRepository extends EntityRepository
             $oper = 'MAX';
         } 
         else{ 
-            $formula = str_replace('{', '|', $formula);
+            $formula = str_replace('{', '', $formula);
             $formula = explode("}", $formula);
             $append = ""; $i = 0;
             foreach ($formula as $key => $value) { 
@@ -380,7 +380,6 @@ class FichaTecnicaRepository extends EntityRepository
                     }
                     if($value1){echo $value."<br>";
                         $append .= "$opera (case SUM($value1) is null when true then 0 else SUM($value1) end)";
-                        $append = str_replace('00\/|', '', $append);
                     }
                     $i++;
                 }else{
