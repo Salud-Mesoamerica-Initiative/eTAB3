@@ -39,10 +39,7 @@ class GuardarRegistroOrigenDatoConsumer implements ConsumerInterface
 
             try {
                 
-                $this->em->getConnection()->beginTransaction();
-                
-                $this->em->getConnection()->exec($sql);
-                //
+                $this->em->getConnection()->beginTransaction();                
                 $sql = "INSERT INTO fila_origen_dato(id_origen_dato, datos, ultima_lectura)
                         VALUES ";
                 $i = 0;
