@@ -374,8 +374,8 @@ class FichaTecnicaRepository extends EntityRepository
                         $opera = "";
                         $value1 = substr($value, 1);
                     }
-                    else{echo substr($value, 5)."<br>";
-                        if(substr($value, 5) == '*100/'){
+                    else{echo substr($value, 0, 5)."<br>";
+                        if(substr($value, 0, 5) == '*100/'){
                             $opera = '*100/';
                             $value1 = substr($value, 6);
                         }
