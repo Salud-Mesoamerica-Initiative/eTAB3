@@ -374,13 +374,18 @@ class FichaTecnicaRepository extends EntityRepository
                         $opera = "";
                         $value1 = substr($value, 1);
                     }
-                    else{
-                        $opera = substr($value, 0,1);
-                        $value1 = substr($value, 2);
+                    else{echo substr($value, 5)."<br>";
+                        if(substr($value, 5) == '*100/'){
+                            $opera = '*100/';
+                            $value1 = substr($value, 6);
+                        }
+                        else{
+                            $opera = substr($value, 0,1);
+                            $value1 = substr($value, 2);
+                        }
                     }
                     if($value1){
                         $value = trim($value);
-                        echo $value."<br>";
                         $append .= "$opera (case SUM($value1) is null when true then 0 else SUM($value1) end)";
                     }
                     $i++;
