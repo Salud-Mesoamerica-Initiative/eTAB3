@@ -379,6 +379,8 @@ class FichaTecnicaRepository extends EntityRepository
                         $value1 = substr($value, 2);
                     }
                     if($value1){
+                        $value = trim($value);
+                        echo $value."<br>";
                         $append .= "$opera (case SUM($value1) is null when true then 0 else SUM($value1) end)";
                     }
                     $i++;
