@@ -365,7 +365,7 @@ class FichaTecnicaRepository extends EntityRepository
             $oper = 'MAX';
         } 
         else{ 
-            $formula = str_replace('{', '', $formula);
+            $formula = str_replace('{', ' ', $formula);
             $formula = explode("}", $formula);
             $append = ""; $i = 0;
             foreach ($formula as $key => $value) { 
