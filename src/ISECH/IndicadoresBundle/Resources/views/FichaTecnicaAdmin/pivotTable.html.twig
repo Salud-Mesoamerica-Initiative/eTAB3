@@ -10,6 +10,9 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script src="{{ asset('bundles/indicadores/js/SVG/rgbcolor.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/indicadores/js/SVG/StackBlur.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/indicadores/js/SVG/canvg.js') }}" type="text/javascript"></script>
     <script src="{{ asset('bundles/indicadores/js/FichaTecnicaAdmin/pivotTable.js') }}" type="text/javascript"></script>
     <script src="{{ asset('bundles/indicadores/js/pivotTable/pivot.js') }}" type="text/javascript"></script>
     <script src="{{ asset('bundles/indicadores/js/pivotTable/pivot.es.js') }}" type="text/javascript"></script>

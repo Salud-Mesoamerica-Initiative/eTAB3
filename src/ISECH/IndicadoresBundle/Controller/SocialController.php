@@ -310,7 +310,7 @@ class SocialController extends Controller {
              return new Response("No existe el elemento");
         }
 
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $em->remove($id);
         $em->flush();
     

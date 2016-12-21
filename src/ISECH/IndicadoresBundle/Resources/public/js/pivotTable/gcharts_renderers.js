@@ -96,6 +96,8 @@
         var editor;
         editor = new google.visualization.ChartEditor();
         google.visualization.events.addListener(editor, 'ok', function() {
+          chart_div = document.getElementById('sql');
+          chart_div.innerHTML = '<img src="' + wrapper.getChart().getImageURI() + '">';
           return editor.getChartWrapper().draw(result[0]);
         });
         return editor.openDialog(wrapper);

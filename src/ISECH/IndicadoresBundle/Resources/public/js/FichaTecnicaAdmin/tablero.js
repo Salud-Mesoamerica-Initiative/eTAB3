@@ -524,7 +524,7 @@ function cargarAcciones(sala) {
                 "bJQueryUI": true,
                 "sDom": '<"H"Tfr>t<"F"ip>',
                 "oTableTools": {
-                    "sSwfPath": sSwfPath,
+                    "sSwfPath": rutahome,
                     "aButtons": [
                         {
                             "sExtends": "collection",

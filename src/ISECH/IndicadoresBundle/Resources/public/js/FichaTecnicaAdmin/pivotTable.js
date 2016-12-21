@@ -19,7 +19,9 @@ $(document).ready(function() {
        var t = $('.pvtTable');
         tableToExcel(t[0],'indicador', $('#titulo_header').attr('data-content').trim()+'.xls');
     });
-    $('#export_grp').on('click',function(e) {      
+    $('#export_grp').on('click',function(e) {    
+        chart_div = document.getElementById('sql');
+        chart_div.innerHTML = '<img src="' + getImgData() + '">';
         $('#myModalLabel2').html(trans.guardar_imagen);
         $('#myModal2').modal('show');
     });
@@ -45,6 +47,25 @@ $(document).ready(function() {
         cargar_indicador(id_indicador,nombre_indicador);
     });
 });
+function getImgData() {
+    var chartArea = document.getElementsByTagName('svg')[0].parentNode;
+    var svg = chartArea.innerHTML;
+    var canvas = document.createElement('canvas');
+    canvas.setAttribute('width', chartArea.offsetWidth);
+    canvas.setAttribute('height', chartArea.offsetHeight);
+
+
+    canvas.setAttribute(
+        'style',
+        'position: absolute; ' +
+        'top: ' + (-chartArea.offsetHeight * 2) + 'px;' +
+        'left: ' + (-chartArea.offsetWidth * 2) + 'px;');
+    document.body.appendChild(canvas);
+    canvg(canvas, svg);
+    var imgData = canvas.toDataURL("image/png");
+    canvas.parentNode.removeChild(canvas);
+    return imgData;
+}
 function cargar_indicador(id_indicador,nombre_indicador){
     var renderers = $.extend($.pivotUtilities.renderers,$.pivotUtilities.gchart_renderers);
                     
