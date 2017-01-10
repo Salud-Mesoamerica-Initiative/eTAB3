@@ -175,7 +175,13 @@ class FichaTecnicaAdminController extends Controller
     public function PivotTableAction()
     {        
         $datos = $this->getListadoIndicadores();
-        
+        $em = $this->getDoctrine()->getManager();
+        $req = $this->getRequest();        
+        $usuario = $this->getUser();
+
+        // guardar el log         
+        $util = new \ISECH\IndicadoresBundle\Util\Util();
+        $util->logUsuario($em, $req, $usuario, "Tabla dinamica", "FichaTecnicaAdmin");
         return $this->render('IndicadoresBundle:FichaTecnicaAdmin:pivotTable.html.twig', array(
                     'categorias' => $datos['categorias'],
                     'clasificacionUso' => $datos['clasificacionUso'],

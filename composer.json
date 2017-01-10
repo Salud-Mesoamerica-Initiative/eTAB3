@@ -39,7 +39,7 @@
 		"knplabs/knp-snappy-bundle": "dev-master",
 
 		"sonata-project/cache": "v1.0.7",
-        "sonata-project/cache-bundle": "dev-master",
+        "sonata-project/cache-bundle": "2.3.0",
         "sonata-project/datagrid-bundle": "^2.2",
         "sonata-project/core-bundle": "^2.2.1",
         "sonata-project/admin-bundle": "~2.3.6",
@@ -62,7 +62,8 @@
         "suncat/mobile-detect-bundle": "v1.0.3",
         "jms/serializer-bundle": "v1.1.0",        
         "snc/redis-bundle": "v2.0.0",
-        "predis/predis": "v1.1.1"
+        "predis/predis": "v1.1.1",
+        "beberlei/DoctrineExtensions": "*"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

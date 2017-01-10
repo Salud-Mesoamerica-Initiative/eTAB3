@@ -64,4 +64,29 @@ class Util
                 return true;
         }
     }
+
+    public function logUsuario($em, $request, $user, $accion, $class)
+    {
+        $registro = $em->createQuery('SELECT l FROM IndicadoresBundle:LogUsuario l 
+                        WHERE l.usuario = :user AND date(l.creado) = :fecha AND l.accion = :accion')
+        ->setParameter('user', $user->getId())->setParameter('fecha', date("Y-m-d"))->setParameter('accion', $accion)->getResult(); 
+        
+        if(!$registro){
+            $ip      = $request->getClientIp();
+            $mac     = explode(" ", exec('getmac'))[0];
+            $info    = $request->headers->get('User-Agent');
+            
+            $entity  = new \MINSAL\IndicadoresBundle\Entity\LogUsuario;
+
+            $entity->setUsuario( $user->getId() );
+            $entity->setIp( $ip );
+            $entity->setMac( $mac );
+            $entity->setInfo( $info );
+            $entity->setAccion( $accion );
+            $entity->setClass( $class );
+            
+            $em->persist($entity);
+            $em->flush();
+        }
+    }
 }

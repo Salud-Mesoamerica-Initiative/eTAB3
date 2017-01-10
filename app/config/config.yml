@@ -63,7 +63,10 @@ doctrine:
 
     orm:
         auto_generate_proxy_classes: %kernel.debug%
-        auto_mapping: true       
+        auto_mapping: true
+        dql:
+            datetime_functions:
+                date: DoctrineExtensions\Query\Mysql\Date
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -194,6 +197,12 @@ services:
         arguments: [%locale%]
         tags:
             -  { name: kernel.event_subscriber }
+
+    log_usuario:
+        class: MINSAL\IndicadoresBundle\Listener\LogUsuario
+        arguments: ['@security.context', '@doctrine']
+        tags:
+            - { name: 'kernel.event_listener', event: 'security.interactive_login' }
 
     monolog.processor.siig:
         class: ISECH\IndicadoresBundle\FormatoVitacora

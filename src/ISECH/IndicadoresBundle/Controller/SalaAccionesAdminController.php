@@ -77,6 +77,10 @@ class SalaAccionesAdminController extends Controller
             $em->flush();
             $resp['estado'] = 'ok';
             $em->getConnection()->commit();
+
+            // guardar el log 
+            $util = new \ISECH\IndicadoresBundle\Util\Util();
+            $util->logUsuario($em, $req, $usuario, "Accion sala", "SalaAcciones");
         } catch (Exception $e) {
             $em->getConnection()->rollback();
             $em->close();

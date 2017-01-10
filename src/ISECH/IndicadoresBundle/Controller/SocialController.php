@@ -83,6 +83,7 @@ class SocialController extends Controller {
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $req = $this->getRequest();
+        $usua = $this->getUser();
         $comentario = new ComentariosSala();
         $ahora = new \DateTime("now");
         $ret = ""; $msg = "";
@@ -191,6 +192,9 @@ class SocialController extends Controller {
                     $msg.="se envio correo a: ".$usuario[$i]."\n\n";
                 }
             }
+            // guardar el log 
+            $util = new \ISECH\IndicadoresBundle\Util\Util();
+            $util->logUsuario($em, $req, $usua, "Compartir sala", "Social");
             if($msg!="")
             {
                 $social = new Social();

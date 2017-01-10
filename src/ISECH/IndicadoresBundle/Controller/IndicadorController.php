@@ -501,6 +501,7 @@ class IndicadorController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $req = $this->getRequest();
+        $usuario = $this->getUser();
         $resp = array();
 
         $sala = json_decode($req->get('datos'));
@@ -556,6 +557,11 @@ class IndicadorController extends Controller
             }
             $resp['estado'] = 'ok';
             $em->getConnection()->commit();
+
+            // guardar el log 
+            $util = new \ISECH\IndicadoresBundle\Util\Util();
+            $util->logUsuario($em, $req, $usuario, "Guardar sala", "Indicador");
+
         } catch (Exception $e) {
             $em->getConnection()->rollback();
             $em->close();

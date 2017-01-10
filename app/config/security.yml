@@ -44,6 +44,7 @@ security:
             logout:
                 path:           /admin/logout
                 target:         /admin/login
+                success_handler:  log_usuario
 
             anonymous:    true
         # -> end custom configuration
