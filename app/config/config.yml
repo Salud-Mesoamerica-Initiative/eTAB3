@@ -200,7 +200,7 @@ services:
 
     log_usuario:
         class: ISECH\IndicadoresBundle\Listener\LogUsuario
-        arguments: ['@security.context', '@doctrine']
+        arguments: ['@security.context', '@doctrine', '@router']
         tags:
             - { name: 'kernel.event_listener', event: 'security.interactive_login' }
 
