@@ -1,0 +1,98 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends 'IndicadoresBundle:Block:block_base.html.twig' %}
+
+
+{% block block %}
+		{% set class=["red","yellow","green","aqua","blue","purple","teal","olive","orange","black","fuchsia","maroon","navy","light-blue"] %}
+        {% set icons=["person","ios7-albums","bookmark","grid","pound","image","images","compose","stats-bars","android-storage","android-archive","ios7-eye","card","speedometer","social-windows-outline","person-add","ios7-people"] %}
+        {% set c1 = 0 %}
+        {% set c2 = 0 %}
+        {% set c3 = 0 %}
+        {% for group in groups %}
+            {% set display = (group.roles is empty or is_granted('ROLE_SUPER_ADMIN') ) %}
+            {% for role in group.roles if not display %}
+                {% set display = is_granted(role)%}
+            {% endfor %}
+
+            {% if display %}
+            
+        <div class="panel panel-default">
+		  <div class="panel-heading">
+			<strong>{{ group.label|trans({}, group.label_catalogue)|capitalize }}</strong>
+		  </div>
+		  <div class="panel-body">
+                {% for admin in group.items %}
+                    {% if admin.hasroute('create') and admin.isGranted('CREATE') or admin.hasroute('list') and admin.isGranted('LIST') %}
+                    
+                        <div class="col-lg-3 col-xs-6">
+                            <!-- small box -->
+                            <div class="small-box bg-{{ class[c1] }}">
+                                <div class="inner">
+                                    <h3 >
+                                        {{ admin.label|trans({}, admin.translationdomain) }}
+                                    </h3>
+                                    <p>
+                        				...
+                    				</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="ion ion-{{ icons[c2] }}"></i>
+                                </div>
+                                <div class="small-box-footer">
+                                    {% if admin.hasroute('create') and admin.isGranted('CREATE') %}
+                                        {% if admin.subClasses is empty %}
+                                            <a class="btn btn-default" href="{{ admin.generateUrl('create')}}" title="{% trans from 'SonataAdminBundle' %}link_add{% endtrans %}">
+                                                <i class="ion ion-plus"></i>
+                                                
+                                            </a>
+                                        {% else %}
+                                            <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#" title="{% trans from 'SonataAdminBundle' %}link_add{% endtrans %}">
+                                                <i class="ion-plus"></i>
+                                                
+                                                <span class="caret"></span>
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                {% for subclass in admin.subclasses|keys %}
+                                                    <li>
+                                                        <a href="{{ admin.generateUrl('create', {'subclass': subclass}) }}">{{ subclass }}</a>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        {% endif %}
+                                    {% endif %}
+                                    {% if admin.hasroute('list') and admin.isGranted('LIST') %}
+                                        <a class="btn btn-default" href="{{ admin.generateUrl('list')}}" title="{% trans from 'SonataAdminBundle' %}link_list{% endtrans -%}">
+                                            <i class="ion ion-navicon"></i>
+                                            
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                     {% set c3 = c3 + 1 %}                                                                                                   
+                     {% set c1 = c1 + 1 %}
+                     {% set c2 = c2 + 1 %}
+                            
+                     {% if c1==14 %} 
+                     {% set c1=0 %}
+                     {% endif %}  
+                    {% endif %}
+                {% endfor %}
+                </div>
+		</div>
+            {% endif %}
+        {% endfor %}
+        {% if c3 == 0 %}
+        	<script>document.location.href='isech/indicadores/fichatecnica/tablero';</script>
+        {% endif %}
+{% endblock %}

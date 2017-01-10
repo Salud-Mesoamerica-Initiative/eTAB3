@@ -1,0 +1,249 @@
+{% extends 'IndicadoresBundle::standard_layout.html.twig' %}
+{% block javascripts %}
+    {{parent()}}
+    <script src="{{ asset('bundles/indicadores/js/angular/angular.js') }}" type="text/javascript"></script>
+    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.14.1.js" type="text/javascript"></script>
+    <script src="{{ asset('bundles/indicadores/js/angular/ngStorage.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/indicadores/js/angular/moment.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/indicadores/js/angular/matriz.js') }}" type="text/javascript"></script>
+
+    <script src="{{ asset('bundles/indicadores/js/export_plugin/tableExport.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/indicadores/js/export_plugin/filesaver.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/indicadores/js/export_plugin/jquery.base64.js') }}" type="text/javascript"></script>
+    
+{% endblock javascripts %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        td{
+            min-width: 30px;
+            min-height: 90px;
+        }
+        td.valores{
+            text-align: right;
+        }
+        td.nombre_variable{
+            vertical-align: middle !important;
+        }
+        table{
+            background-color: white;
+            border-color: black !important;
+        }
+        .sonata-ba-content{
+            overflow: auto;
+        }
+    </style>
+
+{% endblock stylesheets %}
+    
+{% block content %}
+
+    <div class="col-sm-12" ng-app="App" ng-controller="MatrizCtrl" ng-init="ruta='{{ path('matriz_reporte') }}'">
+
+        <div id="div_carga" class='affix' style="display:<% cargando ? 'block' : 'none' %>">
+            <div id="cargador"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span></div>
+        </div>
+
+        <br>
+        <div class="row">
+            <div class="col-sm-1">{{ '_anio_select_' | trans }}:</div>
+            <div class="col-md-5">
+                <p class="input-group">
+                    <label></label>
+                  <input type="text" class="form-control" uib-datepicker-popup="<%format%>" 
+                    ng-model="anio" is-open="status.opened" 
+                    datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" ng-click="open($event)" />
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                  </span>
+                </p>
+            </div>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-default" ng-click="crearPlaneacion(ruta ,anio)"><i class="glyphicon glyphicon-refresh"></i></button>
+
+                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#alertas"><i class="glyphicon glyphicon-exclamation-sign"></i></button>
+            </div>
+            
+            <!-- Modal -->
+            <div class="modal fade" id="alertas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="margin-top:5%">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Alertas</h4>
+                  </div>
+                  <div class="modal-body">
+                    <table border="1" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Color</th>
+                                <th>Límite inferior</th>
+                                <th>Límite superior</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span class="label" style="display:block;widht:100%;font-size:16px;background:red">0 - 69.99</span>
+                                </td>
+                                <td>0</td>
+                                <td>69.99</td>
+                            </tr><tr>
+                            <td>
+                                <span class="label" style="display:block;widht:100%;font-size:16px;background:#FFCC00">70 - 84.99</span>
+                            </td>
+                            <td>70</td>
+                            <td>84.99</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="label" style="display:block;widht:100%;font-size:16px;background:green">85 - 100</span>
+                            </td>
+                            <td>85</td>
+                            <td>100</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+        </div>
+        <div id="feedback_bar"></div>
+        <div ng-if="noPlaneacion" style="height:<% tamanoHeight %>px; overflow:auto"></div>
+        <div class="row" ng-if="!noPlaneacion">
+
+            <div class="page-header">
+                <h1 ng-init="verP = false; verR = false; verV = false;">
+                    <i class="glyphicon glyphicon-th"></i> <span id="tituloReporte">{{ '_matriz_seguimiento_' | trans }} ({{ '_reporte_' | trans }}) <% anio | date:'yyyy' %> </span>
+                    
+                    <div class="pull-right">
+                        <div class="btn-group" role="group" aria-label="...">
+                          
+                            <button type="button" class="btn btn-default" exportar-tabla>
+                                <i class="glyphicon glyphicon-file"></i> {{ '_exportar_' | trans }}
+                            </button>
+
+                            <button type="button" class="btn btn-default" imprimir-div=".imprimir" ruta="{{asset('/bundles/indicadores/')}}">
+                                <i class="glyphicon glyphicon-print"></i> {{ '_imprimir_' | trans }}
+                            </button>
+                        </div>
+                    </div>
+                </h1>
+                <label style="color: cornflowerblue">                    
+                    {{ '_matriz_verP_' | trans }} 
+                    <input type="checkbox" ng-click="verP = !verP" class="form-control" style="width:25px; height:25px; float: left; margin: -8px 1px 0px 7px;">
+                </label>
+
+                <label>
+                    {{ '_matriz_verR_' | trans }} 
+                    <input type="checkbox" ng-click="verR = !verR" class="form-control" style="width:25px; height:25px; float: left; margin: -5px 1px 0px 7px;">
+                </label>
+
+                <!--<label>
+                    {{ '_matriz_verV_' | trans }} 
+                    <input type="checkbox" ng-click="verV = !verV" class="form-control" style="width:25px; height:25px; float: left; margin: -5px 1px 0px 7px;" >
+                </label>-->
+            </div>
+            <div class="" style="height:<% tamanoHeight - 26 %>px; overflow:auto" >
+                <div class="imprimir" id="exportable">
+                    <div class="panel panel-default" ng-repeat="item in dato.matriz">
+                        <div class="panel-heading">
+                            <h4>
+                                <% item.nombre %>
+                            </h4>
+                        </div>
+                        <div class="panel-body" >
+                            <table border="1" class="table table-striped table-bordered matriz" >
+                                <thead>
+                                    <tr>
+                                        <th> {{ '_inidcador_' | trans }} </th>
+                                        <th> {{ '_fuente_' | trans }} </th>
+                                        <th> {{ '_acumular_' | trans }} </th>
+                                        <th> {{ '_meta_anual_' | trans }} </th>
+                                        <th> {{ '_enero_' | trans }} </th>
+                                        <th> {{ '_febrero_' | trans }} </th>
+                                        <th> {{ '_marzo_' | trans }} </th>
+                                        <th> {{ '_abril_' | trans }} </th>
+                                        <th> {{ '_mayo_' | trans }} </th>
+                                        <th> {{ '_junio_' | trans }} </th>
+                                        <th> {{ '_julio_' | trans }} </th>
+                                        <th> {{ '_agosto_' | trans }} </th>
+                                        <th> {{ '_septiembre_' | trans }} </th>
+                                        <th> {{ '_octubre_' | trans }} </th>
+                                        <th> {{ '_noviembre_' | trans }} </th>
+                                        <th> {{ '_diciembre_' | trans }} </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr valign="middle" ng-repeat="inde in item.indicadores_etab">
+                                        <td class="nombre_matriz"><% inde.nombre %></td>
+                                        <td class="nombre_matriz"><% inde.fuente %></td>
+                                        <td> <input type="checkbox" ng-click="acumular[inde.id] = !acumular[inde.id]; acumularAbsoluto(inde)" class="form-control" style="width:25px; height:25px; float: left; margin: -5px 1px 0px 7px;"> </td>
+                                        <td class="nombre_matriz" width="100px"><% inde.meta %></td>
+                                        <td ng-repeat="k in meses" width="110px" ng-init="valorAbsoluto(inde, inde.id, k)" style="background: <% statusx[inde.id][k] > 0 && statusx[inde.id][k] < 70 ? 'red' : statusx[inde.id][k] >= 70 && statusx[inde.id][k] < 85 ? 'gold' : statusx[inde.id][k] >= 85 ? 'limegreen' : ''; %> !important; ">
+                                            <table width="100%" class="list-group" ng-init="statusx[inde.id][k] = inde[k].real / inde[k].planificado * 100">
+                                                <tbody style="border:none">
+                                                    <tr ng-if="inde[k].planificado > 0 && inde[k].real <= 0 && verR && verP" class="list-group-item matriz-planeacion-texto" align="center"><th>&nbsp</th></tr>
+                                                    <tr style="background: darkgray;" ng-if="verR && inde[k].real > 0" class="list-group-item matriz-planeacion-texto" align="center"><th><% inde[k].real | number : 2 %></th></tr>
+                                                    <tr style="background: cornflowerblue;" ng-if="verP && inde[k].planificado > 0" class="list-group-item matriz-planeacion-texto" align="center">
+                                                        <th><% inde[k].planificado | number : 2 %></th>
+                                                        </tr>                                       
+                                                    <tr ng-show="statusx[inde.id][k] > 0" class="list-group-item" align="center">
+                                                        <th>
+                                                            <strong ng-if="statusx[inde.id][k] > 0" style="font-weight:900; text-shadow: 1px 1px 1px #FFF;" >
+                                                                <div align="center">
+                                                                    <% statusx[inde.id][k] | number : 2 %> %
+                                                                </div>
+                                                            </strong>
+                                                        </th>
+                                                    </tr>
+                                                    
+                                                </tbody>
+                                            </table>    
+                                                                                
+                                        </td>                                    
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr valign="middle" ng-repeat="inde in item.indicadores_relacion">
+                                        <td class="nombre_matriz"><% inde.nombre %></td>
+                                        <td class="nombre_matriz"><% inde.fuente %></td>
+                                        <td> <input type="checkbox" ng-click="acumular[inde.id] = !acumular[inde.id]; acumularAbsoluto(inde);" class="form-control" style="width:25px; height:25px; float: left; margin: -5px 1px 0px 7px;"> </td>
+                                        <td class="nombre_matriz" width="100px"><% inde.meta %></td>
+                                        <td ng-repeat="k in meses" width="110px" ng-init="valorAbsoluto(inde, inde.id, k)" style="background: <% (statusx[inde.id][k] >= 0) && statusx[inde.id][k] < 70 ? 'red' : statusx[inde.id][k] >= 70 && statusx[inde.id][k] < 85 ? 'gold' : statusx[inde.id][k] >= 85 ? 'limegreen' : ''; %> !important;">
+                                            <table width="100%" class="list-group" >
+                                                <tbody style="border:none">
+                                                    
+                                                    <tr style="background: darkgray;" ng-if="verR && inde[k].real >= 0" class="list-group-item matriz-planeacion-texto" align="center"><th><% inde[k].real | number : 2 %></th></tr>
+                                                    <tr style="background: cornflowerblue;" ng-if="verP && inde[k].planificado > 0" class="list-group-item matriz-planeacion-texto" align="center">
+                                                        <th><% inde[k].planificado | number : 2 %></th>
+                                                        </tr>                                       
+                                                    <tr ng-show="statusx[inde.id][k] >= 0" class="list-group-item" align="center">
+                                                        <th>
+                                                            <strong ng-if="statusx[inde.id][k] >= 0" style="font-weight:900; text-shadow: 1px 1px 1px #FFF;" >
+                                                                <div align="center">
+                                                                    <% statusx[inde.id][k] | number : 2 %> %
+                                                                </div>                                                                
+                                                            </strong>
+                                                        </th>
+                                                    </tr>
+                                                    <tr ng-show="false"><th></th></tr>
+                                                </tbody>
+                                            </table>                                  
+                                        </td>                                    
+                                    </tr>                        
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div> 
+                </div>               
+            </div> 
+        </div>
+    </div>
+{% endblock content%}

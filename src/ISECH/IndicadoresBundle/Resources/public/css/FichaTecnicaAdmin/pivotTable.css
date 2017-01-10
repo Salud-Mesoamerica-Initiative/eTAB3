@@ -1,0 +1,250 @@
+.background {
+    fill: none;
+    pointer-events: all;
+}
+
+#states {
+    fill: #aaa;
+    stroke: #fff;
+    stroke-width: 1.5px;
+}
+
+.pvtRows .label {
+    display: block !important; 
+}
+
+.pvtUnused li{
+    display:inline-block; margin-right: 12px;padding:3px 0;
+}
+
+#states .active {
+    fill: steelblue;
+}
+
+#div_carga{    
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    /* Para CSS3 */
+    background: rgba(98, 135, 167, .4);
+    /* IE8*/
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#886287a7', endColorstr='#886287a7');
+    /* anteriores a IE8 */
+    -ms-filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#886287a7', endColorstr='#886287a7');
+
+    display:none;
+    z-index:10000;
+}
+
+#cargador{
+    position:absolute;
+    top:50%;
+    left: 50%;
+    margin-top: -25px;
+    margin-left: -25px;
+}
+
+.dropdown-menu-visible{
+    display: block; position: static; margin-bottom: 5px; *width: 180px;
+}
+.pvtTable{
+    width: 20%;
+}
+
+.checkContainer{
+    width: 200px !important;
+}
+#tool_actions{
+    display: none;
+}
+.navbar-inner {
+    min-height: 0px !important;
+}
+.dropdown-menu li a {
+    cursor: pointer;
+}
+
+div.popover-content, div.popover-title{
+    font-size : 9pt !important;
+}
+
+.marco-sala {
+    background-color: #FFFFFF;
+    border: 1px solid #DDDDDD;
+    border-radius: 4px 4px 4px 4px;
+    margin: 15px 0;
+    padding: 39px 19px 14px;
+    position: relative;
+}
+.marco-sala:after {
+    background-color: #FFB709;
+    border: 1px solid #DDDDDD;
+    border-radius: 4px 0 4px 0;
+
+    content: attr(data-content);
+    font-size: 12px;
+    font-weight: bold;
+    left: -1px;
+    padding: 3px 7px;
+    position: absolute;
+    top: -1px;
+}
+
+.label-info{
+    background-color: transparent;
+    color: black;
+    font-weight: normal;
+       
+}
+
+.pvtFilteredAttribute{
+    color: green;
+    font-weight: bold;
+}
+
+.pvtAxisContainer.pvtUnused
+{
+    background: rgba(255,255,255,1) !important;
+    background: -moz-linear-gradient(left, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(237,237,237,1) 100%) !important;
+    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(255,255,255,1)), color-stop(47%, rgba(246,246,246,1)), color-stop(100%, rgba(237,237,237,1))) !important;
+    background: -webkit-linear-gradient(left, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(237,237,237,1) 100%) !important;
+    background: -o-linear-gradient(left, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(237,237,237,1) 100%) !important;
+    background: -ms-linear-gradient(left, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(237,237,237,1) 100%) !important;
+    background: linear-gradient(to right, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(237,237,237,1) 100%) !important;
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed', GradientType=1 ) !important;
+    color: #FFF !important;
+}
+
+.pvtAxisContainer.pvtCols
+{
+    background: rgba(219,219,219,1) !important;
+    background: -moz-linear-gradient(left, rgba(219,219,219,1) 0%, rgba(212,212,212,1) 50%, rgba(204,204,204,1) 100%);
+    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(219,219,219,1)), color-stop(50%, rgba(212,212,212,1)), color-stop(100%, rgba(204,204,204,1))) !important;
+    background: -webkit-linear-gradient(left, rgba(219,219,219,1) 0%, rgba(212,212,212,1) 50%, rgba(204,204,204,1) 100%) !important;
+    background: -o-linear-gradient(left, rgba(219,219,219,1) 0%, rgba(212,212,212,1) 50%, rgba(204,204,204,1) 100%) !important;
+    background: -ms-linear-gradient(left, rgba(219,219,219,1) 0%, rgba(212,212,212,1) 50%, rgba(204,204,204,1) 100%) !important;
+    background: linear-gradient(to right, rgba(219,219,219,1) 0%, rgba(212,212,212,1) 50%, rgba(204,204,204,1) 100%) !important;
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dbdbdb', endColorstr='#cccccc', GradientType=1 ) !important;
+    color: #FFF !important;
+}
+
+.pvtAxisContainer.pvtRows
+{
+    background: rgba(219,219,219,1) !important;
+    background: -moz-linear-gradient(left, rgba(219,219,219,1) 0%, rgba(212,212,212,1) 50%, rgba(204,204,204,1) 100%) !important;
+    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(219,219,219,1)), color-stop(50%, rgba(212,212,212,1)), color-stop(100%, rgba(204,204,204,1))) !important;
+    background: -webkit-linear-gradient(left, rgba(219,219,219,1) 0%, rgba(212,212,212,1) 50%, rgba(204,204,204,1) 100%) !important;
+    background: -o-linear-gradient(left, rgba(219,219,219,1) 0%, rgba(212,212,212,1) 50%, rgba(204,204,204,1) 100%) !important;
+    background: -ms-linear-gradient(left, rgba(219,219,219,1) 0%, rgba(212,212,212,1) 50%, rgba(204,204,204,1) 100%) !important;
+    background: linear-gradient(to right, rgba(219,219,219,1) 0%, rgba(212,212,212,1) 50%, rgba(204,204,204,1) 100%) !important;
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dbdbdb', endColorstr='#cccccc', GradientType=1 ) !important;
+    color: #FFF !important;
+}
+.pvtAxisContainer.pvtRows li
+{
+    margin-bottom: 10px;
+}
+.pvtVals  
+{
+    background: rgba(212,228,239,1) !important;
+    background: -moz-linear-gradient(left, rgba(212,228,239,1) 0%, rgba(134,174,204,1) 100%) !important;
+    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(212,228,239,1)), color-stop(100%, rgba(134,174,204,1))) !important;
+    background: -webkit-linear-gradient(left, rgba(212,228,239,1) 0%, rgba(134,174,204,1) 100%) !important;
+    background: -o-linear-gradient(left, rgba(212,228,239,1) 0%, rgba(134,174,204,1) 100%) !important;
+    background: -ms-linear-gradient(left, rgba(212,228,239,1) 0%, rgba(134,174,204,1) 100%) !important;
+    background: linear-gradient(to right, rgba(212,228,239,1) 0%, rgba(134,174,204,1) 100%) !important;
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d4e4ef', endColorstr='#86aecc', GradientType=1 ) !important;
+    width: 1% !important;
+}
+.pvtVals select, .pvtRenderer, .pvtFilterBox input, select
+{
+    margin-bottom: 3px;
+    margin-top: 3px;
+    display: block;  
+    height: 34px; 
+    padding: 6px 12px; 
+    font-size: 14px; 
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+.pvtVals select option, .pvtRenderer option, select option
+{
+    font-weight: normal;
+    display: block;
+    padding: 0px 2px 1px;
+    white-space: pre;
+    min-height: 1.2em;
+}
+.pvtAxisContainer li span , .pvtFilterBox button
+{
+    padding: 8px;
+    color: #fff;
+    background-color: #5cb85c;
+    border-color: #FFF;
+    font-size: 14px;
+    margin-bottom: 10px;
+    margin-top: 5px;
+}
+.pvtFilterBox
+{
+     font-family: 'Oswald', sans-serif;
+}
+.pvtFilterBox button
+{
+    padding:3px !important;
+    border-radius: 4px;
+}
+.pvtFilterBox input.pvtSearch
+{
+    width: 100%;
+}
+.pvtFilterBox input[type=checkbox]
+{
+    float: left !important;
+    margin: 5px !important;
+    height: auto !important;
+}
+.pvtAxisContainer li span:hover, .pvtAxisContainer li span:focus
+{
+    background-color: #4ba74b;
+    border-color: #3b9d3b;
+}
+
+.checkContainer {
+    text-align: left;
+    overflow: auto;
+    width: 100% !important;
+}
+
+.pvtFilterBox {
+    background: rgba(255,255,255,1);
+    background: -moz-linear-gradient(-45deg, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(237,237,237,1) 100%);
+    background: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(255,255,255,1)), color-stop(47%, rgba(246,246,246,1)), color-stop(100%, rgba(237,237,237,1)));
+    background: -webkit-linear-gradient(-45deg, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(237,237,237,1) 100%);
+    background: -o-linear-gradient(-45deg, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(237,237,237,1) 100%);
+    background: -ms-linear-gradient(-45deg, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(237,237,237,1) 100%);
+    background: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(237,237,237,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed', GradientType=1 );
+    color:#000;
+}
+.modal-dialog.google-visualization-charteditor-dialog {
+    padding: 10px;
+    background: #FFF;
+    width: 50%;
+    margin-left: -1%;
+}
+#myModal2 img
+{
+    width: 100%;
+}

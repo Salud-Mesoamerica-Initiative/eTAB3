@@ -1,0 +1,25 @@
+#campos_orden { list-style-type: none; margin: 0; padding: 0; width: 30%; }
+#campos_orden li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.4em; height: 18px; }
+#campos_orden li span { position: absolute; margin-left: -1.3em; }
+
+.sonata-ba-tbody input{
+    width: 50px;
+}
+DIV.field-container table.table-bordered{
+    width: 60%
+}
+
+TD[class$="alertas-color"] {
+    width: 200px;
+}
+
+/*TD[class$="alertas-comentario"] textarea{
+    width: 650px;
+    height: 30px;
+}*/
+.checkbox-form{
+    width: 25px;
+    height: 25px;
+    float: left;
+    margin: -3px 8px 0px 0px;
+}

@@ -1,0 +1,69 @@
+_inicio:
+    pattern:  /
+    defaults: { _controller: IndicadoresBundle:Tablero:tablero }
+
+_inicioPublico:
+    pattern:  /
+    defaults: { _controller: IndicadoresBundle:Tablero:tableroPublico }
+
+group_show:
+    pattern:  /migroup/{token}/{valor}
+    defaults: { _controller: IndicadoresBundle:Indicador:group_reload }
+    requirements:
+        _method:  GET
+
+indicadores:
+    resource: "@IndicadoresBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+indicadores_rest:
+    type:     rest
+    resource: ISECH\IndicadoresBundle\Controller\IndicadorRESTController
+    prefix: /
+
+# Internal routing configuration to handle ESI
+#_internal:
+#    resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
+#    prefix:   /_internal
+admin:
+    resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
+    prefix: /admin
+
+_sonata_admin:
+    resource: .
+    type: sonata_admin
+    prefix: /admin
+
+sonata_page_cache:
+    resource: '@SonataCacheBundle/Resources/config/routing/cache.xml'
+    prefix: /
+
+fos_user_security:
+    resource: "@FOSUserBundle/Resources/config/routing/security.xml"
+
+sonata_user_profile:
+    resource: "@SonataUserBundle/Resources/config/routing/sonata_profile_1.xml"
+    prefix: /profile
+
+fos_user_register:
+    resource: "@FOSUserBundle/Resources/config/routing/registration.xml"
+    prefix: /register
+
+fos_user_resetting:
+    resource: "@FOSUserBundle/Resources/config/routing/resetting.xml"
+    prefix: /resetting
+
+fos_user_change_password:
+    resource: "@IndicadoresBundle/Resources/config/routing/change_password.xml"
+    prefix: /profile    
+fos_user_group:
+    resource: "@FOSUserBundle/Resources/config/routing/group.xml"
+    prefix: /group
+
+sonata_user:
+    resource: '@IndicadoresBundle/Resources/config/routing/admin_security.xml'
+    prefix: /admin
+
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"    

@@ -1,0 +1,97 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends 'IndicadoresBundle:CRUD:base_list.html.twig' %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+    $(document).ready(function() {
+    	$(".pagination ul").attr("class","pagination");
+		$(".view_link").addClass("btn-info");
+		$(".view_link").removeClass("view_link");
+		
+		$(".sonata-action-element").addClass("btn-primary");
+		$(".sonata-action-element").removeClass("sonata-action-element");
+		
+		$(".table-responsive .btn-group a").click(function(e) {
+			doi=this;
+			$(doi).attr("disabled",true);
+			$(doi).html('<i class="icon ion-loading-a"></i> '+doi.title);
+			id=doi.href.split("=");
+			id=id[1];
+            $.ajax({
+				type: "POST",	
+				dataType:"json",		
+				url: Routing.generate("load_data_ajax"),
+				data:{'id':id},
+				success: function(response)
+				{
+					$(doi).html("<i class='glyphicon glyphicon-download-alt'></i> "+doi.title);
+					var res="";
+					var to=($(doi).parent("div").parent("td").position().top)-40;
+					var le=($(doi).parent("div").parent("td").position().left)+130;
+					
+					if(!response.save)
+					{		
+						res='<div class="popover fade right in" style="top: '+to+'px; left: '+le+'px; width:500px; display: block;">'+
+							'<div class="arrow"></div>'+
+							'<h3 class="popover-title">Error</h3>'+
+							'<div class="popover-content"><ul><li>'+response.message+'</li></ul></div>'+
+						'</div>';
+					}
+					else
+					{
+						res='<div class="popover fade right in" style="top: '+to+'px; left: '+le+'px; width:500px; display: block; ">'+
+							'<div class="arrow"></div>'+
+							'<h3 class="popover-title">Bien</h3>'+
+							'<div class="popover-content"><ul><li>'+response.message+'</li></ul></div>'+
+						'</div>';
+					}
+					$(doi).attr("disabled",false);
+					
+					$(doi).parent("div").parent("td").append(res);					
+					setTimeout("$('.popover').fadeOut('fast');",2500) ;			
+					return false;
+				}
+			});
+			return false;
+        });
+    });
+	</script>
+{% endblock %} 
+{% block stylesheets %}
+    {{ parent() }}
+<style>
+.table {  table-layout:fixed; width:100%}
+.table td { 
+	overflow:hidden;
+	text-overflow:ellipsis;
+	white-space:nowrap;
+	cursor:default;
+}
+
+.table th { 
+	overflow:hidden;
+	text-overflow:ellipsis;
+	white-space:nowrap;
+	cursor:default;
+}
+.table th:nth-child(1) {width: 30px;}
+.table th:last-child {width: 150px;}
+
+</style>
+
+{% endblock %} 
+{% block actions %}
+    <div class="sonata-actions">
+        {% include 'IndicadoresBundle:Core:create_button.html.twig' %}
+    </div>
+{% endblock %}

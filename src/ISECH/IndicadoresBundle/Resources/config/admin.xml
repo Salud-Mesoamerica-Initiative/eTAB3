@@ -1,0 +1,286 @@
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <parameters>
+        <parameter key="admin_max_per_page_number">10</parameter>
+    </parameters>
+    <services>
+	
+		<service id="sonata.admin.fuente_dato" class="ISECH\IndicadoresBundle\Admin\FuenteDatoAdmin">
+            <tag name="sonata.admin" 
+                 manager_type="orm" 
+                 group="catalogos" 
+                 label="fuente_datos-eTAB"
+            />
+            <argument />
+            <argument>ISECH\IndicadoresBundle\Entity\FuenteDato</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <call method="setMaxPerPage"><argument>%admin_max_per_page_number%</argument></call>
+        </service>
+		
+        <service id="sonata.admin.responsable_dato" class="ISECH\IndicadoresBundle\Admin\ResponsableDatoAdmin">
+            <tag name="sonata.admin" 
+                 manager_type="orm" 
+                 group="catalogos" 
+                 label="responsable_datos-eTAB"
+            />
+            <argument />
+            <argument>ISECH\IndicadoresBundle\Entity\ResponsableDato</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <call method="setMaxPerPage"><argument>%admin_max_per_page_number%</argument></call>
+        </service>                
+        
+        <service id="sonata.admin.responsable_indicador" class="ISECH\IndicadoresBundle\Admin\ResponsableIndicadorAdmin">
+            <tag name="sonata.admin" 
+                 manager_type="orm" 
+                 group="catalogos" 
+                 label="responsable_indicador-eTAB"
+            />
+            <argument />
+            <argument>ISECH\IndicadoresBundle\Entity\ResponsableIndicador</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <call method="setMaxPerPage"><argument>%admin_max_per_page_number%</argument></call>
+        </service>
+
+        <service id="sonata.admin.clasificacion_tecnica" class="ISECH\IndicadoresBundle\Admin\ClasificacionTecnicaAdmin">
+            <tag name="sonata.admin" 
+                 manager_type="orm" 
+                 group="catalogos" 
+                 label="clasificacion_tecnica-eTAB"
+            />
+            <argument />
+            <argument>ISECH\IndicadoresBundle\Entity\ClasificacionTecnica</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <call method="setMaxPerPage"><argument>%admin_max_per_page_number%</argument></call>
+        </service>
+
+        <service id="sonata.admin.clasificacion_privacidad" class="ISECH\IndicadoresBundle\Admin\ClasificacionPrivacidadAdmin">
+            <tag name="sonata.admin" 
+                 manager_type="orm" 
+                 group="catalogos" 
+                 label="clasificacion_privacidad-eTAB"
+            />
+            <argument />
+            <argument>ISECH\IndicadoresBundle\Entity\ClasificacionPrivacidad</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <call method="setMaxPerPage"><argument>%admin_max_per_page_number%</argument></call>
+        </service>
+
+        <service id="sonata.admin.clasificacion_nivel" class="ISECH\IndicadoresBundle\Admin\ClasificacionNivelAdmin">
+            <tag name="sonata.admin" 
+                 manager_type="orm" 
+                 group="catalogos" 
+                 label="clasificacion_nivel-eTAB"
+            />
+            <argument />
+            <argument>ISECH\IndicadoresBundle\Entity\ClasificacionNivel</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <call method="setMaxPerPage"><argument>%admin_max_per_page_number%</argument></call>
+        </service>
+
+        <service id="sonata.admin.clasificacion_uso" class="ISECH\IndicadoresBundle\Admin\ClasificacionUsoAdmin">
+            <tag name="sonata.admin" 
+                 manager_type="orm" 
+                 group="catalogos" 
+                 label="clasificacion_uso-eTAB"
+            />
+            <argument />
+            <argument>ISECH\IndicadoresBundle\Entity\ClasificacionUso</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <call method="setMaxPerPage"><argument>%admin_max_per_page_number%</argument></call>
+        </service>
+        <service id="sonata.admin.significado_campo" class="ISECH\IndicadoresBundle\Admin\SignificadoCampoAdmin">
+            <tag name="sonata.admin" 
+                 manager_type="orm" 
+                 group="catalogos" 
+                 label="significado_campo-eTAB"
+            />
+            <argument />
+            <argument>ISECH\IndicadoresBundle\Entity\SignificadoCampo</argument>
+            <argument>IndicadoresBundle:SignificadoCampoAdmin</argument>
+            <call method="setMaxPerPage"><argument>%admin_max_per_page_number%</argument></call>
+        </service> 
+        <service id="sonata.admin.colores_alertas" class="ISECH\IndicadoresBundle\Admin\AlertaAdmin">
+            <tag name="sonata.admin" 
+                 manager_type="orm" 
+                 group="catalogos" 
+                 label="_colores_alertas_-eTAB"
+            />
+            <argument />
+            <argument>ISECH\IndicadoresBundle\Entity\Alerta</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <call method="setMaxPerPage"><argument>%admin_max_per_page_number%</argument></call>
+        </service>       
+        <service id="sonata.admin.conexion" class="ISECH\IndicadoresBundle\Admin\ConexionAdmin">
+            <tag name="sonata.admin" 
+                 manager_type="orm" 
+                 group="origen_datos" 
+                 label="conexion_bd-eTAB"
+            />
+            <argument />
+            <argument>ISECH\IndicadoresBundle\Entity\Conexion</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <call method="setMaxPerPage"><argument>%admin_max_per_page_number%</argument></call>
+        </service>
+        <service id="sonata.admin.origen_dato" class="ISECH\IndicadoresBundle\Admin\OrigenDatosAdmin">
+            <tag name="sonata.admin"
+                 manager_type="orm" 
+                 group="origen_datos" 
+                 label="origen_dato-eTAB"
+            />    
+            <argument />            
+            <argument>ISECH\IndicadoresBundle\Entity\OrigenDatos</argument>
+            <argument>IndicadoresBundle:OrigenDatosAdmin</argument>
+            <call method="setMaxPerPage"><argument>%admin_max_per_page_number%</argument></call>
+        </service>
+        <!--<service id="sonata.admin.diccionario" class="ISECH\IndicadoresBundle\Admin\DiccionarioAdmin">
+            <tag name="sonata.admin"
+                 manager_type="orm" 
+                 group="origen_datos" 
+                 label="javascript.diccionario_transformacion-eTAB"
+            />    
+            <argument />            
+            <argument>ISECH\IndicadoresBundle\Entity\Diccionario</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <call method="setMaxPerPage"><argument>%admin_max_per_page_number%</argument></call>
+        </service>
+        <service id="sonata.admin.regla_transformacion" class="ISECH\IndicadoresBundle\Admin\ReglaTransformacionAdmin">
+            <tag name="sonata.admin"
+                 manager_type="orm" 
+                 group="origen_datos" 
+                 label="_regla_transformacion_-eTAB"
+            />    
+            <argument />            
+            <argument>ISECH\IndicadoresBundle\Entity\ReglaTransformacion</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <call method="setMaxPerPage"><argument>%admin_max_per_page_number%</argument></call>
+        </service>
+        <service id="sonata.admin.campo_calculado" class="ISECH\IndicadoresBundle\Admin\CampoAdmin">
+            <tag name="sonata.admin"
+                 manager_type="orm" 
+                 group="origen_datos" 
+                 label="_campo_calculado_-eTAB"
+            />    
+            <argument />            
+            <argument>ISECH\IndicadoresBundle\Entity\Campo</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <call method="setMaxPerPage"><argument>10</argument></call>
+        </service>-->
+        <service id="sonata.admin.variable" class="ISECH\IndicadoresBundle\Admin\VariableDatoAdmin">
+            <tag name="sonata.admin"
+                 manager_type="orm" 
+                 group="indicadores" 
+                 label="variables-eTAB"
+            />
+            <argument />
+            <argument>ISECH\IndicadoresBundle\Entity\VariableDato</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <call method="setMaxPerPage"><argument>%admin_max_per_page_number%</argument></call>
+        </service>
+
+        <service id="sonata.admin.ficha" class="ISECH\IndicadoresBundle\Admin\FichaTecnicaAdmin">
+            <tag name="sonata.admin"
+                 manager_type="orm" 
+                 group="indicadores" 
+                 label="ficha_tecnica-eTAB"
+            />
+            <argument />
+            <argument>ISECH\IndicadoresBundle\Entity\FichaTecnica</argument>
+            <argument>IndicadoresBundle:FichaTecnicaAdmin</argument>
+            <call method="setMaxPerPage"><argument>%admin_max_per_page_number%</argument></call>
+        </service>
+        <service id="sonata.admin.indicador_alertas" class="ISECH\IndicadoresBundle\Admin\IndicadorAlertasAdmin">
+            <tag name="sonata.admin"
+                 manager_type="orm" 
+                 group="indicadores" 
+                 label="indicador_alertas-eTAB"
+            />
+            <argument />
+            <argument>ISECH\IndicadoresBundle\Entity\IndicadorAlertas</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <call method="setMaxPerPage"><argument>%admin_max_per_page_number%</argument></call>
+        </service>
+<!--        <service id="sonata.admin.usuario_indicadores" class="ISECH\IndicadoresBundle\Admin\UserIndicatorsAdmin">
+            <tag name="sonata.admin"
+                 manager_type="orm" 
+                 group="indicadores" 
+                 label="usuario_indicadores-eTAB"
+            />
+            <argument />
+            <argument>ISECH\IndicadoresBundle\Entity\User</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <call method="setMaxPerPage"><argument>%admin_max_per_page_number%</argument></call>
+        </service>-->
+		
+		<service id="sonata.admin.boletin" class="ISECH\IndicadoresBundle\Admin\BoletinAdmin">
+            <tag name="sonata.admin"
+                 manager_type="orm" 
+                 group="sonata_user" 
+                 label="Boletin"
+            />
+            <argument />
+            <argument>ISECH\IndicadoresBundle\Entity\Boletin</argument>
+            <argument>IndicadoresBundle:Correo</argument>
+            <call method="setMaxPerPage"><argument>%admin_max_per_page_number%</argument></call>
+        </service>
+		
+        <service id="indicadores.cargar_origen_datos_servicio" class="ISECH\IndicadoresBundle\Consumer\CargarOrigenDatoConsumer">            
+            <argument type="service" id="service_container" />            
+        </service>
+        <service id="indicadores.guardar_registro_origen_dato" class="ISECH\IndicadoresBundle\Consumer\GuardarRegistroOrigenDatoConsumer">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="service_container" />            
+        </service>
+		<service id="sonata.admin.orm.filter.type.string" class="ISECH\IndicadoresBundle\Filter\StringFilter">
+            <tag name="sonata.admin.filter.type" alias="doctrine_orm_string" />
+        </service>        
+
+        <service id="sonata.admin.indicadores_desempeno" class="ISECH\IndicadoresBundle\Admin\MatrizIndicadoresDesempenoAdmin">
+            <tag name="sonata.admin" 
+                 manager_type="orm" 
+                 group="_matriz_seguimiento_" 
+                 label="_config_indicador_desempeno_"
+            />
+            <argument />
+            <argument>ISECH\IndicadoresBundle\Entity\MatrizIndicadoresDesempeno</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <call method="setMaxPerPage"><argument>%admin_max_per_page_number%</argument></call>
+        </service>
+
+        <service id="sonata.admin.indicadores_rel" class="ISECH\IndicadoresBundle\Admin\MatrizIndicadoresRelAdmin">
+            <tag name="sonata.admin" 
+                 manager_type="orm" 
+                 group="_matriz_seguimiento_" 
+                 label="_indicador_rel_"
+            />
+            <argument />
+            <argument>ISECH\IndicadoresBundle\Entity\MatrizIndicadoresRel</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <call method="setMaxPerPage"><argument>%admin_max_per_page_number%</argument></call>
+        </service>
+
+        <service id="sonata.admin.matriz_seguimiento" class="ISECH\IndicadoresBundle\Admin\MatrizSeguimientoAdmin">
+            <tag name="sonata.admin" 
+                 manager_type="orm" 
+                 group="_matriz_seguimiento_" 
+                 label="_reporte_"
+            />
+            <argument />
+            <argument>ISECH\IndicadoresBundle\Entity\MatrizSeguimiento</argument>
+            <argument>IndicadoresBundle:MatrizSeguimientoREST</argument>
+            <call method="setMaxPerPage"><argument>%admin_max_per_page_number%</argument></call>
+        </service> 
+
+        <service id="sonata.admin.sala_acciones" class="ISECH\IndicadoresBundle\Admin\SalaAccionesAdmin">
+            <tag name="sonata.admin"
+                 manager_type="orm" 
+                 group="indicadores" 
+                 label="_sala_acciones_"
+            />
+            <argument />
+            <argument>ISECH\IndicadoresBundle\Entity\SalaAcciones</argument>
+            <argument>IndicadoresBundle:SalaAccionesAdmin</argument>
+            <call method="setMaxPerPage"><argument>%admin_max_per_page_number%</argument></call>
+        </service> 
+    </services>
+</container>

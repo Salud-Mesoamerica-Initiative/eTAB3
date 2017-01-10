@@ -1,0 +1,61 @@
+#div_carga{    
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    /* Para CSS3 */
+    background: rgba(98, 135, 167, .4);
+    /* IE8*/
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#886287a7', endColorstr='#886287a7');
+    /* anteriores a IE8 */
+    -ms-filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#886287a7', endColorstr='#886287a7');
+
+    display:none;
+    z-index:10000;
+}
+#cargador{
+    position:absolute;
+    top:50%;
+    left: 50%;
+    margin-top: -25px;
+    margin-left: -25px;
+}
+
+.form-horizontal .form-group .col-lg-5 > .checkbox {
+    min-height: 27px;
+    margin-left: 41.5%;
+}
+
+.matriz td:hover{
+    background: #FFC !important;
+}
+.matriz thead{
+    border: 3px solid gray;
+}
+.matriz tbody {
+    border: 2px solid yellowgreen;
+}
+.matriz tfoot {
+    border: 2px solid lightsteelblue;
+}
+
+.matriz>tfoot>tr:nth-child(odd)>td {
+    background-color: rgba(76, 80, 177, 0.12);;
+}
+
+.matriz>tfoot>tr>td {
+    border: 1px solid #ddd;
+}
+.matriz-planeacion{
+    display: block;
+    height: 20px;
+    width: 100%;
+    background: cornflowerblue;
+    border-radius: 3px;
+       
+}
+.matriz-planeacion-texto{
+    color: white; 
+    text-shadow: 1px 1px 1px #000;
+}

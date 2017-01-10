@@ -1,0 +1,111 @@
+{% extends 'IndicadoresBundle::standard_layout.html.twig' %}
+{% block javascripts %}
+    {{parent()}}
+    <script type="text/javascript" src="{{ app.request.schemeAndHttpHost ~ asset('bundles/indicadores/vendor/table2excel/jquery.table2excel.min.js') }}"></script>
+    
+    <script type="text/javascript">
+        $( document ).ready(function() {
+            $('#exportar').click(function (e){
+                $("#matrizSeguimiento").table2excel({
+                    exclude: ".excludeThisClass",
+                    name: "Matriz seguimiento",
+                    filename: "matriz-seguimiento" //do not include extension
+                });             
+            });
+                        });
+    </script>
+{% endblock javascripts %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        td{
+            min-width: 30px;
+            min-height: 90px;
+        }
+        td.valores{
+            text-align: right;
+        }
+        td.nombre_variable{
+            vertical-align: middle !important;
+        }
+        table{
+            background-color: white;
+            border-color: black !important;
+        }
+        .sonata-ba-content{
+            overflow: auto;
+        }
+    </style>
+
+{% endblock stylesheets %}
+    
+{% block content %}
+    <button class="btn btn-default btn-lg dropdown-toggle" type="button" id="exportar" aria-expanded="false">
+    {{'_exportar_'|trans}}<span class="glyphicon glyphicon-export" aria-hidden="true"></span>
+    </button>
+    <TABLE  class="table table-hover table-bordered" id="matrizSeguimiento">
+        <THEAD>
+            
+       </THEAD>
+        <TBODY>
+            {% for cat in categorias%}
+                <TR >
+                    <TH bgcolor="#C9E0D3" colspan="2" >{% for des in cat.descripcion %}{{des}}<BR/><BR/>{% endfor %}</TH>
+                    {% for anio, anios in parms %}
+                        {% for mes in anios %}
+                            <TH bgcolor="#C9E0D3">{{ mes ~ '/' ~ anio}}</TH>
+                        {% endfor %}
+                    {% endfor %}
+                    <TH bgcolor="#C9E0D3" >Observaciones</TH>
+                </TR>
+                {% for variable in cat.datos %}
+                    <TR>                    
+                        <TD rowspan="3" class="nombre_variable">{{datosFrm[variable].descripcion}}</TD>
+                        <Th >Real</Th>
+                        {% for anio, anios in parms %}
+                            {% for mes in anios %}
+                                <TD class="valores">
+                                    {% if datosFrm[variable]['datos']['real'][mes ~ '/' ~ anio] is defined %}
+                                        {{datosFrm[variable]['datos']['real'][mes ~ '/' ~ anio] }}
+                                    {% endif %}
+                                </TD>
+                            {% endfor %}
+                        {% endfor %}
+                        <TD rowspan="3" >{{datosFrm[variable].observaciones}}</TD>
+                    </TR>
+                    <TR>
+                        <TH>Planificado</TH>
+                        {% for anio, anios in parms %}
+                            {% for mes in anios %}
+                                <TD class="valores">
+                                    {% if datosFrm[variable]['datos']['planificado'][mes ~ '/' ~ anio] is defined %}
+                                        {{datosFrm[variable]['datos']['planificado'][mes ~ '/' ~ anio] }}
+                                    {% endif %}
+                                </TD>
+                            {% endfor %}
+                        {% endfor %}
+                    </TR>
+                    <TR>
+                        <TH>Estatus</TH>
+                        {% for anio, anios in parms %}
+                            {% for mes in anios %}
+                                
+                                {% if datosFrm[variable]['datos']['estatus'][mes ~ '/' ~ anio] is defined 
+                                        and datosFrm[variable]['datos']['estatus'][mes ~ '/' ~ anio] != null
+                                    %}
+                                    {% set v = datosFrm[variable]['datos']['estatus'][mes ~ '/' ~ anio] %}
+                                    <TD class="valores" bgcolor="{% if v >= 0 and v < 75 %}#FE4D4D{% elseif v < 85 %} #FFFF00 {% else %} #79CE79{% endif %}">
+                                    {# {{datosFrm[variable]['datos']['estatus'][mes ~ '/' ~ anio]|number_format}}% #}
+                                {% else %}
+                                    <TD bgcolor="#E6E6E6">
+                                {% endif %}
+                                </TD>
+                            {% endfor %}
+                        {% endfor %}
+                    </TR>
+                {% endfor %}
+            {% endfor %}
+        </TBODY>
+    </TABLE>
+{% endblock content%}

@@ -1,0 +1,87 @@
+<style>
+.select2-drop {
+    z-index: 99999999 !important;
+}
+</style>
+<div id="compartir" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addActionLabel" aria-hidden="true" style="z-index:99999999">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="addActionLabel">{{'_compartir_sala_'|trans}}</h3>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="form-horizontal">
+                  <!-- Nav tabs -->
+                  <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#c_home" aria-controls="home" role="tab" data-toggle="tab" >{{'User List'|trans}} </a></li>
+                    <li role="presentation"><a href="#c_profile" aria-controls="profile" role="tab" data-toggle="tab" >{{'_comentarios_'|trans}}</a></li>
+                  </ul>
+                  <!-- Tab panes -->
+                  <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="c_home">
+                      <br>
+                        <div  id="users">
+                                                   
+                            <form id="compartir_frm" > 
+                                <label for="usuario">
+                                    {{'_usuario_con'|trans}} 
+                                </label>                                                     
+                               <div id="usuarios_sala"></div>
+                               <div class="checkbox">
+                                   <label><input type="checkbox" name="correo" id="correo" value="1">{{'_usuario_notificacion'|trans}}</label>
+                               </div>
+                            </form>
+                            
+                        </div>
+                        <hr>
+                        <div>
+                            <label for="usuario_sin">
+                                {{'_usuario_sin'|trans}} 
+                            </label>  
+                            <div class="well well-sm">{{'_usuario_sin_inidicacion'|trans}}</div>                        
+                            <textarea name="usuario_sin" id="usuario_sin" class="form-control"></textarea>                        
+                        </div>
+                    </div>
+
+                    <div role="tabpanel" class="tab-pane" id="c_profile">
+                        <br>
+                      <div id="coments" class="content tab-pane" >
+                          
+                        <label for="_comentarios_">{{'_comentarios_'|trans}}</label>                                      
+                        <div id="chat">                    
+                            <form id="chat-form">                            
+                                <textarea name="chat-mensaje" id="chat-form-mensaje" required="true" class="form-control"></textarea>                                        
+                            </form>
+                            <br>
+                            <div class="panel panel-default">
+                              <div class="panel-heading">
+                                <h3 class="panel-title">{{'_foro_'|trans}}</h3>
+                              </div>
+                              <div class="panel-body" id="content_mensajes">
+                                <div class="comments-container">
+                                    <ul class="comments-list" id="chat-mensajes">
+                                                                            
+                                    </ul>
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+                   
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">                   
+                <button id="guardar_compartir" type="submit" class="btn btn-primary">{{'_enviar_'|trans}}</button>            
+                <button class="btn btn-danger" data-dismiss="modal" aria-hidden="true">{{'_cerrar_'|trans}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+

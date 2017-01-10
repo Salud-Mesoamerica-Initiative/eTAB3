@@ -1,0 +1,30 @@
+{% extends 'IndicadoresBundle::standard_layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ app.request.schemeAndHttpHost ~ asset('bundles/indicadores/vendor/MonthPicker/MonthPicker.min.css') }}" type="text/css" media="all" />
+{% endblock stylesheets %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ app.request.schemeAndHttpHost ~ asset('bundles/indicadores/vendor/MonthPicker/MonthPicker.min.js') }}"></script>
+    <script type="text/javascript" src="{{ app.request.schemeAndHttpHost ~ asset('bundles/indicadores/js/Reportes/matrizSeguimiento.js') }}"></script>
+{% endblock javascripts %}
+    
+{% block content %}
+    <div class="row">
+        <div  class="col-md-3" >
+            <H3>{{'_desde_'|trans}}</H3>
+            <div  id="inicio-div"></div>
+        </div>
+        <div class="col-md-3" >
+            <H3>{{'_hasta_'|trans}}</H3>
+            <div  id="fin-div"></div>
+        </div>
+    </div>
+    </BR>
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+    
+{% endblock content%}

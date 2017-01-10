@@ -1,0 +1,65 @@
+<div id="addAction" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addActionLabel" aria-hidden="true" style="z-index:99999999">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="addActionLabel">{{'_sala_acciones_'|trans}}</h3>
+            </div>
+
+            <div class="modal-body">
+                <div>
+                  <!-- Nav tabs -->
+                  <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab" onclick="mostrarAccionSala('')">{{'_agregar_accion_'|trans}} </a></li>
+                    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab" onclick="mostrarAccionSala('none')">{{'_historial_accion_'|trans}}</a></li>
+                  </ul>
+
+                  <!-- Tab panes -->
+                  <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="home">
+                      <br>
+                      <form id='acciones_frm' class="form-horizontal" role="form">                          
+                          <div class="form-group" id="acciones_div">
+                            <label for="acciones" class="col-sm-2 control-label col-lg-3">
+                              {{'_acciones_'|trans}}
+                            </label>
+                            <div class="col-sm-10 col-lg-8">
+                              <textarea class="form-control" rows="3" id="acciones"></textarea>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="observaciones" class="col-sm-2 col-lg-3 control-label">{{'_observaciones_'|trans}}</label>
+                            <div class="col-sm-10 col-lg-8">
+                              <textarea class="form-control" rows="3" id="observaciones"></textarea>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="responsables" class="col-sm-2 control-label col-lg-3">{{'_responsables_'|trans}}</label>
+                            <div class="col-sm-10 col-lg-8">
+                              <textarea class="form-control" rows="3" id="responsables"></textarea>
+                            </div>
+                          </div>
+                          
+                      </form>
+                    </div>
+
+                    <div role="tabpanel" class="tab-pane" id="profile">
+                      <div id="acciones_sala" class="content tab-pane" ></div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div id='info_accion' class="alert alert-danger" role="alert" style="display: none;">
+                  
+                </div>
+            </div>
+
+            <div class="modal-footer">   
+                <button id='guardar_accion' class="btn btn-primary " >{{'_guardar_cambios_'|trans}}</button>             
+                <button class="btn btn-danger" data-dismiss="modal" aria-hidden="true">{{'_cerrar_'|trans}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
