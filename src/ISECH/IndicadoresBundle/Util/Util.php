@@ -76,7 +76,7 @@ class Util
             $mac     = explode(" ", exec('getmac'))[0];
             $info    = $request->headers->get('User-Agent');
             
-            $entity  = new \MINSAL\IndicadoresBundle\Entity\LogUsuario;
+            $entity  = new \ISECH\IndicadoresBundle\Entity\LogUsuario;
 
             $entity->setUsuario( $user->getId() );
             $entity->setIp( $ip );

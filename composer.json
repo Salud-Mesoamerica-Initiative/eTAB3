@@ -32,7 +32,7 @@
         
         "sensio/distribution-bundle": "~5.0",
         "sensio/framework-extra-bundle": "v3.0.16",
-        "sensio/generator-bundle": "v3.0.8",
+        "sensio/generator-bundle": "v3.1.2",
         "incenteev/composer-parameter-handler": "v2.1.2",
                    
         "knplabs/knp-menu-bundle":"dev-master",
