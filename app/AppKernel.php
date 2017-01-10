@@ -43,7 +43,7 @@ class AppKernel extends Kernel
             
             new SunCat\MobileDetectBundle\MobileDetectBundle(),
             
-            new ISECH\IndicadoresBundle\IndicadoresBundle(),
+            new MINSAL\IndicadoresBundle\IndicadoresBundle(),
 
             new FOS\RestBundle\FOSRestBundle(),
             

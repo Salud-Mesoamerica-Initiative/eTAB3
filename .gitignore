@@ -8,6 +8,10 @@
 !/var/logs
 /var/logs/*
 !var/logs/.gitkeep
+/app/logs
+/app/var
+/app/bootstrap.php.cache
+/app/console
 !/var/sessions
 /var/sessions/*
 !var/sessions/.gitkeep
