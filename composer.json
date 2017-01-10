@@ -19,16 +19,16 @@
         "php": ">=5.3.3",
         
         "symfony/symfony": "2.8.*", 
-		"symfony/assetic-bundle": "v2.8.0",
+        "symfony/assetic-bundle": "v2.8.0",
         "symfony/swiftmailer-bundle": "^2.3",
         "symfony/monolog-bundle": "^2.8",
         "symfony/polyfill-apcu": "^1.0",
-		
+        
         "doctrine/orm": "^2.5",
         "doctrine/doctrine-bundle": "^1.6",
-        "doctrine/doctrine-cache-bundle": "^1.2",	
+        "doctrine/doctrine-cache-bundle": "^1.2",   
         
-		"twig/extensions": "v1.3.0",
+        "twig/extensions": "v1.3.0",
         
         "sensio/distribution-bundle": "~5.0",
         "sensio/framework-extra-bundle": "v3.0.16",
@@ -36,10 +36,10 @@
         "incenteev/composer-parameter-handler": "v2.1.2",
                    
         "knplabs/knp-menu-bundle":"dev-master",
-		"knplabs/knp-snappy-bundle": "dev-master",
+        "knplabs/knp-snappy-bundle": "dev-master",
 
-		"sonata-project/cache": "v1.0.7",
-        "sonata-project/cache-bundle": "2.3.0",
+        "sonata-project/cache": "v1.0.7",
+        "sonata-project/cache-bundle": "2.3.1",
         "sonata-project/datagrid-bundle": "^2.2",
         "sonata-project/core-bundle": "^2.2.1",
         "sonata-project/admin-bundle": "~2.3.6",
@@ -47,8 +47,8 @@
         "sonata-project/block-bundle": "~2.2,>=2.2.7,<2.3",
         "sonata-project/easy-extends-bundle": "2.x-dev",
         "sonata-project/user-bundle": "~2.2.4",
-		
-	
+        
+    
         "simplethings/entity-audit-bundle": "v0.6",
         "friendsofsymfony/user-bundle": "v1.3.6",
         "friendsofsymfony/jsrouting-bundle": "v1.6.0",
@@ -58,7 +58,7 @@
         "php-amqplib/php-amqplib": "~2.6",
         "php-amqplib/rabbitmq-bundle": "^1.10",
         "fr3d/ldap-bundle": "3.0.0",
-		        
+                
         "suncat/mobile-detect-bundle": "v1.0.3",
         "jms/serializer-bundle": "v1.1.0",        
         "snc/redis-bundle": "v2.0.0",
@@ -95,6 +95,6 @@
         "branch-alias": {
             "dev-master": "2.3-dev"
         },
-		"symfony-assets-install": "symlink"
+        "symfony-assets-install": "symlink"
     }
 }
